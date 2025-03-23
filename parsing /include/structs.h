@@ -6,15 +6,17 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 06:20:05 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/03/23 08:00:27 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/03/23 08:51:20 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STRUCTS_H
 # define STRUCTS_H
 
+# include "dependencies.h"
 typedef enum s_redir_type
 {
+	ERROR,
 	REDIR_IN,
 	REDIR_OUT,
 	APPEND,
@@ -31,14 +33,13 @@ typedef struct s_cmd_node
 {
 	char			*cmd;
 	char			*args;
-	t_redir_token	*redir;
+	t_redir_token	**redir;
 }					t_cmd_node;
 
 typedef struct s_op_node
 {
-	char			*cmd;
-	char			*args;
-	t_redir_token	*redir;
+	char			*op;
+	t_redir_type	type;
 }					t_op_node;
 
 typedef enum s_token_type
@@ -46,7 +47,7 @@ typedef enum s_token_type
 	CMD_TOKEN,
 	OP_TOKEN,
 	L_PAREN_TOKEN,
-    R_PAREN_TOKEN,
+	R_PAREN_TOKEN,
 }					t_token_type;
 
 typedef struct s_list
