@@ -7,7 +7,7 @@ TARGET = parser
 LIB_DIR = lib
 
 SRC_FILES = parser.c \
-	$(LIB_DIR)/string_utils_1.c
+	$(LIB_DIR)/string_utils_1.c $(LIB_DIR)/flagging_utils.c
 
 OBJ_FILES = $(SRC_FILES:.c=.o)
 

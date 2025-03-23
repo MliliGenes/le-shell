@@ -19,59 +19,45 @@ t_cmd_node	*create_cmd_node(void)
 	return (cmd_node);
 }
 
-int	is_and_op(char *src)
-{
-	return ((src[0] == '&' && src[1] == '&'));
-}
-
-int	is_or_op(char *src)
-{
-	return ((src[0] == '&' && src[1] == '&'));
-}
-
-int	is_pipe_op(char *src)
-{
-	return ((src[0] == '&' && src[1] == '&'));
-}
-
 t_cmd_node	*split_command_line(char *big_f_chunk)
 {
-	t_cmd_node	*head;
-	int			index;
-	int			start;
-	char		*cmd;
+	int		index;
+	int		start;
+	char	*cmd;
 
-	head = NULL;
 	index = 0;
 	start = 0;
-	while (big_f_chunk[index])
+	if (!big_f_chunk)
+		return (NULL);
+	while (1)
 	{
-		if (is_pipe_op(&big_f_chunk[index]) || is_and_op(&big_f_chunk[index])
-			|| is_or_op(&big_f_chunk[index]))
+		if (!big_f_chunk[index] || is_pipe_op(&big_f_chunk[index])
+			|| is_and_op(&big_f_chunk[index]) || is_or_op(&big_f_chunk[index]))
 		{
-			cmd = ft_strndup(&big_f_chunk[start], index - start);
-			printf("%s\n", cmd);
+			if (index > start)
+			{
+				cmd = ft_strndup(&big_f_chunk[start], index - start);
+				printf("Command: %s\n", cmd);
+			}
+			if (!big_f_chunk[index])
+				break ;
 			if (is_and_op(&big_f_chunk[index]) || is_or_op(&big_f_chunk[index]))
 				index += 2;
 			else
 				index++;
 			start = index;
 		}
-		index++;
+		else
+			index++;
 	}
-	if (start < index)
-	{
-		cmd = ft_strndup(&big_f_chunk[start], index - start);
-		printf("%s\n", cmd);
-	}
-	return (head);
+	return (NULL);
 }
 
 int	main(void)
 {
 	char	*input;
 
-	input = "ls -l | lol";
-	split_command_line(input);
+	input = "ls -l |";
+	split_command_line("ls -l |");
 	return (0);
 }
