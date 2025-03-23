@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   string_utils.c                                     :+:      :+:    :+:   */
+/*   string_utils_1.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 08:45:31 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/03/23 09:18:29 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/03/23 10:32:39 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,28 @@ char	*ft_strdup(const char *s)
 		return (NULL);
 	i = 0;
 	while (s[i])
+	{
+		dup[i] = s[i];
+		i++;
+	}
+	dup[i] = '\0';
+	return (dup);
+}
+
+char	*ft_strndup(const char *s, size_t n)
+{
+	size_t	len;
+	size_t	i;
+	char	*dup;
+
+	len = 0;
+	while (s[len] && len < n)
+		len++;
+	dup = malloc(len + 1);
+	if (!dup)
+		return (NULL);
+	i = 0;
+	while (i < len && s[i])
 	{
 		dup[i] = s[i];
 		i++;
