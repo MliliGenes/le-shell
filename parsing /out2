@@ -1,0 +1,12 @@
+total 56
+drwxr-xr-x  11 sel-mlil  candidates    374 Mar 23 16:37 .
+drwxr-xr-x   5 sel-mlil  candidates    170 Mar 23 12:42 ..
+-rw-r--r--@  1 sel-mlil  candidates    407 Mar 23 10:39 Makefile
+-rw-r--r--   1 sel-mlil  candidates      0 Mar 23 16:37 file
+drwxr-xr-x   6 sel-mlil  candidates    204 Mar 23 09:14 include
+drwxr-xr-x   6 sel-mlil  candidates    204 Mar 23 16:37 lib
+-rw-r--r--   1 sel-mlil  candidates      0 Mar 23 16:37 out
+-rw-r--r--   1 sel-mlil  candidates      0 Mar 23 16:37 out2
+-rwxr-xr-x   1 sel-mlil  candidates  13060 Mar 23 16:37 parser
+-rw-r--r--   1 sel-mlil  candidates   1296 Mar 23 16:36 parser.c
+-rw-r--r--   1 sel-mlil  candidates   1868 Mar 23 16:37 parser.o

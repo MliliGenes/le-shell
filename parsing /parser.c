@@ -1,7 +1,25 @@
 #include "include/parsing.h"
 
+int	locate_redirection(char *chunk)
+{
+	int	index;
+
+	index = 0;
+	while (chunk[index])
+	{
+		if (is_redir_in(&chunk[index]) || is_redir_out(&chunk[index])
+			|| is_redir_her(&chunk[index]) || is_redir_append(&chunk[index]))
+		{
+			
+		}
+		else
+			index++;
+	}
+}
+
 // int	fill_cmd_node(t_cmd_node *cmd_node, char *chunk)
 // {
+
 // 	return (0);
 // }
 
@@ -43,7 +61,7 @@ t_cmd_node	*split_command_line(char *big_f_chunk)
 			|| is_and_op(&big_f_chunk[index]) || is_or_op(&big_f_chunk[index]))
 		{
 			cmd = ft_strndup(&big_f_chunk[start], index - start);
-			printf("Command: %s\n", cmd);
+			printf("command chunk: %s\n", cmd);
 			if (!big_f_chunk[index])
 				break ;
 			skip_ops(&index, big_f_chunk);
