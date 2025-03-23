@@ -19,6 +19,14 @@ t_cmd_node	*create_cmd_node(void)
 	return (cmd_node);
 }
 
+static void	skip_ops(int *index, char *big_f_chunk)
+{
+	if (is_and_op(&big_f_chunk[*index]) || is_or_op(&big_f_chunk[*index]))
+		(*index) += 2;
+	else
+		(*index)++;
+}
+
 t_cmd_node	*split_command_line(char *big_f_chunk)
 {
 	int		index;
@@ -27,24 +35,18 @@ t_cmd_node	*split_command_line(char *big_f_chunk)
 
 	index = 0;
 	start = 0;
-	if (!big_f_chunk)
+	if (!big_f_chunk || !*big_f_chunk)
 		return (NULL);
 	while (1)
 	{
 		if (!big_f_chunk[index] || is_pipe_op(&big_f_chunk[index])
 			|| is_and_op(&big_f_chunk[index]) || is_or_op(&big_f_chunk[index]))
 		{
-			if (index > start)
-			{
-				cmd = ft_strndup(&big_f_chunk[start], index - start);
-				printf("Command: %s\n", cmd);
-			}
+			cmd = ft_strndup(&big_f_chunk[start], index - start);
+			printf("Command: %s\n", cmd);
 			if (!big_f_chunk[index])
 				break ;
-			if (is_and_op(&big_f_chunk[index]) || is_or_op(&big_f_chunk[index]))
-				index += 2;
-			else
-				index++;
+			skip_ops(&index, big_f_chunk);
 			start = index;
 		}
 		else
@@ -53,11 +55,10 @@ t_cmd_node	*split_command_line(char *big_f_chunk)
 	return (NULL);
 }
 
-int	main(void)
+int	main(int ac, char **av)
 {
-	char	*input;
-
-	input = "ls -l |";
-	split_command_line("ls -l |");
+	(void)ac;
+	(void)av;
+	split_command_line("");
 	return (0);
 }
