@@ -6,80 +6,55 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 06:20:05 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/03/21 07:53:07 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/03/23 08:00:27 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STRUCTS_H
 # define STRUCTS_H
 
-// Token types for lexical analysis
-typedef enum e_token_type
+typedef enum s_redir_type
 {
-	TOKEN_WORD,      // Commands and arguments
-	TOKEN_PIPE,      // |
-	TOKEN_REDIR_IN,  // <
-	TOKEN_REDIR_OUT, // >
-	TOKEN_APPEND,    // >>
-	TOKEN_HEREDOC,   // <<
-	TOKEN_AND,       // && (bonus)
-	TOKEN_OR,        // || (bonus)
-	TOKEN_L_PAREN,   // ( (bonus)
-	TOKEN_R_PAREN,   // ) (bonus)
-	TOKEN_EOF        // End of input
-}						t_token_type;
+	REDIR_IN,
+	REDIR_OUT,
+	APPEND,
+	HEREDOC,
+}					t_redir_type;
 
-// Token structure
-typedef struct s_token
+typedef struct s_redir_token
 {
-	t_token_type		type;
-	char				*value;
-	struct s_token		*next;
-}						t_token;
+	char			*file_name;
+	t_redir_type	type;
+}					t_redir_token;
 
-// AST node types
-typedef enum e_node_type
+typedef struct s_cmd_node
 {
-	NODE_COMMAND, // Simple command with args
-	NODE_PIPE,    // Pipe operator
-	NODE_REDIR,   // Redirection
-	NODE_AND,     // AND operator (bonus)
-	NODE_OR,      // OR operator (bonus)
-}						t_node_type;
+	char			*cmd;
+	char			*args;
+	t_redir_token	*redir;
+}					t_cmd_node;
 
-// AST node structure
-typedef struct s_ast_node
+typedef struct s_op_node
 {
-	t_node_type			type;
+	char			*cmd;
+	char			*args;
+	t_redir_token	*redir;
+}					t_op_node;
 
-	// For command nodes
-	char **args; // Command and its arguments
-
-	// For redirection nodes
-	int redir_type; // <, >, >>, <<
-	char *file;     // Filename or delimiter
-
-	// Tree structure
-	struct s_ast_node	*left;
-	struct s_ast_node	*right;
-}						t_ast_node;
-
-// Environment variable structure
-typedef struct s_env
+typedef enum s_token_type
 {
-	char				*key;
-	char				*value;
-	struct s_env		*next;
-}						t_env;
+	CMD_TOKEN,
+	OP_TOKEN,
+	L_PAREN_TOKEN,
+    R_PAREN_TOKEN,
+}					t_token_type;
 
-// Main shell structure
-typedef struct s_shell
+typedef struct s_list
 {
-	t_token *tokens;     // Linked list of tokens
-	t_ast_node *ast;     // Abstract Syntax Tree root
-	t_env *env;          // Environment variables
-	int last_exit_code;  // $? value
-	int signal_received; // Global for signal handling
-}						t_shell;
+	void			*token;
+	t_token_type	token_type;
+	struct s_list	*prev;
+	struct s_list	*next;
+}					t_list;
 
 #endif
