@@ -1,21 +1,20 @@
 #include "include/parsing.h"
 
-int	locate_redirection(char *chunk)
-{
-	int	index;
+// int	locate_redirection(char *chunk)
+// {
+// 	int	index;
 
-	index = 0;
-	while (chunk[index])
-	{
-		if (is_redir_in(&chunk[index]) || is_redir_out(&chunk[index])
-			|| is_redir_her(&chunk[index]) || is_redir_append(&chunk[index]))
-		{
-			
-		}
-		else
-			index++;
-	}
-}
+// 	index = 0;
+// 	while (chunk[index])
+// 	{
+// 		if (is_redir_in(&chunk[index]) || is_redir_out(&chunk[index])
+// 			|| is_redir_her(&chunk[index]) || is_redir_append(&chunk[index]))
+// 		{
+// 		}
+// 		else
+// 			index++;
+// 	}
+// }
 
 // int	fill_cmd_node(t_cmd_node *cmd_node, char *chunk)
 // {
@@ -37,12 +36,13 @@ t_cmd_node	*create_cmd_node(void)
 	return (cmd_node);
 }
 
-static void	skip_ops(int *index, char *big_f_chunk)
+static int	skip_ops(int *index, char *big_f_chunk)
 {
 	if (is_and_op(&big_f_chunk[*index]) || is_or_op(&big_f_chunk[*index]))
 		(*index) += 2;
 	else
 		(*index)++;
+	return (*index);
 }
 
 t_cmd_node	*split_command_line(char *big_f_chunk)
@@ -57,15 +57,18 @@ t_cmd_node	*split_command_line(char *big_f_chunk)
 		return (NULL);
 	while (1)
 	{
-		if (!big_f_chunk[index] || is_pipe_op(&big_f_chunk[index])
-			|| is_and_op(&big_f_chunk[index]) || is_or_op(&big_f_chunk[index]))
+		if (is_pipe_op(&big_f_chunk[index]) || is_and_op(&big_f_chunk[index])
+			|| is_or_op(&big_f_chunk[index]))
 		{
-			cmd = ft_strndup(&big_f_chunk[start], index - start);
-			printf("command chunk: %s\n", cmd);
+			if (index > start)
+			{
+				cmd = ft_strndup(&big_f_chunk[start], index - start);
+				printf("command chunk: %s\n%d > %d\n", cmd, index, index
+					- start);
+			}
 			if (!big_f_chunk[index])
 				break ;
-			skip_ops(&index, big_f_chunk);
-			start = index;
+			start = skip_ops(&index, big_f_chunk);
 		}
 		else
 			index++;
@@ -77,6 +80,6 @@ int	main(int ac, char **av)
 {
 	(void)ac;
 	(void)av;
-	split_command_line("");
+	split_command_line("deez |");
 	return (0);
 }
