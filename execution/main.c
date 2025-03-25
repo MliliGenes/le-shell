@@ -6,7 +6,7 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 03:02:50 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/03/25 06:23:14 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/03/25 08:14:26 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,7 @@ int exit_status = 0;
 void	handle_signal(int sig)
 {
 	(void)sig;
-	write(1, "\n", 1);
-	rl_on_new_line();
-	
-	rl_redisplay();
+	printf("\nminishell> ");
 }
 
 int exec_builtins(char *input)
@@ -63,5 +60,6 @@ int main()
 		}
 		free(input);
 	}
+	clear_history();
 	return (0);
 }

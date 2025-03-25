@@ -6,22 +6,20 @@ NAME = minishell
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
 
+LIBFT = ./lib/libft.a
+
 all: $(NAME)
 
 $(NAME): $(M_OBJS)
-	make -C ./libft
-	$(CC) $(CFLAGS) -o $(NAME) $(M_OBJS) ./libft/libft.a -lreadline
-
+	$(CC) $(CFLAGS) -o $(NAME) $(M_OBJS) $(LIBFT) -lreadline
 
 %.o: %.c minishell.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	make clean -C ./libft
 	rm -rf $(M_OBJS) $(B_OBJS)
 
 fclean: clean
-	make fclean -C ./libft
 	rm -rf $(NAME)
 
 re: fclean all
