@@ -6,7 +6,7 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 03:02:50 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/03/23 03:57:09 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/03/25 05:58:28 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,17 @@ int exit_status = 0;
 void	handle_signal(int sig)
 {
 	if (sig == SIGINT)
-		write(1, "\nminishell$ ", 12);
+		write(1, "\nminishell> ", 12);
 }
 
 int exec_builtins(char *input)
 {
 	if (ft_strncmp(input, "exit", 4) == 0)
 	{
+		printf("exit\n");
 		exit(0);
 	}
+	return 1;
 }
 
 void ll()
@@ -40,13 +42,15 @@ int main()
 	char *input;
 	
 	signal(SIGINT, handle_signal);
+	signal(SIGQUIT, SIG_IGN);
 	while (1)
 	{
-		input = readline("minishell$ ");
+		input = readline("minishell> ");
+		exec_builtins(input);
 		if (!input)
 		{
 			printf("exit\n");
-			break;
+			break ;
 		}
 		if (ft_strlen(input) > 0)
 			printf("%s\n", input);
