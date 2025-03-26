@@ -3,16 +3,16 @@ M_OBJS = $(M_SRCS:.c=.o)
 
 NAME = minishell
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -I./readline-8.2 -DREADLINE_LIBRARY
-LDFLAGS = -L./readline-8.2 -lreadline -lhistory -lncurses
+CFLAGS = -Wall -Wextra -Werror -I./include -DREADLINE_LIBRARY
+LDFLAGS = -L./lib -lreadline -lhistory -lncurses
 
 LIBFT = ./lib/libft.a
-READLINE = ./readline-8.2/libreadline.a
-HISTORY = ./readline-8.2/libhistory.a
+READLINE = ./lib/libreadline.a
+HISTORY = ./lib/libhistory.a
 
 all: $(NAME)
 
-$(NAME): $(M_OBJS) $(LIBFT) $(READLINE) $(HISTORY)
+$(NAME): $(M_OBJS)
 	$(CC) $(CFLAGS) $(M_OBJS) -o $(NAME) $(LDFLAGS) $(LIBFT)
 
 %.o: %.c minishell.h
