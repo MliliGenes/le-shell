@@ -6,7 +6,7 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 03:02:50 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/03/26 07:19:13 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/03/26 08:50:11 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,11 @@ void handle_pwd(char *input)
 			perror("getcwd");
 		free(pwd);
 	}
+}
+
+void	handle_cd(char **args)
+{
+	//TODO: hanlde cd with relative paths and absolute paths
 }
 
 void ll()
