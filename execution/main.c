@@ -6,7 +6,7 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 03:02:50 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/03/26 04:40:25 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/03/26 07:19:13 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,8 +92,26 @@ void	handle_echo(char *input)
 	char **args;
 	
 	args = ft_split(input, ' ');
-	ft_echo(args);
+	{
+		if (ft_strncmp(args[0], "echo", 4) == 0)
+			ft_echo(args);
+	}
 	free_2d(args);
+}
+
+void handle_pwd(char *input)
+{
+	char *pwd;
+	
+	if ((ft_strcmp(input, "pwd") == 0))
+	{
+		pwd = getcwd(NULL, 0);
+		if (pwd)
+			printf("%s\n", pwd);
+		else
+			perror("getcwd");
+		free(pwd);
+	}
 }
 
 void ll()
@@ -122,6 +140,7 @@ int main()
 		{
 			add_history(input);
 			handle_echo(input);
+			handle_pwd(input);
 			hadnle_exit(input);
 		}
 		free(input);
