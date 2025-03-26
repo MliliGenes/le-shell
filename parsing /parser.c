@@ -63,8 +63,7 @@ t_cmd_node	*split_command_line(char *big_f_chunk)
 			if (index > start)
 			{
 				cmd = ft_strndup(&big_f_chunk[start], index - start);
-				printf("command chunk: %s\n%d > %d\n", cmd, index, index
-					- start);
+				printf("command chunk: %s\n", cmd);
 			}
 			if (!big_f_chunk[index])
 				break ;
@@ -80,6 +79,6 @@ int	main(int ac, char **av)
 {
 	(void)ac;
 	(void)av;
-	split_command_line("deez |");
+	split_command_line("    jhh ghj\"|\" hjghjgh");
 	return (0);
 }
