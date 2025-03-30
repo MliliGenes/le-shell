@@ -39,6 +39,7 @@
             position: relative;
             padding-left: 1.5rem;
             margin-bottom: 0.5rem;
+            word-break: break-word;
         }
         .pipeline-list li:before {
             content: "→";
@@ -52,59 +53,72 @@
         .pipeline-list li.final:before {
             content: "⇒";
         }
+        pre {
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+        @media (max-width: 640px) {
+            .pipeline-list li {
+                padding-left: 1.25rem;
+                font-size: 0.9rem;
+            }
+            .function {
+                font-size: 0.85rem;
+            }
+        }
     </style>
 </head>
-<body class="terminal text-gray-200 p-8">
+<body class="terminal text-gray-200 p-4 sm:p-8">
     <div class="max-w-4xl mx-auto">
-        <header class="mb-12">
-            <h1 class="text-4xl font-bold mb-2 text-green-400">Minishell Parser</h1>
+        <header class="mb-8 sm:mb-12">
+            <h1 class="text-2xl sm:text-4xl font-bold mb-2 text-green-400">Minishell Parser</h1>
             <div class="flex items-center">
                 <div class="h-3 w-3 rounded-full bg-red-500 mr-2"></div>
                 <div class="h-3 w-3 rounded-full bg-yellow-500 mr-2"></div>
                 <div class="h-3 w-3 rounded-full bg-green-500 mr-2"></div>
-                <span class="ml-4 text-gray-400">Implementation Documentation</span>
+                <span class="ml-2 sm:ml-4 text-sm sm:text-base text-gray-400">Implementation Documentation</span>
             </div>
         </header>
 
-        <div class="mb-12">
-            <h2 class="text-2xl font-bold mb-4 phase">Phase 1: Tokenization</h2>
-            <p class="mb-6">Convert input string into a sequence of classified tokens</p>
+        <div class="mb-8 sm:mb-12">
+            <h2 class="text-xl sm:text-2xl font-bold mb-3 sm:mb-4 phase">Phase 1: Tokenization</h2>
+            <p class="mb-4 sm:mb-6 text-sm sm:text-base">Convert input string into a sequence of classified tokens</p>
             
-            <div class="mb-8 border-l-2 border-gray-700 pl-4">
-                <h3 class="text-xl font-bold mb-2 command">initialize_lexer</h3>
-                <pre class="function mb-2">t_lexer *initialize_lexer(char *input);</pre>
-                <p class="description mb-2">Set up the lexer to process the command line input.</p>
-                <p class="test mb-1"><span class="text-gray-500">Test:</span> Create a lexer with the input "echo hello world"</p>
-                <p class="example"><span class="text-gray-500">Example:</span> Should return a lexer structure with the input string and position set to 0.</p>
+            <div class="mb-6 sm:mb-8 border-l-2 border-gray-700 pl-3 sm:pl-4">
+                <h3 class="text-lg sm:text-xl font-bold mb-1 sm:mb-2 command">initialize_lexer</h3>
+                <pre class="function mb-1 sm:mb-2 text-xs sm:text-sm">t_lexer *initialize_lexer(char *input);</pre>
+                <p class="description mb-1 sm:mb-2 text-sm sm:text-base">Set up the lexer to process the command line input.</p>
+                <p class="test mb-1 text-xs sm:text-sm"><span class="text-gray-500">Test:</span> Create a lexer with the input "echo hello world"</p>
+                <p class="example text-xs sm:text-sm"><span class="text-gray-500">Example:</span> Should return a lexer structure with the input string and position set to 0.</p>
             </div>
             
-            <div class="mb-8 border-l-2 border-gray-700 pl-4">
-                <h3 class="text-xl font-bold mb-2 command">get_next_token</h3>
-                <pre class="function mb-2">t_token *get_next_token(t_lexer *lexer);</pre>
-                <p class="description mb-2">Extract the next token from the input string, handling quotes and spaces.</p>
-                <p class="test mb-1"><span class="text-gray-500">Test:</span> Run on "ls -la | grep file"</p>
-                <p class="example"><span class="text-gray-500">Example:</span> Should return tokens: "ls", "-la", "|", "grep", "file"</p>
+            <div class="mb-6 sm:mb-8 border-l-2 border-gray-700 pl-3 sm:pl-4">
+                <h3 class="text-lg sm:text-xl font-bold mb-1 sm:mb-2 command">get_next_token</h3>
+                <pre class="function mb-1 sm:mb-2 text-xs sm:text-sm">t_token *get_next_token(t_lexer *lexer);</pre>
+                <p class="description mb-1 sm:mb-2 text-sm sm:text-base">Extract the next token from the input string, handling quotes and spaces.</p>
+                <p class="test mb-1 text-xs sm:text-sm"><span class="text-gray-500">Test:</span> Run on "ls -la | grep file"</p>
+                <p class="example text-xs sm:text-sm"><span class="text-gray-500">Example:</span> Should return tokens: "ls", "-la", "|", "grep", "file"</p>
             </div>
             
-            <div class="mb-8 border-l-2 border-gray-700 pl-4">
-                <h3 class="text-xl font-bold mb-2 command">handle_quotes</h3>
-                <pre class="function mb-2">char *handle_quotes(t_lexer *lexer, char quote_char);</pre>
-                <p class="description mb-2">Process quoted strings (both single and double quotes) according to shell rules.</p>
-                <p class="test mb-1"><span class="text-gray-500">Test:</span> Run on input with "echo 'hello world' "some $VAR""</p>
-                <p class="example"><span class="text-gray-500">Example:</span> Should extract 'hello world' and "some $VAR" as separate tokens with quotes removed.</p>
+            <div class="mb-6 sm:mb-8 border-l-2 border-gray-700 pl-3 sm:pl-4">
+                <h3 class="text-lg sm:text-xl font-bold mb-1 sm:mb-2 command">handle_quotes</h3>
+                <pre class="function mb-1 sm:mb-2 text-xs sm:text-sm">char *handle_quotes(t_lexer *lexer, char quote_char);</pre>
+                <p class="description mb-1 sm:mb-2 text-sm sm:text-base">Process quoted strings (both single and double quotes) according to shell rules.</p>
+                <p class="test mb-1 text-xs sm:text-sm"><span class="text-gray-500">Test:</span> Run on input with "echo 'hello world' "some $VAR""</p>
+                <p class="example text-xs sm:text-sm"><span class="text-gray-500">Example:</span> Should extract 'hello world' and "some $VAR" as separate tokens with quotes removed.</p>
             </div>
             
-            <div class="mb-8 border-l-2 border-gray-700 pl-4">
-                <h3 class="text-xl font-bold mb-2 command">classify_token</h3>
-                <pre class="function mb-2">t_token_type classify_token(char *token_str);</pre>
-                <p class="description mb-2">Identify the type of token (command, operator, redirection, etc.)</p>
-                <p class="test mb-1"><span class="text-gray-500">Test:</span> Run on various inputs like "|", ">", "echo", etc.</p>
-                <p class="example"><span class="text-gray-500">Example:</span> "|" should return OP_TOKEN, "echo" should return CMD_TOKEN</p>
+            <div class="mb-6 sm:mb-8 border-l-2 border-gray-700 pl-3 sm:pl-4">
+                <h3 class="text-lg sm:text-xl font-bold mb-1 sm:mb-2 command">classify_token</h3>
+                <pre class="function mb-1 sm:mb-2 text-xs sm:text-sm">t_token_type classify_token(char *token_str);</pre>
+                <p class="description mb-1 sm:mb-2 text-sm sm:text-base">Identify the type of token (command, operator, redirection, etc.)</p>
+                <p class="test mb-1 text-xs sm:text-sm"><span class="text-gray-500">Test:</span> Run on various inputs like "|", ">", "echo", etc.</p>
+                <p class="example text-xs sm:text-sm"><span class="text-gray-500">Example:</span> "|" should return OP_TOKEN, "echo" should return CMD_TOKEN</p>
             </div>
             
-            <div class="bg-gray-800 p-4 rounded mb-8">
-                <h4 class="font-bold mb-2">Phase 1 Pipeline:</h4>
-                <ul class="pipeline-list text-green-300">
+            <div class="bg-gray-800 p-3 sm:p-4 rounded mb-6 sm:mb-8">
+                <h4 class="font-bold mb-1 sm:mb-2 text-sm sm:text-base">Phase 1 Pipeline:</h4>
+                <ul class="pipeline-list text-green-300 text-xs sm:text-sm">
                     <li>Input string</li>
                     <li>initialize_lexer</li>
                     <li class="process">[get_next_token → classify_token → add_to_token_list]</li>
@@ -114,45 +128,45 @@
             </div>
         </div>
 
-        <div class="mb-12">
-            <h2 class="text-2xl font-bold mb-4 phase">Phase 2: Parsing with Shunting Yard</h2>
-            <p class="mb-6">Convert tokens into postfix notation using the shunting yard algorithm</p>
+        <div class="mb-8 sm:mb-12">
+            <h2 class="text-xl sm:text-2xl font-bold mb-3 sm:mb-4 phase">Phase 2: Parsing with Shunting Yard</h2>
+            <p class="mb-4 sm:mb-6 text-sm sm:text-base">Convert tokens into postfix notation using the shunting yard algorithm</p>
             
-            <div class="mb-8 border-l-2 border-gray-700 pl-4">
-                <h3 class="text-xl font-bold mb-2 command">initialize_shunting_yard</h3>
-                <pre class="function mb-2">t_parser *initialize_shunting_yard(void);</pre>
-                <p class="description mb-2">Set up the stacks needed for the shunting yard algorithm.</p>
-                <p class="test mb-1"><span class="text-gray-500">Test:</span> Create new parser</p>
-                <p class="example"><span class="text-gray-500">Example:</span> Should return a parser with empty operator stack and output queue.</p>
+            <div class="mb-6 sm:mb-8 border-l-2 border-gray-700 pl-3 sm:pl-4">
+                <h3 class="text-lg sm:text-xl font-bold mb-1 sm:mb-2 command">initialize_shunting_yard</h3>
+                <pre class="function mb-1 sm:mb-2 text-xs sm:text-sm">t_parser *initialize_shunting_yard(void);</pre>
+                <p class="description mb-1 sm:mb-2 text-sm sm:text-base">Set up the stacks needed for the shunting yard algorithm.</p>
+                <p class="test mb-1 text-xs sm:text-sm"><span class="text-gray-500">Test:</span> Create new parser</p>
+                <p class="example text-xs sm:text-sm"><span class="text-gray-500">Example:</span> Should return a parser with empty operator stack and output queue.</p>
             </div>
             
-            <div class="mb-8 border-l-2 border-gray-700 pl-4">
-                <h3 class="text-xl font-bold mb-2 command">process_token</h3>
-                <pre class="function mb-2">void process_token(t_parser *parser, t_token *token);</pre>
-                <p class="description mb-2">Process a token according to shunting yard rules.</p>
-                <p class="test mb-1"><span class="text-gray-500">Test:</span> Process tokens from "ls -la | grep file"</p>
-                <p class="example"><span class="text-gray-500">Example:</span> Commands go to output, operators handled based on precedence.</p>
+            <div class="mb-6 sm:mb-8 border-l-2 border-gray-700 pl-3 sm:pl-4">
+                <h3 class="text-lg sm:text-xl font-bold mb-1 sm:mb-2 command">process_token</h3>
+                <pre class="function mb-1 sm:mb-2 text-xs sm:text-sm">void process_token(t_parser *parser, t_token *token);</pre>
+                <p class="description mb-1 sm:mb-2 text-sm sm:text-base">Process a token according to shunting yard rules.</p>
+                <p class="test mb-1 text-xs sm:text-sm"><span class="text-gray-500">Test:</span> Process tokens from "ls -la | grep file"</p>
+                <p class="example text-xs sm:text-sm"><span class="text-gray-500">Example:</span> Commands go to output, operators handled based on precedence.</p>
             </div>
             
-            <div class="mb-8 border-l-2 border-gray-700 pl-4">
-                <h3 class="text-xl font-bold mb-2 command">handle_operator</h3>
-                <pre class="function mb-2">void handle_operator(t_parser *parser, t_token *op_token);</pre>
-                <p class="description mb-2">Process operators based on precedence rules.</p>
-                <p class="test mb-1"><span class="text-gray-500">Test:</span> Test with pipe (|) operator</p>
-                <p class="example"><span class="text-gray-500">Example:</span> Should compare precedence with operators on the stack and move operators to output as needed.</p>
+            <div class="mb-6 sm:mb-8 border-l-2 border-gray-700 pl-3 sm:pl-4">
+                <h3 class="text-lg sm:text-xl font-bold mb-1 sm:mb-2 command">handle_operator</h3>
+                <pre class="function mb-1 sm:mb-2 text-xs sm:text-sm">void handle_operator(t_parser *parser, t_token *op_token);</pre>
+                <p class="description mb-1 sm:mb-2 text-sm sm:text-base">Process operators based on precedence rules.</p>
+                <p class="test mb-1 text-xs sm:text-sm"><span class="text-gray-500">Test:</span> Test with pipe (|) operator</p>
+                <p class="example text-xs sm:text-sm"><span class="text-gray-500">Example:</span> Should compare precedence with operators on the stack and move operators to output as needed.</p>
             </div>
             
-            <div class="mb-8 border-l-2 border-gray-700 pl-4">
-                <h3 class="text-xl font-bold mb-2 command">finalize_parsing</h3>
-                <pre class="function mb-2">void finalize_parsing(t_parser *parser);</pre>
-                <p class="description mb-2">Complete the shunting yard algorithm by moving remaining operators to output.</p>
-                <p class="test mb-1"><span class="text-gray-500">Test:</span> Call after all tokens are processed</p>
-                <p class="example"><span class="text-gray-500">Example:</span> All operators should be moved from operator stack to output queue.</p>
+            <div class="mb-6 sm:mb-8 border-l-2 border-gray-700 pl-3 sm:pl-4">
+                <h3 class="text-lg sm:text-xl font-bold mb-1 sm:mb-2 command">finalize_parsing</h3>
+                <pre class="function mb-1 sm:mb-2 text-xs sm:text-sm">void finalize_parsing(t_parser *parser);</pre>
+                <p class="description mb-1 sm:mb-2 text-sm sm:text-base">Complete the shunting yard algorithm by moving remaining operators to output.</p>
+                <p class="test mb-1 text-xs sm:text-sm"><span class="text-gray-500">Test:</span> Call after all tokens are processed</p>
+                <p class="example text-xs sm:text-sm"><span class="text-gray-500">Example:</span> All operators should be moved from operator stack to output queue.</p>
             </div>
             
-            <div class="bg-gray-800 p-4 rounded mb-8">
-                <h4 class="font-bold mb-2">Phase 2 Pipeline:</h4>
-                <ul class="pipeline-list text-green-300">
+            <div class="bg-gray-800 p-3 sm:p-4 rounded mb-6 sm:mb-8">
+                <h4 class="font-bold mb-1 sm:mb-2 text-sm sm:text-base">Phase 2 Pipeline:</h4>
+                <ul class="pipeline-list text-green-300 text-xs sm:text-sm">
                     <li>List of tokens</li>
                     <li>initialize_shunting_yard</li>
                     <li class="process">[process_token for each token]</li>
@@ -162,45 +176,45 @@
             </div>
         </div>
 
-        <div class="mb-12">
-            <h2 class="text-2xl font-bold mb-4 phase">Phase 3: Building Command Tree</h2>
-            <p class="mb-6">Create the final command execution tree from the postfix notation</p>
+        <div class="mb-8 sm:mb-12">
+            <h2 class="text-xl sm:text-2xl font-bold mb-3 sm:mb-4 phase">Phase 3: Building Command Tree</h2>
+            <p class="mb-4 sm:mb-6 text-sm sm:text-base">Create the final command execution tree from the postfix notation</p>
             
-            <div class="mb-8 border-l-2 border-gray-700 pl-4">
-                <h3 class="text-xl font-bold mb-2 command">build_command_tree</h3>
-                <pre class="function mb-2">t_list *build_command_tree(t_parser *parser);</pre>
-                <p class="description mb-2">Create the final command execution tree from the output queue.</p>
-                <p class="test mb-1"><span class="text-gray-500">Test:</span> Build tree from "ls -la | grep file"</p>
-                <p class="example"><span class="text-gray-500">Example:</span> Should create a tree with "ls -la" and "grep file" connected by a pipe.</p>
+            <div class="mb-6 sm:mb-8 border-l-2 border-gray-700 pl-3 sm:pl-4">
+                <h3 class="text-lg sm:text-xl font-bold mb-1 sm:mb-2 command">build_command_tree</h3>
+                <pre class="function mb-1 sm:mb-2 text-xs sm:text-sm">t_list *build_command_tree(t_parser *parser);</pre>
+                <p class="description mb-1 sm:mb-2 text-sm sm:text-base">Create the final command execution tree from the output queue.</p>
+                <p class="test mb-1 text-xs sm:text-sm"><span class="text-gray-500">Test:</span> Build tree from "ls -la | grep file"</p>
+                <p class="example text-xs sm:text-sm"><span class="text-gray-500">Example:</span> Should create a tree with "ls -la" and "grep file" connected by a pipe.</p>
             </div>
             
-            <div class="mb-8 border-l-2 border-gray-700 pl-4">
-                <h3 class="text-xl font-bold mb-2 command">create_command_node</h3>
-                <pre class="function mb-2">t_cmd_node *create_command_node(char *cmd, char *args);</pre>
-                <p class="description mb-2">Create a command node with its arguments.</p>
-                <p class="test mb-1"><span class="text-gray-500">Test:</span> Create node for "echo hello world"</p>
-                <p class="example"><span class="text-gray-500">Example:</span> Should return a command node with cmd="echo" and args="hello world".</p>
+            <div class="mb-6 sm:mb-8 border-l-2 border-gray-700 pl-3 sm:pl-4">
+                <h3 class="text-lg sm:text-xl font-bold mb-1 sm:mb-2 command">create_command_node</h3>
+                <pre class="function mb-1 sm:mb-2 text-xs sm:text-sm">t_cmd_node *create_command_node(char *cmd, char *args);</pre>
+                <p class="description mb-1 sm:mb-2 text-sm sm:text-base">Create a command node with its arguments.</p>
+                <p class="test mb-1 text-xs sm:text-sm"><span class="text-gray-500">Test:</span> Create node for "echo hello world"</p>
+                <p class="example text-xs sm:text-sm"><span class="text-gray-500">Example:</span> Should return a command node with cmd="echo" and args="hello world".</p>
             </div>
             
-            <div class="mb-8 border-l-2 border-gray-700 pl-4">
-                <h3 class="text-xl font-bold mb-2 command">add_redirection</h3>
-                <pre class="function mb-2">void add_redirection(t_cmd_node *cmd, t_redir_token *redir);</pre>
-                <p class="description mb-2">Add a redirection to a command node.</p>
-                <p class="test mb-1"><span class="text-gray-500">Test:</span> Add redirection "< input.txt" to "cat" command</p>
-                <p class="example"><span class="text-gray-500">Example:</span> Should add a REDIR_IN redirection with filename "input.txt" to the cat command.</p>
+            <div class="mb-6 sm:mb-8 border-l-2 border-gray-700 pl-3 sm:pl-4">
+                <h3 class="text-lg sm:text-xl font-bold mb-1 sm:mb-2 command">add_redirection</h3>
+                <pre class="function mb-1 sm:mb-2 text-xs sm:text-sm">void add_redirection(t_cmd_node *cmd, t_redir_token *redir);</pre>
+                <p class="description mb-1 sm:mb-2 text-sm sm:text-base">Add a redirection to a command node.</p>
+                <p class="test mb-1 text-xs sm:text-sm"><span class="text-gray-500">Test:</span> Add redirection "< input.txt" to "cat" command</p>
+                <p class="example text-xs sm:text-sm"><span class="text-gray-500">Example:</span> Should add a REDIR_IN redirection with filename "input.txt" to the cat command.</p>
             </div>
             
-            <div class="mb-8 border-l-2 border-gray-700 pl-4">
-                <h3 class="text-xl font-bold mb-2 command">connect_commands</h3>
-                <pre class="function mb-2">t_list *connect_commands(t_list *left, t_list *right, t_op_node *op);</pre>
-                <p class="description mb-2">Connect commands with operators (pipes, &&, ||).</p>
-                <p class="test mb-1"><span class="text-gray-500">Test:</span> Connect "ls -la" and "grep file" with a pipe</p>
-                <p class="example"><span class="text-gray-500">Example:</span> Should return a list node with operator="|" and left/right pointing to the commands.</p>
+            <div class="mb-6 sm:mb-8 border-l-2 border-gray-700 pl-3 sm:pl-4">
+                <h3 class="text-lg sm:text-xl font-bold mb-1 sm:mb-2 command">connect_commands</h3>
+                <pre class="function mb-1 sm:mb-2 text-xs sm:text-sm">t_list *connect_commands(t_list *left, t_list *right, t_op_node *op);</pre>
+                <p class="description mb-1 sm:mb-2 text-sm sm:text-base">Connect commands with operators (pipes, &&, ||).</p>
+                <p class="test mb-1 text-xs sm:text-sm"><span class="text-gray-500">Test:</span> Connect "ls -la" and "grep file" with a pipe</p>
+                <p class="example text-xs sm:text-sm"><span class="text-gray-500">Example:</span> Should return a list node with operator="|" and left/right pointing to the commands.</p>
             </div>
             
-            <div class="bg-gray-800 p-4 rounded mb-8">
-                <h4 class="font-bold mb-2">Phase 3 Pipeline:</h4>
-                <ul class="pipeline-list text-green-300">
+            <div class="bg-gray-800 p-3 sm:p-4 rounded mb-6 sm:mb-8">
+                <h4 class="font-bold mb-1 sm:mb-2 text-sm sm:text-base">Phase 3 Pipeline:</h4>
+                <ul class="pipeline-list text-green-300 text-xs sm:text-sm">
                     <li>Postfix token queue</li>
                     <li class="process">[pop tokens and build tree using stack]</li>
                     <li class="final">final command execution tree</li>
@@ -208,29 +222,29 @@
             </div>
         </div>
 
-        <div class="mb-12">
-            <h2 class="text-2xl font-bold mb-4 phase">Phase 4: Variable Expansion</h2>
-            <p class="mb-6">Handle environment variable substitution</p>
+        <div class="mb-8 sm:mb-12">
+            <h2 class="text-xl sm:text-2xl font-bold mb-3 sm:mb-4 phase">Phase 4: Variable Expansion</h2>
+            <p class="mb-4 sm:mb-6 text-sm sm:text-base">Handle environment variable substitution</p>
             
-            <div class="mb-8 border-l-2 border-gray-700 pl-4">
-                <h3 class="text-xl font-bold mb-2 command">expand_variables</h3>
-                <pre class="function mb-2">char *expand_variables(char *str, t_env *env);</pre>
-                <p class="description mb-2">Replace environment variables ($VAR) with their values.</p>
-                <p class="test mb-1"><span class="text-gray-500">Test:</span> Expand "Hello $USER"</p>
-                <p class="example"><span class="text-gray-500">Example:</span> If USER=john, should return "Hello john".</p>
+            <div class="mb-6 sm:mb-8 border-l-2 border-gray-700 pl-3 sm:pl-4">
+                <h3 class="text-lg sm:text-xl font-bold mb-1 sm:mb-2 command">expand_variables</h3>
+                <pre class="function mb-1 sm:mb-2 text-xs sm:text-sm">char *expand_variables(char *str, t_env *env);</pre>
+                <p class="description mb-1 sm:mb-2 text-sm sm:text-base">Replace environment variables ($VAR) with their values.</p>
+                <p class="test mb-1 text-xs sm:text-sm"><span class="text-gray-500">Test:</span> Expand "Hello $USER"</p>
+                <p class="example text-xs sm:text-sm"><span class="text-gray-500">Example:</span> If USER=john, should return "Hello john".</p>
             </div>
             
-            <div class="mb-8 border-l-2 border-gray-700 pl-4">
-                <h3 class="text-xl font-bold mb-2 command">expand_exit_status</h3>
-                <pre class="function mb-2">char *expand_exit_status(char *str, int last_exit_status);</pre>
-                <p class="description mb-2">Replace $? with the most recent exit status.</p>
-                <p class="test mb-1"><span class="text-gray-500">Test:</span> Expand "Exit status: $?"</p>
-                <p class="example"><span class="text-gray-500">Example:</span> If last exit status was 127, should return "Exit status: 127".</p>
+            <div class="mb-6 sm:mb-8 border-l-2 border-gray-700 pl-3 sm:pl-4">
+                <h3 class="text-lg sm:text-xl font-bold mb-1 sm:mb-2 command">expand_exit_status</h3>
+                <pre class="function mb-1 sm:mb-2 text-xs sm:text-sm">char *expand_exit_status(char *str, int last_exit_status);</pre>
+                <p class="description mb-1 sm:mb-2 text-sm sm:text-base">Replace $? with the most recent exit status.</p>
+                <p class="test mb-1 text-xs sm:text-sm"><span class="text-gray-500">Test:</span> Expand "Exit status: $?"</p>
+                <p class="example text-xs sm:text-sm"><span class="text-gray-500">Example:</span> If last exit status was 127, should return "Exit status: 127".</p>
             </div>
             
-            <div class="bg-gray-800 p-4 rounded mb-8">
-                <h4 class="font-bold mb-2">Phase 4 Pipeline:</h4>
-                <ul class="pipeline-list text-green-300">
+            <div class="bg-gray-800 p-3 sm:p-4 rounded mb-6 sm:mb-8">
+                <h4 class="font-bold mb-1 sm:mb-2 text-sm sm:text-base">Phase 4 Pipeline:</h4>
+                <ul class="pipeline-list text-green-300 text-xs sm:text-sm">
                     <li>Command tree</li>
                     <li class="process">[traverse tree and expand variables]</li>
                     <li class="final">expanded command tree</li>
@@ -238,9 +252,39 @@
             </div>
         </div>
 
-        <footer class="mt-12 text-center text-gray-500 text-sm">
+        <div class="mb-8 sm:mb-12">
+            <h2 class="text-xl sm:text-2xl font-bold mb-3 sm:mb-4 phase">Phase 5: Execution Preparation</h2>
+            <p class="mb-4 sm:mb-6 text-sm sm:text-base">Prepare the command tree for execution</p>
+            
+            <div class="mb-6 sm:mb-8 border-l-2 border-gray-700 pl-3 sm:pl-4">
+                <h3 class="text-lg sm:text-xl font-bold mb-1 sm:mb-2 command">handle_redirections</h3>
+                <pre class="function mb-1 sm:mb-2 text-xs sm:text-sm">int handle_redirections(t_cmd_node *cmd);</pre>
+                <p class="description mb-1 sm:mb-2 text-sm sm:text-base">Open files for redirections and set up file descriptors.</p>
+                <p class="test mb-1 text-xs sm:text-sm"><span class="text-gray-500">Test:</span> Handle redirection in "cat < input.txt > output.txt"</p>
+                <p class="example text-xs sm:text-sm"><span class="text-gray-500">Example:</span> Should open input.txt for reading and output.txt for writing.</p>
+            </div>
+            
+            <div class="mb-6 sm:mb-8 border-l-2 border-gray-700 pl-3 sm:pl-4">
+                <h3 class="text-lg sm:text-xl font-bold mb-1 sm:mb-2 command">setup_pipes</h3>
+                <pre class="function mb-1 sm:mb-2 text-xs sm:text-sm">int setup_pipes(t_list *cmd_tree);</pre>
+                <p class="description mb-1 sm:mb-2 text-sm sm:text-base">Create pipes between commands.</p>
+                <p class="test mb-1 text-xs sm:text-sm"><span class="text-gray-500">Test:</span> Setup pipe for "ls | grep file"</p>
+                <p class="example text-xs sm:text-sm"><span class="text-gray-500">Example:</span> Should create a pipe and connect the output of ls to the input of grep.</p>
+            </div>
+            
+            <div class="bg-gray-800 p-3 sm:p-4 rounded mb-6 sm:mb-8">
+                <h4 class="font-bold mb-1 sm:mb-2 text-sm sm:text-base">Phase 5 Pipeline:</h4>
+                <ul class="pipeline-list text-green-300 text-xs sm:text-sm">
+                    <li>Expanded command tree</li>
+                    <li class="process">[handle redirections and setup pipes]</li>
+                    <li class="final">execution-ready command tree</li>
+                </ul>
+            </div>
+        </div>
+
+        <footer class="mt-8 sm:mt-12 text-center text-gray-500 text-xs sm:text-sm">
             <p>Minishell Parser Documentation - created with ♥ by le saad (sel-mlil)</p>
-            <p class="mt-2">Color scheme inspired by Visual Studio Code Dark+</p>
+            <p class="mt-1 sm:mt-2">Color scheme inspired by Visual Studio Code Dark+</p>
         </footer>
     </div>
 </body>
