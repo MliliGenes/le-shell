@@ -31,6 +31,27 @@
         .phase {
             color: #c586c0;
         }
+        .pipeline-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .pipeline-list li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .pipeline-list li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #4ec9b0;
+        }
+        .pipeline-list li.process:before {
+            content: "↳";
+        }
+        .pipeline-list li.final:before {
+            content: "⇒";
+        }
     </style>
 </head>
 <body class="terminal text-gray-200 p-8">
@@ -83,7 +104,13 @@
             
             <div class="bg-gray-800 p-4 rounded mb-8">
                 <h4 class="font-bold mb-2">Phase 1 Pipeline:</h4>
-                <pre class="text-green-300">Input string → initialize_lexer → [get_next_token → classify_token → add_to_token_list] (repeat until end) → list of classified tokens</pre>
+                <ul class="pipeline-list text-green-300">
+                    <li>Input string</li>
+                    <li>initialize_lexer</li>
+                    <li class="process">[get_next_token → classify_token → add_to_token_list]</li>
+                    <li class="process">(repeat until end)</li>
+                    <li class="final">list of classified tokens</li>
+                </ul>
             </div>
         </div>
 
@@ -125,7 +152,13 @@
             
             <div class="bg-gray-800 p-4 rounded mb-8">
                 <h4 class="font-bold mb-2">Phase 2 Pipeline:</h4>
-                <pre class="text-green-300">List of tokens → initialize_shunting_yard → [process_token for each token] → finalize_parsing → output queue with tokens in postfix notation</pre>
+                <ul class="pipeline-list text-green-300">
+                    <li>List of tokens</li>
+                    <li>initialize_shunting_yard</li>
+                    <li class="process">[process_token for each token]</li>
+                    <li>finalize_parsing</li>
+                    <li class="final">output queue with tokens in postfix notation</li>
+                </ul>
             </div>
         </div>
 
@@ -167,7 +200,11 @@
             
             <div class="bg-gray-800 p-4 rounded mb-8">
                 <h4 class="font-bold mb-2">Phase 3 Pipeline:</h4>
-                <pre class="text-green-300">Postfix token queue → [pop tokens and build tree using stack] → final command execution tree</pre>
+                <ul class="pipeline-list text-green-300">
+                    <li>Postfix token queue</li>
+                    <li class="process">[pop tokens and build tree using stack]</li>
+                    <li class="final">final command execution tree</li>
+                </ul>
             </div>
         </div>
 
@@ -193,38 +230,16 @@
             
             <div class="bg-gray-800 p-4 rounded mb-8">
                 <h4 class="font-bold mb-2">Phase 4 Pipeline:</h4>
-                <pre class="text-green-300">Command tree → [traverse tree and expand variables in arguments and redirections] → expanded command tree</pre>
-            </div>
-        </div>
-
-        <div class="mb-12">
-            <h2 class="text-2xl font-bold mb-4 phase">Phase 5: Execution Preparation</h2>
-            <p class="mb-6">Prepare the command tree for execution</p>
-            
-            <div class="mb-8 border-l-2 border-gray-700 pl-4">
-                <h3 class="text-xl font-bold mb-2 command">handle_redirections</h3>
-                <pre class="function mb-2">int handle_redirections(t_cmd_node *cmd);</pre>
-                <p class="description mb-2">Open files for redirections and set up file descriptors.</p>
-                <p class="test mb-1"><span class="text-gray-500">Test:</span> Handle redirection in "cat < input.txt > output.txt"</p>
-                <p class="example"><span class="text-gray-500">Example:</span> Should open input.txt for reading and output.txt for writing.</p>
-            </div>
-            
-            <div class="mb-8 border-l-2 border-gray-700 pl-4">
-                <h3 class="text-xl font-bold mb-2 command">setup_pipes</h3>
-                <pre class="function mb-2">int setup_pipes(t_list *cmd_tree);</pre>
-                <p class="description mb-2">Create pipes between commands.</p>
-                <p class="test mb-1"><span class="text-gray-500">Test:</span> Setup pipe for "ls | grep file"</p>
-                <p class="example"><span class="text-gray-500">Example:</span> Should create a pipe and connect the output of ls to the input of grep.</p>
-            </div>
-            
-            <div class="bg-gray-800 p-4 rounded mb-8">
-                <h4 class="font-bold mb-2">Phase 5 Pipeline:</h4>
-                <pre class="text-green-300">Expanded command tree → [handle redirections and setup pipes] → execution-ready command tree</pre>
+                <ul class="pipeline-list text-green-300">
+                    <li>Command tree</li>
+                    <li class="process">[traverse tree and expand variables]</li>
+                    <li class="final">expanded command tree</li>
+                </ul>
             </div>
         </div>
 
         <footer class="mt-12 text-center text-gray-500 text-sm">
-            <p>Minishell Parser Documentation - Generated on 2023-11-15</p>
+            <p>Minishell Parser Documentation - created with ♥ by le saad (sel-mlil)</p>
             <p class="mt-2">Color scheme inspired by Visual Studio Code Dark+</p>
         </footer>
     </div>
