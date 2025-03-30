@@ -57,6 +57,14 @@
             white-space: pre-wrap;
             word-break: break-word;
         }
+        .pseudocode {
+            background-color: #2d2d2d;
+            border-left: 3px solid #4ec9b0;
+            padding: 1rem;
+            margin: 1rem 0;
+            font-size: 0.85rem;
+            color: #d4d4d4;
+        }
         @media (max-width: 640px) {
             .pipeline-list li {
                 padding-left: 1.25rem;
@@ -90,6 +98,15 @@
                 <p class="description mb-1 sm:mb-2 text-sm sm:text-base">Set up the lexer to process the command line input.</p>
                 <p class="test mb-1 text-xs sm:text-sm"><span class="text-gray-500">Test:</span> Create a lexer with the input "echo hello world"</p>
                 <p class="example text-xs sm:text-sm"><span class="text-gray-500">Example:</span> Should return a lexer structure with the input string and position set to 0.</p>
+                <div class="pseudocode">
+                    <pre>FUNCTION initialize_lexer(input: string)
+    lexer = ALLOCATE new t_lexer
+    lexer.input = input
+    lexer.position = 0
+    lexer.length = LENGTH(input)
+    RETURN lexer
+END FUNCTION</pre>
+                </div>
             </div>
             
             <div class="mb-6 sm:mb-8 border-l-2 border-gray-700 pl-3 sm:pl-4">
@@ -98,6 +115,33 @@
                 <p class="description mb-1 sm:mb-2 text-sm sm:text-base">Extract the next token from the input string, handling quotes and spaces.</p>
                 <p class="test mb-1 text-xs sm:text-sm"><span class="text-gray-500">Test:</span> Run on "ls -la | grep file"</p>
                 <p class="example text-xs sm:text-sm"><span class="text-gray-500">Example:</span> Should return tokens: "ls", "-la", "|", "grep", "file"</p>
+                <div class="pseudocode">
+                    <pre>FUNCTION get_next_token(lexer: t_lexer)
+    WHILE lexer.position < lexer.length AND is_whitespace(lexer.input[lexer.position])
+        lexer.position++
+    END WHILE
+    
+    IF lexer.position >= lexer.length THEN
+        RETURN NULL  // End of input
+    END IF
+    
+    current_char = lexer.input[lexer.position]
+    
+    // Handle quotes
+    IF current_char IS '\'' OR current_char IS '"' THEN
+        RETURN handle_quotes(lexer, current_char)
+    END IF
+    
+    // Handle operators and redirections
+    IF current_char IS '|' OR current_char IS '<' OR current_char IS '>' OR 
+       current_char IS '(' OR current_char IS ')' THEN
+        RETURN handle_operator(lexer)
+    END IF
+    
+    // Handle regular words (commands, arguments)
+    RETURN handle_word(lexer)
+END FUNCTION</pre>
+                </div>
             </div>
             
             <div class="mb-6 sm:mb-8 border-l-2 border-gray-700 pl-3 sm:pl-4">
@@ -106,6 +150,34 @@
                 <p class="description mb-1 sm:mb-2 text-sm sm:text-base">Process quoted strings (both single and double quotes) according to shell rules.</p>
                 <p class="test mb-1 text-xs sm:text-sm"><span class="text-gray-500">Test:</span> Run on input with "echo 'hello world' "some $VAR""</p>
                 <p class="example text-xs sm:text-sm"><span class="text-gray-500">Example:</span> Should extract 'hello world' and "some $VAR" as separate tokens with quotes removed.</p>
+                <div class="pseudocode">
+                    <pre>FUNCTION handle_quotes(lexer: t_lexer, quote_char: char)
+    lexer.position++  // Skip opening quote
+    start_pos = lexer.position
+    
+    // Find closing quote
+    WHILE lexer.position < lexer.length AND lexer.input[lexer.position] != quote_char
+        lexer.position++
+    END WHILE
+    
+    IF lexer.position >= lexer.length THEN
+        RETURN create_error_token("Unclosed quote")
+    END IF
+    
+    // Extract the content between quotes
+    content_length = lexer.position - start_pos
+    content = SUBSTRING(lexer.input, start_pos, content_length)
+    
+    lexer.position++  // Skip closing quote
+    
+    token = ALLOCATE new t_token
+    token.value = content
+    token.type = WORD_TOKEN
+    token.quote_type = quote_char
+    
+    RETURN token
+END FUNCTION</pre>
+                </div>
             </div>
             
             <div class="mb-6 sm:mb-8 border-l-2 border-gray-700 pl-3 sm:pl-4">
@@ -114,6 +186,29 @@
                 <p class="description mb-1 sm:mb-2 text-sm sm:text-base">Identify the type of token (command, operator, redirection, etc.)</p>
                 <p class="test mb-1 text-xs sm:text-sm"><span class="text-gray-500">Test:</span> Run on various inputs like "|", ">", "echo", etc.</p>
                 <p class="example text-xs sm:text-sm"><span class="text-gray-500">Example:</span> "|" should return OP_TOKEN, "echo" should return CMD_TOKEN</p>
+                <div class="pseudocode">
+                    <pre>FUNCTION classify_token(token_str: string)
+    IF token_str IS "|" THEN
+        RETURN OP_TOKEN
+    ELSE IF token_str IS "<" THEN
+        RETURN OP_TOKEN with type REDIR_IN
+    ELSE IF token_str IS ">" THEN
+        RETURN OP_TOKEN with type REDIR_OUT
+    ELSE IF token_str IS ">>" THEN
+        RETURN OP_TOKEN with type APPEND
+    ELSE IF token_str IS "<<" THEN
+        RETURN OP_TOKEN with type HEREDOC
+    ELSE IF token_str IS "(" THEN
+        RETURN L_PAREN_TOKEN
+    ELSE IF token_str IS ")" THEN
+        RETURN R_PAREN_TOKEN
+    ELSE IF is_first_token_in_command() THEN
+        RETURN CMD_TOKEN
+    ELSE
+        RETURN WORD_TOKEN  // Arguments or other words
+    END IF
+END FUNCTION</pre>
+                </div>
             </div>
             
             <div class="bg-gray-800 p-3 sm:p-4 rounded mb-6 sm:mb-8">
@@ -138,6 +233,14 @@
                 <p class="description mb-1 sm:mb-2 text-sm sm:text-base">Set up the stacks needed for the shunting yard algorithm.</p>
                 <p class="test mb-1 text-xs sm:text-sm"><span class="text-gray-500">Test:</span> Create new parser</p>
                 <p class="example text-xs sm:text-sm"><span class="text-gray-500">Example:</span> Should return a parser with empty operator stack and output queue.</p>
+                <div class="pseudocode">
+                    <pre>FUNCTION initialize_shunting_yard()
+    parser = ALLOCATE new t_parser
+    parser.op_stack = CREATE_EMPTY_STACK()
+    parser.output_queue = CREATE_EMPTY_QUEUE()
+    RETURN parser
+END FUNCTION</pre>
+                </div>
             </div>
             
             <div class="mb-6 sm:mb-8 border-l-2 border-gray-700 pl-3 sm:pl-4">
@@ -146,6 +249,30 @@
                 <p class="description mb-1 sm:mb-2 text-sm sm:text-base">Process a token according to shunting yard rules.</p>
                 <p class="test mb-1 text-xs sm:text-sm"><span class="text-gray-500">Test:</span> Process tokens from "ls -la | grep file"</p>
                 <p class="example text-xs sm:text-sm"><span class="text-gray-500">Example:</span> Commands go to output, operators handled based on precedence.</p>
+                <div class="pseudocode">
+                    <pre>FUNCTION process_token(parser: t_parser, token: t_token)
+    IF token.type IS CMD_TOKEN OR token.type IS WORD_TOKEN THEN
+        ENQUEUE(parser.output_queue, token)
+    ELSE IF token.type IS OP_TOKEN THEN
+        handle_operator(parser, token)
+    ELSE IF token.type IS L_PAREN_TOKEN THEN
+        PUSH(parser.op_stack, token)
+    ELSE IF token.type IS R_PAREN_TOKEN THEN
+        // Pop operators until matching left parenthesis
+        WHILE NOT IS_EMPTY(parser.op_stack) AND TOP(parser.op_stack).type IS NOT L_PAREN_TOKEN
+            op = POP(parser.op_stack)
+            ENQUEUE(parser.output_queue, op)
+        END WHILE
+        
+        // Discard the left parenthesis
+        IF NOT IS_EMPTY(parser.op_stack) THEN
+            DISCARD POP(parser.op_stack)
+        ELSE
+            REPORT_ERROR("Mismatched parentheses")
+        END IF
+    END IF
+END FUNCTION</pre>
+                </div>
             </div>
             
             <div class="mb-6 sm:mb-8 border-l-2 border-gray-700 pl-3 sm:pl-4">
@@ -154,6 +281,20 @@
                 <p class="description mb-1 sm:mb-2 text-sm sm:text-base">Process operators based on precedence rules.</p>
                 <p class="test mb-1 text-xs sm:text-sm"><span class="text-gray-500">Test:</span> Test with pipe (|) operator</p>
                 <p class="example text-xs sm:text-sm"><span class="text-gray-500">Example:</span> Should compare precedence with operators on the stack and move operators to output as needed.</p>
+                <div class="pseudocode">
+                    <pre>FUNCTION handle_operator(parser: t_parser, op_token: t_token)
+    // While top of operator stack has higher or equal precedence
+    WHILE NOT IS_EMPTY(parser.op_stack) AND 
+          precedence(TOP(parser.op_stack)) >= precedence(op_token) AND
+          TOP(parser.op_stack).type IS NOT L_PAREN_TOKEN
+        
+        top_op = POP(parser.op_stack)
+        ENQUEUE(parser.output_queue, top_op)
+    END WHILE
+    
+    PUSH(parser.op_stack, op_token)
+END FUNCTION</pre>
+                </div>
             </div>
             
             <div class="mb-6 sm:mb-8 border-l-2 border-gray-700 pl-3 sm:pl-4">
@@ -162,6 +303,23 @@
                 <p class="description mb-1 sm:mb-2 text-sm sm:text-base">Complete the shunting yard algorithm by moving remaining operators to output.</p>
                 <p class="test mb-1 text-xs sm:text-sm"><span class="text-gray-500">Test:</span> Call after all tokens are processed</p>
                 <p class="example text-xs sm:text-sm"><span class="text-gray-500">Example:</span> All operators should be moved from operator stack to output queue.</p>
+                <div class="pseudocode">
+                    <pre>FUNCTION finalize_parsing(parser: t_parser)
+    // Move all remaining operators to the output queue
+    WHILE NOT IS_EMPTY(parser.op_stack)
+        op = POP(parser.op_stack)
+        
+        IF op.type IS L_PAREN_TOKEN THEN
+            REPORT_ERROR("Mismatched parentheses")
+            RETURN FALSE
+        END IF
+        
+        ENQUEUE(parser.output_queue, op)
+    END WHILE
+    
+    RETURN TRUE
+END FUNCTION</pre>
+                </div>
             </div>
             
             <div class="bg-gray-800 p-3 sm:p-4 rounded mb-6 sm:mb-8">
@@ -186,6 +344,40 @@
                 <p class="description mb-1 sm:mb-2 text-sm sm:text-base">Create the final command execution tree from the output queue.</p>
                 <p class="test mb-1 text-xs sm:text-sm"><span class="text-gray-500">Test:</span> Build tree from "ls -la | grep file"</p>
                 <p class="example text-xs sm:text-sm"><span class="text-gray-500">Example:</span> Should create a tree with "ls -la" and "grep file" connected by a pipe.</p>
+                <div class="pseudocode">
+                    <pre>FUNCTION build_command_tree(parser: t_parser)
+    node_stack = CREATE_EMPTY_STACK()
+    
+    WHILE NOT IS_EMPTY(parser.output_queue)
+        token = DEQUEUE(parser.output_queue)
+        
+        IF token.type IS CMD_TOKEN OR token.type IS WORD_TOKEN THEN
+            node = create_tree_node(token)
+            PUSH(node_stack, node)
+        ELSE IF token.type IS OP_TOKEN THEN
+            // Operators require two operands
+            IF SIZE(node_stack) < 2 THEN
+                REPORT_ERROR("Invalid expression")
+                RETURN NULL
+            END IF
+            
+            right = POP(node_stack)
+            left = POP(node_stack)
+            
+            op_node = create_operator_node(token, left, right)
+            PUSH(node_stack, op_node)
+        END IF
+    END WHILE
+    
+    // The final result should be a single node
+    IF SIZE(node_stack) != 1 THEN
+        REPORT_ERROR("Invalid expression")
+        RETURN NULL
+    END IF
+    
+    RETURN POP(node_stack)
+END FUNCTION</pre>
+                </div>
             </div>
             
             <div class="mb-6 sm:mb-8 border-l-2 border-gray-700 pl-3 sm:pl-4">
@@ -194,6 +386,16 @@
                 <p class="description mb-1 sm:mb-2 text-sm sm:text-base">Create a command node with its arguments.</p>
                 <p class="test mb-1 text-xs sm:text-sm"><span class="text-gray-500">Test:</span> Create node for "echo hello world"</p>
                 <p class="example text-xs sm:text-sm"><span class="text-gray-500">Example:</span> Should return a command node with cmd="echo" and args="hello world".</p>
+                <div class="pseudocode">
+                    <pre>FUNCTION create_command_node(cmd: string, args: string)
+    node = ALLOCATE new t_cmd_node
+    node.cmd = STRDUP(cmd)
+    node.args = STRDUP(args)
+    node.redir = NULL
+    node.next = NULL
+    RETURN node
+END FUNCTION</pre>
+                </div>
             </div>
             
             <div class="mb-6 sm:mb-8 border-l-2 border-gray-700 pl-3 sm:pl-4">
@@ -202,6 +404,20 @@
                 <p class="description mb-1 sm:mb-2 text-sm sm:text-base">Add a redirection to a command node.</p>
                 <p class="test mb-1 text-xs sm:text-sm"><span class="text-gray-500">Test:</span> Add redirection "< input.txt" to "cat" command</p>
                 <p class="example text-xs sm:text-sm"><span class="text-gray-500">Example:</span> Should add a REDIR_IN redirection with filename "input.txt" to the cat command.</p>
+                <div class="pseudocode">
+                    <pre>FUNCTION add_redirection(cmd: t_cmd_node, redir: t_redir_token)
+    IF cmd.redir IS NULL THEN
+        cmd.redir = redir
+    ELSE
+        // Add to the end of the redirection list
+        current = cmd.redir
+        WHILE current.next IS NOT NULL
+            current = current.next
+        END WHILE
+        current.next = redir
+    END IF
+END FUNCTION</pre>
+                </div>
             </div>
             
             <div class="mb-6 sm:mb-8 border-l-2 border-gray-700 pl-3 sm:pl-4">
@@ -210,6 +426,16 @@
                 <p class="description mb-1 sm:mb-2 text-sm sm:text-base">Connect commands with operators (pipes, &&, ||).</p>
                 <p class="test mb-1 text-xs sm:text-sm"><span class="text-gray-500">Test:</span> Connect "ls -la" and "grep file" with a pipe</p>
                 <p class="example text-xs sm:text-sm"><span class="text-gray-500">Example:</span> Should return a list node with operator="|" and left/right pointing to the commands.</p>
+                <div class="pseudocode">
+                    <pre>FUNCTION connect_commands(left: t_list, right: t_list, op: t_op_node)
+    node = ALLOCATE new t_list
+    node.token = op
+    node.token_type = OP_TOKEN
+    node.left = left
+    node.right = right
+    RETURN node
+END FUNCTION</pre>
+                </div>
             </div>
             
             <div class="bg-gray-800 p-3 sm:p-4 rounded mb-6 sm:mb-8">
@@ -232,6 +458,37 @@
                 <p class="description mb-1 sm:mb-2 text-sm sm:text-base">Replace environment variables ($VAR) with their values.</p>
                 <p class="test mb-1 text-xs sm:text-sm"><span class="text-gray-500">Test:</span> Expand "Hello $USER"</p>
                 <p class="example text-xs sm:text-sm"><span class="text-gray-500">Example:</span> If USER=john, should return "Hello john".</p>
+                <div class="pseudocode">
+                    <pre>FUNCTION expand_variables(str: string, env: t_env)
+    result = ""
+    i = 0
+    
+    WHILE i < LENGTH(str)
+        IF str[i] IS '$' AND i + 1 < LENGTH(str) THEN
+            // Skip the $
+            i++
+            
+            // Find the end of the variable name
+            start = i
+            WHILE i < LENGTH(str) AND (IS_ALPHANUMERIC(str[i]) OR str[i] IS '_')
+                i++
+            END WHILE
+            
+            var_name = SUBSTRING(str, start, i - start)
+            var_value = get_env_value(env, var_name)
+            
+            IF var_value IS NOT NULL THEN
+                result += var_value
+            END IF
+        ELSE
+            result += str[i]
+            i++
+        END IF
+    END WHILE
+    
+    RETURN result
+END FUNCTION</pre>
+                </div>
             </div>
             
             <div class="mb-6 sm:mb-8 border-l-2 border-gray-700 pl-3 sm:pl-4">
@@ -240,6 +497,25 @@
                 <p class="description mb-1 sm:mb-2 text-sm sm:text-base">Replace $? with the most recent exit status.</p>
                 <p class="test mb-1 text-xs sm:text-sm"><span class="text-gray-500">Test:</span> Expand "Exit status: $?"</p>
                 <p class="example text-xs sm:text-sm"><span class="text-gray-500">Example:</span> If last exit status was 127, should return "Exit status: 127".</p>
+                <div class="pseudocode">
+                    <pre>FUNCTION expand_exit_status(str: string, last_exit_status: int)
+    result = ""
+    i = 0
+    
+    WHILE i < LENGTH(str)
+        IF str[i] IS '$' AND i + 1 < LENGTH(str) AND str[i+1] IS '?' THEN
+            // Replace $? with last exit status
+            result += CONVERT_TO_STRING(last_exit_status)
+            i += 2  // Skip $?
+        ELSE
+            result += str[i]
+            i++
+        END IF
+    END WHILE
+    
+    RETURN result
+END FUNCTION</pre>
+                </div>
             </div>
             
             <div class="bg-gray-800 p-3 sm:p-4 rounded mb-6 sm:mb-8">
@@ -262,6 +538,56 @@
                 <p class="description mb-1 sm:mb-2 text-sm sm:text-base">Open files for redirections and set up file descriptors.</p>
                 <p class="test mb-1 text-xs sm:text-sm"><span class="text-gray-500">Test:</span> Handle redirection in "cat < input.txt > output.txt"</p>
                 <p class="example text-xs sm:text-sm"><span class="text-gray-500">Example:</span> Should open input.txt for reading and output.txt for writing.</p>
+                <div class="pseudocode">
+                    <pre>FUNCTION handle_redirections(cmd: t_cmd_node)
+    current_redir = cmd.redir
+    
+    WHILE current_redir IS NOT NULL
+        CASE current_redir.type OF
+            REDIR_IN:
+                fd = OPEN(current_redir.file_name, O_RDONLY)
+                IF fd < 0 THEN
+                    PERROR("open")
+                    RETURN FALSE
+                END IF
+                DUP2(fd, STDIN_FILENO)
+                CLOSE(fd)
+                
+            REDIR_OUT:
+                fd = OPEN(current_redir.file_name, O_WRONLY | O_CREAT | O_TRUNC, 0644)
+                IF fd < 0 THEN
+                    PERROR("open")
+                    RETURN FALSE
+                END IF
+                DUP2(fd, STDOUT_FILENO)
+                CLOSE(fd)
+                
+            APPEND:
+                fd = OPEN(current_redir.file_name, O_WRONLY | O_CREAT | O_APPEND, 0644)
+                IF fd < 0 THEN
+                    PERROR("open")
+                    RETURN FALSE
+                END IF
+                DUP2(fd, STDOUT_FILENO)
+                CLOSE(fd)
+                
+            HEREDOC:
+                // Heredoc handling is more complex and requires reading input
+                // This is a simplified version
+                fd = create_heredoc(current_redir.file_name)
+                IF fd < 0 THEN
+                    RETURN FALSE
+                END IF
+                DUP2(fd, STDIN_FILENO)
+                CLOSE(fd)
+        END CASE
+        
+        current_redir = current_redir.next
+    END WHILE
+    
+    RETURN TRUE
+END FUNCTION</pre>
+                </div>
             </div>
             
             <div class="mb-6 sm:mb-8 border-l-2 border-gray-700 pl-3 sm:pl-4">
@@ -270,6 +596,37 @@
                 <p class="description mb-1 sm:mb-2 text-sm sm:text-base">Create pipes between commands.</p>
                 <p class="test mb-1 text-xs sm:text-sm"><span class="text-gray-500">Test:</span> Setup pipe for "ls | grep file"</p>
                 <p class="example text-xs sm:text-sm"><span class="text-gray-500">Example:</span> Should create a pipe and connect the output of ls to the input of grep.</p>
+                <div class="pseudocode">
+                    <pre>FUNCTION setup_pipes(cmd_tree: t_list)
+    IF cmd_tree IS NULL OR cmd_tree.token_type IS NOT OP_TOKEN THEN
+        RETURN TRUE  // No pipes to set up
+    END IF
+    
+    op = cmd_tree.token
+    
+    IF op.op IS "|" THEN
+        pipe_fds[2]
+        IF PIPE(pipe_fds) < 0 THEN
+            PERROR("pipe")
+            RETURN FALSE
+        END IF
+        
+        // Store pipe file descriptors in the operator node for later use
+        op.pipe_read = pipe_fds[0]
+        op.pipe_write = pipe_fds[1]
+        
+        // Recursively set up pipes for left and right subtrees
+        setup_pipes(cmd_tree.left)
+        setup_pipes(cmd_tree.right)
+    ELSE
+        // For other operators like && and ||, just recursively set up pipes
+        setup_pipes(cmd_tree.left)
+        setup_pipes(cmd_tree.right)
+    END IF
+    
+    RETURN TRUE
+END FUNCTION</pre>
+                </div>
             </div>
             
             <div class="bg-gray-800 p-3 sm:p-4 rounded mb-6 sm:mb-8">
