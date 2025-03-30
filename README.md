@@ -23,6 +23,8 @@ typedef enum e_token_type {
     TOKEN_RPAREN,      // ) (bonus)
     TOKEN_EOF          // End of input
 } t_token_type;
+// this is getting updated
+
 
 // Token structure
 typedef struct s_token {
