@@ -1,84 +1,46 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/01 23:35:56 by sel-mlil          #+#    #+#             */
+/*   Updated: 2025/04/01 23:50:02 by sel-mlil         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "include/parsing.h"
 
-// int	locate_redirection(char *chunk)
-// {
-// 	int	index;
+// TODO day 0
+/* Lexer initialization */
+t_lexer         *init_lexer(const char *input);
 
-// 	index = 0;
-// 	while (chunk[index])
-// 	{
-// 		if (is_redir_in(&chunk[index]) || is_redir_out(&chunk[index])
-// 			|| is_redir_her(&chunk[index]) || is_redir_append(&chunk[index]))
-// 		{
-// 		}
-// 		else
-// 			index++;
-// 	}
-// }
+/* Token creation/destruction */
+t_token         *create_token(t_token_type type, char *value);
+void            free_token(t_token *token);
 
-// int	fill_cmd_node(t_cmd_node *cmd_node, char *chunk)
-// {
+// TODO day 1
+/* Lexer operations */
+void            advance_lexer(t_lexer *lexer);
+void            skip_whitespace(t_lexer *lexer);
+char            *collect_word(t_lexer *lexer);
 
-// 	return (0);
-// }
+/* Main tokenization */
+t_token         *get_next_token(t_lexer *lexer);
 
-t_cmd_node	*create_cmd_node(void)
-{
-	t_cmd_node	*cmd_node;
+// TODO day 2
+/* Token classification */
+t_token_type    classify_token(char *value);
 
-	cmd_node = malloc(sizeof(t_cmd_node));
-	if (!cmd_node)
-		return (NULL);
-	cmd_node->cmd = NULL;
-	cmd_node->args = NULL;
-	cmd_node->redir = NULL;
-	cmd_node->next = NULL;
-	return (cmd_node);
-}
+/* Specialized collectors */
+char            *collect_quoted(t_lexer *lexer, char quote);
+char            *collect_operator(t_lexer *lexer);
+bool            is_operator(char c);
 
-static int	skip_ops(int *index, char *big_f_chunk)
-{
-	if (is_and_op(&big_f_chunk[*index]) || is_or_op(&big_f_chunk[*index]))
-		(*index) += 2;
-	else
-		(*index)++;
-	return (*index);
-}
-
-t_cmd_node	*split_command_line(char *big_f_chunk)
-{
-	int		index;
-	int		start;
-	char	*cmd;
-
-	index = 0;
-	start = 0;
-	if (!big_f_chunk || !*big_f_chunk)
-		return (NULL);
-	while (1)
-	{
-		if (is_pipe_op(&big_f_chunk[index]) || is_and_op(&big_f_chunk[index])
-			|| is_or_op(&big_f_chunk[index]))
-		{
-			if (index > start)
-			{
-				cmd = ft_strndup(&big_f_chunk[start], index - start);
-				printf("command chunk: %s\n", cmd);
-			}
-			if (!big_f_chunk[index])
-				break ;
-			start = skip_ops(&index, big_f_chunk);
-		}
-		else
-			index++;
-	}
-	return (NULL);
-}
-
-int	main(int ac, char **av)
+int	main(int ac, char **av, char **envp)
 {
 	(void)ac;
 	(void)av;
-	split_command_line("    jhh ghj\"|\" hjghjgh");
 	return (0);
 }
