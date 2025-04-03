@@ -6,7 +6,7 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 03:02:50 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/03/26 08:50:11 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/04/03 20:49:18 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,23 @@ void handle_pwd(char *input)
 void	handle_cd(char **args)
 {
 	//TODO: hanlde cd with relative paths and absolute paths
+	//TODO: Before calling chdir(), store the current PWD as OLDPWD (since OLDPWD should always point
+	// TODO: Call chdir() with the new path (whether it's absolute or constructed from a relative path).
+	//TODO: After chdir(), update PWD by calling getcwd() to get the new current directory and setting it as PWD.
+}
+
+void	handle_env(char *input, char **env)
+{
+	if (ft_strcmp(input, "env") == 0)
+	{
+		int i = 0;
+		while (env[i])
+		{
+			printf("%s\n", env[i]);
+			i++;
+		}
+	}
+	return;
 }
 
 void ll()
@@ -124,12 +141,13 @@ void ll()
 	system("leaks minishell");
 }
 
-int main()
+int main(int argc, char *argv[], char *envp[])
 {
 	atexit(ll);
 	
 	char *input;
-	
+	(void)argc;
+	(void)argv;
 	signal(SIGINT, handle_signal);
 	signal(SIGQUIT, SIG_IGN);
 	while (1)
@@ -146,6 +164,7 @@ int main()
 			add_history(input);
 			handle_echo(input);
 			handle_pwd(input);
+			handle_env(input, envp);
 			hadnle_exit(input);
 		}
 		free(input);
