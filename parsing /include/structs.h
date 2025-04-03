@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 06:20:05 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/01 23:12:52 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/03 15:29:50 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,9 @@ typedef struct s_token
 typedef struct s_lexer
 {
 	char				*input;
+	int					len;
 	int					pos;
+	char				current_char;
 }						t_lexer;
 
 /**
