@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 06:20:05 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/04 21:59:17 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/04 22:09:26 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,9 @@
  */
 typedef enum e_token_type
 {
-	TOKEN_WORD,      
-    TOKEN_S_QUOTE,    
-    TOKEN_D_QUOTE,
+	TOKEN_WORD,
+	TOKEN_S_QUOTE,
+	TOKEN_D_QUOTE,
 	TOKEN_PIPE,
 	TOKEN_REDIR_IN,
 	TOKEN_REDIR_OUT,
@@ -59,7 +59,8 @@ typedef struct s_token
 	char				*value;
 	t_token_type		type;
 	int					n_index;
-	bool				join;
+	int					start_pos;
+	int					end_pos;
 	struct s_token		*next;
 }						t_token;
 
