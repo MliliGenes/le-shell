@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 23:35:56 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/04 22:15:12 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/04 22:49:02 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,30 @@ void	advance_lexer(t_lexer *lexer)
 	}
 }
 
+int	check_quotes_balance(const char *input)
+{
+	int	in_single_quote;
+	int	in_double_quote;
+	int	i;
+
+	in_single_quote = 0;
+	in_double_quote = 0;
+	i = 0;
+	while (input[i])
+	{
+		if (input[i] == '\'' && !in_double_quote)
+			in_single_quote = !in_single_quote;
+		else if (input[i] == '"' && !in_single_quote)
+			in_double_quote = !in_double_quote;
+		i++;
+	}
+	if (in_single_quote)
+		return (1);
+	if (in_double_quote)
+		return (2);
+	return (0);
+}
+
 // skipping spaces
 void	skip_whitespace(t_lexer *lexer)
 {
@@ -135,7 +159,7 @@ t_token	*handle_word(t_lexer *lexer)
 	value = ft_strndup(lexer->input + start, lexer->pos - start);
 	if (!value)
 		return (NULL);
-	token = create_token(TOKEN_WORD, value, start, lexer->pos - start);
+	token = create_token(TOKEN_WORD, value, start, lexer->pos - 1);
 	return (token);
 }
 
@@ -154,14 +178,14 @@ t_token	*handle_quoted(t_lexer *lexer)
 		advance_lexer(lexer);
 	if (lexer->current_char != quote_type)
 		return (NULL);
+	advance_lexer(lexer);
 	value = ft_strndup(lexer->input + start, lexer->pos - start);
 	if (!value)
 		return (NULL);
 	type = TOKEN_S_QUOTE;
 	if (quote_type == '"')
 		type = TOKEN_D_QUOTE;
-	token = create_token(type, value, start, lexer->pos - start);
-	advance_lexer(lexer);
+	token = create_token(type, value, start, lexer->pos - 1);
 	return (token);
 }
 
@@ -230,22 +254,26 @@ int	main(int ac, char **av, char **envp)
 {
 	t_lexer	*lexer;
 	t_token	*token;
+	int		a;
 
 	(void)ac;
 	(void)av;
 	(void)envp;
 	//  || file1.txt | | < infile.txt 'cat file2.txt'
-	lexer = init_lexer("ls | echo \"$hello\"'dawd' >test");
+	lexer = init_lexer("   ls | echo \"$hello\"'dawd >test   ");
 	// check if all quotes are open and closed
 	// check the ops if valid (len is two and the chars are the same)
-	if (!lexer)
+	if (!lexer || check_quotes_balance(lexer->input))
 		return (1);
 	token = get_next_token(lexer);
 	while (token && token->value)
 	{
-		printf("index: %d\ntoken: %s\ntype: %d\n\n", token->n_index,
-			token->value, token->type);
+		printf("index: %d\ntoken: %s\ntype: %d\nrange: [%d - %d]\n\n",
+			token->n_index, token->value, token->type, token->start_pos,
+			token->end_pos);
 		token = get_next_token(lexer);
 	}
+	a = 0;
+	printf("%d", !a);
 	return (0);
 }
