@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 23:35:56 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/04 18:36:12 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/04 19:23:30 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,6 @@ t_token	*handle_quoted(t_lexer *lexer)
 	char			*value;
 	char			quote_type;
 	int				start;
-	t_token_type	type;
 
 	start = lexer->pos;
 	quote_type = lexer->current_char;
@@ -161,11 +160,7 @@ t_token	*handle_quoted(t_lexer *lexer)
 	value = ft_strndup(lexer->input + start, lexer->pos - start);
 	if (!value)
 		return (NULL);
-	type = TOKEN_S_QUOTE;
-	if (quote_type == '\"')
-		type = TOKEN_D_QUOTE;
-	token = create_token(type, value);
-	// advance_lexer(lexer);
+	token = create_token(TOKEN_WORD, value);
 	return (token);
 }
 
@@ -237,11 +232,12 @@ int	main(int ac, char **av, char **envp)
 	(void)ac;
 	(void)av;
 	(void)envp;
-	lexer = init_lexer("echo | \"$hello\"$hello&file1.txt | | < infile.txt 'cat file2.txt'");
+	// i need to collect the quotes
+	lexer = init_lexer("echo | \"$hello\"'dawd||file1.txt | | < infile.txt 'cat file2.txt'");
 	if (!lexer)
 		return (1);
 	token = get_next_token(lexer);
-	while (token->value)
+	while (token && token->value)
 	{
 		printf("index: %d\ntoken: %s\ntype: %d\n\n", token->n_index,
 			token->value, token->type);
