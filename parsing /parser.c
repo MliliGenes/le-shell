@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 23:35:56 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/04 20:45:05 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/04 21:16:53 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,8 @@ t_token	*handle_word(t_lexer *lexer)
 
 	start = lexer->pos;
 	while (lexer->pos < lexer->len && lexer->current_char != ' '
-		&& !is_operator(lexer->current_char))
+		&& !(is_operator(lexer->current_char) || lexer->current_char == '\''
+			|| lexer->current_char == '\"'))
 		advance_lexer(lexer);
 	value = ft_strndup(lexer->input + start, lexer->pos - start);
 	if (!value)
@@ -138,10 +139,10 @@ t_token	*handle_word(t_lexer *lexer)
 
 t_token	*handle_quoted(t_lexer *lexer)
 {
-	t_token			*token;
-	char			*value;
-	char			quote_type;
-	int				start;
+	t_token	*token;
+	char	*value;
+	char	quote_type;
+	int		start;
 
 	start = lexer->pos;
 	quote_type = lexer->current_char;
@@ -151,12 +152,6 @@ t_token	*handle_quoted(t_lexer *lexer)
 	if (lexer->current_char != quote_type)
 		return (NULL);
 	advance_lexer(lexer);
-	if (!is_operator(lexer->current_char) && !is_full_operator(lexer))
-	{
-		while (lexer->pos < lexer->len && !is_operator(lexer->current_char)
-			&& lexer->current_char != ' ')
-			advance_lexer(lexer);
-	}
 	value = ft_strndup(lexer->input + start, lexer->pos - start);
 	if (!value)
 		return (NULL);
@@ -233,7 +228,7 @@ int	main(int ac, char **av, char **envp)
 	(void)av;
 	(void)envp;
 	// i need to collect the quotes
-	lexer = init_lexer("echo | awdawd\"$hello\"'dawd||file1.txt | | < infile.txt 'cat file2.txt'");
+	lexer = init_lexer("echo | awdawd\"$hello\"dawd||file1.txt | | < infile.txt 'cat file2.txt'");
 	if (!lexer)
 		return (1);
 	token = get_next_token(lexer);
