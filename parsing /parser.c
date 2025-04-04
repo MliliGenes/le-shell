@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 23:35:56 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/04 22:02:15 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/04 22:15:12 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ t_lexer	*init_lexer(const char *input)
 }
 
 /* Token creation/destruction */
-t_token	*create_token(t_token_type type, char *value)
+t_token	*create_token(t_token_type type, char *value, int start, int end)
 {
 	t_token		*token;
 	static int	index;
@@ -64,8 +64,10 @@ t_token	*create_token(t_token_type type, char *value)
 		return (NULL);
 	token->value = value;
 	token->type = type;
-	token->next = NULL;
 	token->n_index = index++;
+	token->start_pos = start;
+	token->end_pos = end;
+	token->next = NULL;
 	return (token);
 }
 
@@ -133,7 +135,7 @@ t_token	*handle_word(t_lexer *lexer)
 	value = ft_strndup(lexer->input + start, lexer->pos - start);
 	if (!value)
 		return (NULL);
-	token = create_token(TOKEN_WORD, value);
+	token = create_token(TOKEN_WORD, value, start, lexer->pos - start);
 	return (token);
 }
 
@@ -158,7 +160,7 @@ t_token	*handle_quoted(t_lexer *lexer)
 	type = TOKEN_S_QUOTE;
 	if (quote_type == '"')
 		type = TOKEN_D_QUOTE;
-	token = create_token(type, value);
+	token = create_token(type, value, start, lexer->pos - start);
 	advance_lexer(lexer);
 	return (token);
 }
@@ -195,7 +197,8 @@ t_token	*handle_operator(t_lexer *lexer)
 		return (NULL);
 	for (int i = 0; i < op_len; i++)
 		advance_lexer(lexer);
-	token = create_token(classify_operator(op_str), op_str);
+	token = create_token(classify_operator(op_str), op_str, lexer->pos,
+			lexer->pos + op_len);
 	if (!token)
 		free(op_str);
 	return (token);
@@ -206,7 +209,7 @@ t_token	*get_next_token(t_lexer *lexer)
 {
 	skip_whitespace(lexer);
 	if (lexer->current_char == '\0')
-		return (create_token(TOKEN_EOF, NULL));
+		return (create_token(TOKEN_EOF, NULL, lexer->pos, lexer->pos));
 	if (lexer->current_char == '\'' || lexer->current_char == '"')
 		return (handle_quoted(lexer));
 	if (is_operator(lexer->current_char) && is_full_operator(lexer))
