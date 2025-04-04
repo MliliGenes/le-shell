@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 23:35:56 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/04 21:16:53 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/04 21:22:13 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -228,7 +228,7 @@ int	main(int ac, char **av, char **envp)
 	(void)av;
 	(void)envp;
 	// i need to collect the quotes
-	lexer = init_lexer("echo | awdawd\"$hello\"dawd||file1.txt | | < infile.txt 'cat file2.txt'");
+	lexer = init_lexer("ls | echo \"$hello\"dawd>test || file1.txt | | < infile.txt 'cat file2.txt'");
 	if (!lexer)
 		return (1);
 	token = get_next_token(lexer);
