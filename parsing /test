@@ -1,0 +1,30 @@
+total 64
+drwxr-xr-x  11 sel-mlil  candidates    374 Apr  4 11:13 .
+drwxr-xr-x   6 sel-mlil  candidates    204 Apr  3 15:59 ..
+-rw-r--r--   1 sel-mlil  candidates    407 Mar 30 02:08 Makefile
+-rw-r--r--   1 sel-mlil  candidates   3691 Apr  1 22:27 ROADMAP.md
+drwxr-xr-x   6 sel-mlil  candidates    204 Mar 30 02:08 include
+drwxr-xr-x   6 sel-mlil  candidates    204 Apr  3 15:57 lib
+-rwxr-xr-x   1 sel-mlil  candidates  13148 Apr  3 15:57 parser
+-rw-r--r--   1 sel-mlil  candidates   3313 Apr  3 16:11 parser.c
+-rw-r--r--   1 sel-mlil  candidates   2052 Apr  3 15:57 parser.o
+-rw-r--r--   1 sel-mlil  candidates      0 Apr  4 11:13 sax
+-rw-r--r--   1 sel-mlil  candidates      0 Apr  4 11:17 test
+
+./include:
+total 40
+drwxr-xr-x   6 sel-mlil  candidates   204 Mar 30 02:08 .
+drwxr-xr-x  11 sel-mlil  candidates   374 Apr  4 11:13 ..
+-rw-r--r--   1 sel-mlil  candidates  1094 Mar 30 02:08 dependencies.h
+-rw-r--r--   1 sel-mlil  candidates  1328 Mar 30 02:08 lib.h
+-rw-r--r--   1 sel-mlil  candidates  1243 Apr  3 15:59 parsing.h
+-rw-r--r--   1 sel-mlil  candidates  4795 Apr  3 15:29 structs.h
+
+./lib:
+total 32
+drwxr-xr-x   6 sel-mlil  candidates   204 Apr  3 15:57 .
+drwxr-xr-x  11 sel-mlil  candidates   374 Apr  4 11:13 ..
+-rw-r--r--   1 sel-mlil  candidates   953 Apr  3 15:59 flagging_utils.c
+-rw-r--r--   1 sel-mlil  candidates  1192 Apr  3 15:57 flagging_utils.o
+-rw-r--r--   1 sel-mlil  candidates  1837 Mar 30 02:08 string_utils_1.c
+-rw-r--r--   1 sel-mlil  candidates  1792 Apr  3 15:57 string_utils_1.o
