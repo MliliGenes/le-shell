@@ -6,7 +6,7 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 03:02:50 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/04/03 20:49:18 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/04/04 22:49:49 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,9 @@ void	handle_signal(int sig)
 }
 
 
-void hadnle_exit(char *input)
+void hadnle_exit(char **args)
 {
-	if (ft_strncmp(input, "exit", 4) == 0)
-	{
-		printf("exit\n");
-		exit(0);
-	}
+	
 }
 
 int ft_echo(char **args)
@@ -114,13 +110,13 @@ void handle_pwd(char *input)
 	}
 }
 
-void	handle_cd(char **args)
-{
-	//TODO: hanlde cd with relative paths and absolute paths
-	//TODO: Before calling chdir(), store the current PWD as OLDPWD (since OLDPWD should always point
-	// TODO: Call chdir() with the new path (whether it's absolute or constructed from a relative path).
-	//TODO: After chdir(), update PWD by calling getcwd() to get the new current directory and setting it as PWD.
-}
+// void	handle_cd(char **args)
+// {
+// 	//TODO: hanlde cd with relative paths and absolute paths
+// 	//TODO: Before calling chdir(), store the current PWD as OLDPWD (since OLDPWD should always point
+// 	// TODO: Call chdir() with the new path (whether it's absolute or constructed from a relative path).
+// 	//TODO: After chdir(), update PWD by calling getcwd() to get the new current directory and setting it as PWD.
+// }
 
 void	handle_env(char *input, char **env)
 {
@@ -165,7 +161,7 @@ int main(int argc, char *argv[], char *envp[])
 			handle_echo(input);
 			handle_pwd(input);
 			handle_env(input, envp);
-			hadnle_exit(input);
+			hadnle_exit(ft_split(input, ' '));
 		}
 		free(input);
 	}
