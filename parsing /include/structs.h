@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 06:20:05 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/04 13:23:57 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/04 17:23:54 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@
 typedef enum e_token_type
 {
 	TOKEN_WORD,      
-    TOKEN_S_QUOTE,    
+TOKEN_S_QUOTE,        
     TOKEN_D_QUOTE,
 	TOKEN_PIPE,
 	TOKEN_REDIR_IN,
@@ -102,7 +102,7 @@ typedef enum e_redir_type
 typedef struct s_redir
 {
 	t_redir_type		type;
-	char				*file;
+	char				*file_or_limiter;
 	struct s_redir		*next;
 }						t_redir;
 

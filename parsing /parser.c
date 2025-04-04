@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 23:35:56 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/04 14:37:51 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/04 18:36:12 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,13 +144,20 @@ t_token	*handle_quoted(t_lexer *lexer)
 	int				start;
 	t_token_type	type;
 
-	start = lexer->pos + 1;
+	start = lexer->pos;
 	quote_type = lexer->current_char;
 	advance_lexer(lexer);
 	while (lexer->current_char != quote_type && lexer->pos < lexer->len)
 		advance_lexer(lexer);
 	if (lexer->current_char != quote_type)
-		return (printf("zaba"), exit(1), NULL);
+		return (NULL);
+	advance_lexer(lexer);
+	if (!is_operator(lexer->current_char) && !is_full_operator(lexer))
+	{
+		while (lexer->pos < lexer->len && !is_operator(lexer->current_char)
+			&& lexer->current_char != ' ')
+			advance_lexer(lexer);
+	}
 	value = ft_strndup(lexer->input + start, lexer->pos - start);
 	if (!value)
 		return (NULL);
@@ -158,7 +165,7 @@ t_token	*handle_quoted(t_lexer *lexer)
 	if (quote_type == '\"')
 		type = TOKEN_D_QUOTE;
 	token = create_token(type, value);
-	advance_lexer(lexer);
+	// advance_lexer(lexer);
 	return (token);
 }
 
@@ -230,14 +237,14 @@ int	main(int ac, char **av, char **envp)
 	(void)ac;
 	(void)av;
 	(void)envp;
-	lexer = init_lexer("echo | \"$hello\" >> file1.txt | | < infile.txt 'cat file2.txt' ");
+	lexer = init_lexer("echo | \"$hello\"$hello&file1.txt | | < infile.txt 'cat file2.txt'");
 	if (!lexer)
 		return (1);
 	token = get_next_token(lexer);
 	while (token->value)
 	{
-		printf("index: %d\ntoken: \"%s\"\ntype: %d\n\n", token->n_index, token->value,
-			token->type);
+		printf("index: %d\ntoken: %s\ntype: %d\n\n", token->n_index,
+			token->value, token->type);
 		token = get_next_token(lexer);
 	}
 	return (0);
