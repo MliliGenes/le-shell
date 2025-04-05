@@ -13,8 +13,8 @@
 #ifndef DEPENDENCIES_H
 # define DEPENDENCIES_H
 
-# include <readline/history.h>
-# include <readline/readline.h>
+// # include <readline/history.h>
+// # include <readline/readline.h>
 # include <stdbool.h>
 # include <stddef.h>
 # include <stdio.h>

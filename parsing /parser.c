@@ -12,6 +12,10 @@
 
 #include "include/parsing.h"
 
+bool is_white_space(char c) {
+	return ((c >= 9 && c <= 13 ) || c == 32);
+}
+
 bool	is_operator(char c)
 {
 	return (c == '|' || c == '&' || c == ';' || c == '<' || c == '>' || c == '('
@@ -117,7 +121,7 @@ int	check_quotes_balance(const char *input)
 // skipping spaces
 void	skip_whitespace(t_lexer *lexer)
 {
-	while (lexer->pos < lexer->len && lexer->current_char == ' ')
+	while (lexer->pos < lexer->len && is_white_space(lexer->current_char))
 		advance_lexer(lexer);
 }
 
@@ -152,7 +156,7 @@ t_token	*handle_word(t_lexer *lexer)
 	int		start;
 
 	start = lexer->pos;
-	while (lexer->pos < lexer->len && lexer->current_char != ' '
+	while (lexer->pos < lexer->len && !is_white_space(lexer->current_char)
 		&& !(is_operator(lexer->current_char) || lexer->current_char == '\''
 			|| lexer->current_char == '"'))
 		advance_lexer(lexer);
@@ -254,13 +258,12 @@ int	main(int ac, char **av, char **envp)
 {
 	t_lexer	*lexer;
 	t_token	*token;
-	int		a;
 
 	(void)ac;
 	(void)av;
 	(void)envp;
 	//  || file1.txt | | < infile.txt 'cat file2.txt'
-	lexer = init_lexer("   ls | echo \"$hello\"'dawd >test   ");
+	lexer = init_lexer(" (cat file1.txt) && ls | echo\t\t\t saad\"$hello\"'world' >test < infile.txt cat file2.txt ");
 	// check if all quotes are open and closed
 	// check the ops if valid (len is two and the chars are the same)
 	if (!lexer || check_quotes_balance(lexer->input))
@@ -268,12 +271,11 @@ int	main(int ac, char **av, char **envp)
 	token = get_next_token(lexer);
 	while (token && token->value)
 	{
+		// printf("%s\\",token->value);
 		printf("index: %d\ntoken: %s\ntype: %d\nrange: [%d - %d]\n\n",
 			token->n_index, token->value, token->type, token->start_pos,
 			token->end_pos);
 		token = get_next_token(lexer);
 	}
-	a = 0;
-	printf("%d", !a);
 	return (0);
 }

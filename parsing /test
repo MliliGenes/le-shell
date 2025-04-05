@@ -1,30 +1,85 @@
-total 64
-drwxr-xr-x  11 sel-mlil  candidates    374 Apr  4 11:13 .
-drwxr-xr-x   6 sel-mlil  candidates    204 Apr  3 15:59 ..
--rw-r--r--   1 sel-mlil  candidates    407 Mar 30 02:08 Makefile
--rw-r--r--   1 sel-mlil  candidates   3691 Apr  1 22:27 ROADMAP.md
-drwxr-xr-x   6 sel-mlil  candidates    204 Mar 30 02:08 include
-drwxr-xr-x   6 sel-mlil  candidates    204 Apr  3 15:57 lib
--rwxr-xr-x   1 sel-mlil  candidates  13148 Apr  3 15:57 parser
--rw-r--r--   1 sel-mlil  candidates   3313 Apr  3 16:11 parser.c
--rw-r--r--   1 sel-mlil  candidates   2052 Apr  3 15:57 parser.o
--rw-r--r--   1 sel-mlil  candidates      0 Apr  4 11:13 sax
--rw-r--r--   1 sel-mlil  candidates      0 Apr  4 11:17 test
+index: 0
+token: (
+type: 10
+range: [2 - 3]
 
-./include:
-total 40
-drwxr-xr-x   6 sel-mlil  candidates   204 Mar 30 02:08 .
-drwxr-xr-x  11 sel-mlil  candidates   374 Apr  4 11:13 ..
--rw-r--r--   1 sel-mlil  candidates  1094 Mar 30 02:08 dependencies.h
--rw-r--r--   1 sel-mlil  candidates  1328 Mar 30 02:08 lib.h
--rw-r--r--   1 sel-mlil  candidates  1243 Apr  3 15:59 parsing.h
--rw-r--r--   1 sel-mlil  candidates  4795 Apr  3 15:29 structs.h
+index: 1
+token: cat
+type: 0
+range: [2 - 4]
 
-./lib:
-total 32
-drwxr-xr-x   6 sel-mlil  candidates   204 Apr  3 15:57 .
-drwxr-xr-x  11 sel-mlil  candidates   374 Apr  4 11:13 ..
--rw-r--r--   1 sel-mlil  candidates   953 Apr  3 15:59 flagging_utils.c
--rw-r--r--   1 sel-mlil  candidates  1192 Apr  3 15:57 flagging_utils.o
--rw-r--r--   1 sel-mlil  candidates  1837 Mar 30 02:08 string_utils_1.c
--rw-r--r--   1 sel-mlil  candidates  1792 Apr  3 15:57 string_utils_1.o
+index: 2
+token: file1.txt
+type: 0
+range: [6 - 14]
+
+index: 3
+token: )
+type: 11
+range: [16 - 17]
+
+index: 4
+token: &&
+type: 8
+range: [19 - 21]
+
+index: 5
+token: ls
+type: 0
+range: [20 - 21]
+
+index: 6
+token: |
+type: 3
+range: [24 - 25]
+
+index: 7
+token: echo
+type: 0
+range: [25 - 28]
+
+index: 8
+token: saad
+type: 0
+range: [33 - 36]
+
+index: 9
+token: "$hello"
+type: 2
+range: [37 - 44]
+
+index: 10
+token: 'world'
+type: 1
+range: [45 - 51]
+
+index: 11
+token: >
+type: 5
+range: [54 - 55]
+
+index: 12
+token: test
+type: 0
+range: [54 - 57]
+
+index: 13
+token: <
+type: 4
+range: [60 - 61]
+
+index: 14
+token: infile.txt
+type: 0
+range: [61 - 70]
+
+index: 15
+token: cat
+type: 0
+range: [72 - 74]
+
+index: 16
+token: file2.txt
+type: 0
+range: [76 - 84]
+
