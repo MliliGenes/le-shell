@@ -5,8 +5,10 @@ NAME = minishell
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -I./include -DREADLINE_LIBRARY
 LDFLAGS = -L./lib -lreadline -lhistory -lncurses
+LDFLAGS = -lreadline -lhistory # for linux
 
-LIBFT = ./lib/libft.a
+# LIBFT = ./lib/libft.a
+LIBFT = ./lib/libft-linux.a  # for linux
 READLINE = ./lib/libreadline.a
 HISTORY = ./lib/libhistory.a
 
