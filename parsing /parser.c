@@ -271,11 +271,15 @@ int	main(int ac, char **av, char **envp)
 	token = get_next_token(lexer);
 	while (token && token->value)
 	{
-		// printf("%s\\",token->value);
-		printf("index: %d\ntoken: %s\ntype: %d\nrange: [%d - %d]\n\n",
-			token->n_index, token->value, token->type, token->start_pos,
-			token->end_pos);
+		printf("Token #%d\n", token->n_index);
+		printf("  Value     : %s\n", token->value);
+		printf("  Type      : %d\n", token->type);
+		printf("  Start Pos : %d\n", token->start_pos);
+		printf("  End Pos   : %d\n", token->end_pos);
+		printf("---------------------------\n");
+	
 		token = get_next_token(lexer);
 	}
+		
 	return (0);
 }

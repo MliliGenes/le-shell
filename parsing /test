@@ -1,85 +1,102 @@
-index: 0
-token: (
-type: 10
-range: [2 - 3]
-
-index: 1
-token: cat
-type: 0
-range: [2 - 4]
-
-index: 2
-token: file1.txt
-type: 0
-range: [6 - 14]
-
-index: 3
-token: )
-type: 11
-range: [16 - 17]
-
-index: 4
-token: &&
-type: 8
-range: [19 - 21]
-
-index: 5
-token: ls
-type: 0
-range: [20 - 21]
-
-index: 6
-token: |
-type: 3
-range: [24 - 25]
-
-index: 7
-token: echo
-type: 0
-range: [25 - 28]
-
-index: 8
-token: saad
-type: 0
-range: [33 - 36]
-
-index: 9
-token: "$hello"
-type: 2
-range: [37 - 44]
-
-index: 10
-token: 'world'
-type: 1
-range: [45 - 51]
-
-index: 11
-token: >
-type: 5
-range: [54 - 55]
-
-index: 12
-token: test
-type: 0
-range: [54 - 57]
-
-index: 13
-token: <
-type: 4
-range: [60 - 61]
-
-index: 14
-token: infile.txt
-type: 0
-range: [61 - 70]
-
-index: 15
-token: cat
-type: 0
-range: [72 - 74]
-
-index: 16
-token: file2.txt
-type: 0
-range: [76 - 84]
-
+Token #0
+  Value     : (
+  Type      : 10
+  Start Pos : 2
+  End Pos   : 3
+---------------------------
+Token #1
+  Value     : cat
+  Type      : 0
+  Start Pos : 2
+  End Pos   : 4
+---------------------------
+Token #2
+  Value     : file1.txt
+  Type      : 0
+  Start Pos : 6
+  End Pos   : 14
+---------------------------
+Token #3
+  Value     : )
+  Type      : 11
+  Start Pos : 16
+  End Pos   : 17
+---------------------------
+Token #4
+  Value     : &&
+  Type      : 8
+  Start Pos : 19
+  End Pos   : 21
+---------------------------
+Token #5
+  Value     : ls
+  Type      : 0
+  Start Pos : 20
+  End Pos   : 21
+---------------------------
+Token #6
+  Value     : |
+  Type      : 3
+  Start Pos : 24
+  End Pos   : 25
+---------------------------
+Token #7
+  Value     : echo
+  Type      : 0
+  Start Pos : 25
+  End Pos   : 28
+---------------------------
+Token #8
+  Value     : saad
+  Type      : 0
+  Start Pos : 33
+  End Pos   : 36
+---------------------------
+Token #9
+  Value     : "$hello"
+  Type      : 2
+  Start Pos : 37
+  End Pos   : 44
+---------------------------
+Token #10
+  Value     : 'world'
+  Type      : 1
+  Start Pos : 45
+  End Pos   : 51
+---------------------------
+Token #11
+  Value     : >
+  Type      : 5
+  Start Pos : 54
+  End Pos   : 55
+---------------------------
+Token #12
+  Value     : test
+  Type      : 0
+  Start Pos : 54
+  End Pos   : 57
+---------------------------
+Token #13
+  Value     : <
+  Type      : 4
+  Start Pos : 60
+  End Pos   : 61
+---------------------------
+Token #14
+  Value     : infile.txt
+  Type      : 0
+  Start Pos : 61
+  End Pos   : 70
+---------------------------
+Token #15
+  Value     : cat
+  Type      : 0
+  Start Pos : 72
+  End Pos   : 74
+---------------------------
+Token #16
+  Value     : file2.txt
+  Type      : 0
+  Start Pos : 76
+  End Pos   : 84
+---------------------------
