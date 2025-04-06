@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 06:20:05 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/04 22:09:26 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/06 18:32:56 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,6 @@ typedef struct s_redir
 typedef struct s_cmd
 {
 	char				**args;
-	t_redir				*redirs;
 	struct s_cmd		*next;
 }						t_cmd;
 
