@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 06:20:05 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/06 22:08:32 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/06 22:26:22 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,13 +54,15 @@ typedef enum e_token_type
 	TOKEN_S_QUOTE,
 	TOKEN_D_QUOTE,
 
-	TOKEN_PIPE,
 	TOKEN_REDIR_IN,
 	TOKEN_REDIR_OUT,
 	TOKEN_APPEND,
 	TOKEN_HEREDOC,
+
+	TOKEN_PIPE,
 	TOKEN_AND,
 	TOKEN_OR,
+
 	TOKEN_PAREN_L,
 	TOKEN_PAREN_R,
 
@@ -125,7 +127,7 @@ typedef struct s_redir
 typedef struct s_cmd
 {
 	char						**args;
-	struct s_cmd				*next;
+	char						**flags;
 }								t_cmd;
 
 /**
@@ -152,8 +154,12 @@ typedef struct s_op
 
 typedef struct s_processed_token
 {
-	char						*value;
-	t_token_type				type;
+	enum
+	{
+		P_TOKEN_CMD,
+		P_TOKEN_OP,
+	} type;
+	void						*p_token;
 	struct s_processed_token	*next;
 	struct s_processed_token	*prev;
 }								t_processed_token;
