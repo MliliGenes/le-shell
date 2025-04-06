@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 06:20:05 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/06 22:26:22 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/06 22:44:47 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,7 +207,7 @@ typedef struct s_ast
 	struct s_ast				*left;
 	struct s_ast				*right;
 	t_op_type					op;
-	// struct s_ast		*subshell;
+	struct s_ast				*subshell;
 	t_redir						*redirs;
 }								t_ast;
 
