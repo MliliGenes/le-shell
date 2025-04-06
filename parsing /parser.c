@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 23:35:56 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/06 19:15:38 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/06 19:28:06 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -264,7 +264,7 @@ int	main(int ac, char **av, char **envp)
 	(void)ac;
 	(void)av;
 	(void)envp;
-	lexer = init_lexer(" (cat file1.txt) && ls | echo\t\t\t \"$hello\"'world'&>test < infile.txt cat file2.txt ");
+	lexer = init_lexer(" (cat file1.txt) && ls | echo\t\t\t \"$hello\"'world'>test < infile.txt cat file2.txt ");
 	// check if all quotes are open and closed
 	// check the ops if valid (len is two and the chars are the same)
 	if (!lexer || check_quotes_balance(lexer->input))

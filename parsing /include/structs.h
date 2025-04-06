@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 06:20:05 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/06 18:32:56 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/06 21:42:46 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,20 @@
 # define STRUCTS_H
 
 # include "dependencies.h"
+
+/**
+ * struct s_lexer - Lexer state structure
+ *
+ * @input: Input string being processed
+ * @pos: Current position in input string
+ */
+typedef struct s_lexer
+{
+	char				*input;
+	int					len;
+	int					pos;
+	char				current_char;
+}						t_lexer;
 
 /**
  * enum e_token_type - Types of tokens in lexical analysis
@@ -32,9 +46,14 @@
  */
 typedef enum e_token_type
 {
+	TOKEN_COMMAND,
+	TOKEN_ARG,
+	TOKEN_FILE,
+
 	TOKEN_WORD,
 	TOKEN_S_QUOTE,
 	TOKEN_D_QUOTE,
+
 	TOKEN_PIPE,
 	TOKEN_REDIR_IN,
 	TOKEN_REDIR_OUT,
@@ -44,6 +63,7 @@ typedef enum e_token_type
 	TOKEN_OR,
 	TOKEN_PAREN_L,
 	TOKEN_PAREN_R,
+
 	TOKEN_EOF
 }						t_token_type;
 
@@ -62,21 +82,8 @@ typedef struct s_token
 	int					start_pos;
 	int					end_pos;
 	struct s_token		*next;
+	struct s_token		*prev;
 }						t_token;
-
-/**
- * struct s_lexer - Lexer state structure
- *
- * @input: Input string being processed
- * @pos: Current position in input string
- */
-typedef struct s_lexer
-{
-	char				*input;
-	int					len;
-	int					pos;
-	char				current_char;
-}						t_lexer;
 
 /**
  * enum e_redir_type - Types of redirection operations
@@ -121,6 +128,27 @@ typedef struct s_cmd
 	struct s_cmd		*next;
 }						t_cmd;
 
+
+typedef struct s_stack
+{
+	t_token				*top;
+}						t_stack;
+
+typedef struct s_queue
+{
+	t_token				*front;
+	t_token				*rear;
+}						t_queue;
+
+typedef struct s_parser
+{
+	t_stack op_stack;
+	t_queue output_queue;
+	t_token *last_token;
+}						t_parser;
+
+
+
 /**
  * enum e_op_type - Types of AST node operations
  *
@@ -160,7 +188,7 @@ typedef struct s_ast
 	struct s_ast		*left;
 	struct s_ast		*right;
 	t_op_type			op;
-	struct s_ast		*subshell;
+	// struct s_ast		*subshell;
 	t_redir				*redirs;
 }						t_ast;
 
