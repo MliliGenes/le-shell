@@ -25,66 +25,66 @@ End Pos   : 17
 Token #4
 Value     : &&
 Type      : 11
-Start Pos : 19
-End Pos   : 21
+Start Pos : 18
+End Pos   : 20
 
 Token #5
 Value     : ls
 Type      : 3
-Start Pos : 20
-End Pos   : 21
+Start Pos : 19
+End Pos   : 20
 
 Token #6
 Value     : |
 Type      : 10
-Start Pos : 24
-End Pos   : 25
+Start Pos : 23
+End Pos   : 24
 
 Token #7
 Value     : echo
 Type      : 3
-Start Pos : 25
-End Pos   : 28
+Start Pos : 24
+End Pos   : 27
 
 Token #8
-Value     : "$hello"'world'
+Value     : "$hel'l'o"'world'
 Type      : 5
-Start Pos : 33
-End Pos   : 47
+Start Pos : 32
+End Pos   : 48
 
 Token #9
 Value     : >
 Type      : 7
-Start Pos : 49
-End Pos   : 50
+Start Pos : 50
+End Pos   : 51
 
 Token #10
 Value     : test
 Type      : 3
-Start Pos : 49
-End Pos   : 52
+Start Pos : 50
+End Pos   : 53
 
 Token #11
 Value     : <
 Type      : 6
-Start Pos : 55
-End Pos   : 56
+Start Pos : 56
+End Pos   : 57
 
 Token #12
 Value     : infile.txt
 Type      : 3
-Start Pos : 56
-End Pos   : 65
+Start Pos : 57
+End Pos   : 66
 
 Token #13
 Value     : cat
 Type      : 3
-Start Pos : 67
-End Pos   : 69
+Start Pos : 68
+End Pos   : 70
 
 Token #14
 Value     : file2.txt
 Type      : 3
-Start Pos : 71
-End Pos   : 79
+Start Pos : 72
+End Pos   : 80
 

@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 23:35:56 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/06 19:28:06 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/07 16:56:08 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,24 @@ void	advance_lexer(t_lexer *lexer)
 		lexer->pos++;
 		lexer->current_char = lexer->input[lexer->pos];
 	}
+}
+
+bool	check_ops_validity(const char *input)
+{
+	int	i;
+	int	count;
+
+	i = 0;
+	count = 0;
+	while (input[i])
+	{
+		if (is_operator(input[i]))
+			count++;
+		if (count > 2)
+			return false;
+		i++;
+	}
+	return false;
 }
 
 int	check_quotes_balance(const char *input)
@@ -183,7 +201,8 @@ t_token	*handle_quoted(t_lexer *lexer)
 	if (lexer->current_char != quote_type)
 		return (NULL);
 	advance_lexer(lexer);
-	while (!is_white_space(lexer->current_char) && !is_operator(lexer->current_char))
+	while (!is_white_space(lexer->current_char)
+		&& !is_operator(lexer->current_char))
 		advance_lexer(lexer);
 	value = ft_strndup(lexer->input + start, lexer->pos - start);
 	if (!value)
@@ -264,8 +283,7 @@ int	main(int ac, char **av, char **envp)
 	(void)ac;
 	(void)av;
 	(void)envp;
-	lexer = init_lexer(" (cat file1.txt) && ls | echo\t\t\t \"$hello\"'world'>test < infile.txt cat file2.txt ");
-	// check if all quotes are open and closed
+	lexer = init_lexer(" (cat file1.txt)&& ls | echo\t\t\t \"$hello\"'world'>test < infile.txt cat file2.txt ");
 	// check the ops if valid (len is two and the chars are the same)
 	if (!lexer || check_quotes_balance(lexer->input))
 		return (1);
