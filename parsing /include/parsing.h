@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 09:14:40 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/04 22:11:10 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/08 19:06:08 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 
 t_token *create_token(t_token_type type, char *value, int start, int end);
 void	free_token(t_token *token);
-t_lexer	*init_lexer(const char *input);
+t_lexer	*init_lexer(char *input);
 void	advance_lexer(t_lexer *lexer);
 void	skip_whitespace(t_lexer *lexer);
 t_token	*handle_word(t_lexer *lexer);

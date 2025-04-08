@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 23:35:56 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/08 18:22:37 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/08 20:44:23 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,22 @@ bool	is_operator(char c)
 {
 	return (c == '|' || c == '&' || c == ';' || c == '<' || c == '>' || c == '('
 		|| c == ')');
+}
+
+bool	is_op(t_token_type type)
+{
+	return (type == TOKEN_AND || type == TOKEN_OR || type == TOKEN_PIPE);
+}
+
+bool	is_redir(t_token_type type)
+{
+	return (type == TOKEN_REDIR_IN || type == TOKEN_HEREDOC
+		|| type == TOKEN_REDIR_OUT || type == TOKEN_APPEND);
+}
+
+bool	is_paren(t_token_type type)
+{
+	return (type == TOKEN_PAREN_L || type == TOKEN_PAREN_R);
 }
 
 bool	is_full_operator(t_lexer *lexer)
@@ -44,14 +60,14 @@ bool	is_full_operator(t_lexer *lexer)
 }
 
 /* Lexer initialization */
-t_lexer	*init_lexer(const char *input)
+t_lexer	*init_lexer(char *input)
 {
 	t_lexer	*lexer;
 
 	lexer = malloc(sizeof(t_lexer));
 	if (!lexer)
 		return (NULL);
-	lexer->input = ft_strdup(input);
+	lexer->input = input;
 	lexer->current_char = lexer->input[0];
 	lexer->pos = 0;
 	lexer->len = ft_strlen(input);
@@ -89,18 +105,28 @@ void	add_back_token(t_token **head, t_token *new)
 	tmp = (*head);
 	while (tmp->next)
 		tmp = tmp->next;
-	new->prev = tmp;
 	tmp->next = new;
-	return ;
+	new->prev = tmp;
 }
 
 void	free_token(t_token *token)
 {
 	if (!token)
 		return ;
-	if (token->value)
-		free(token->value);
+	free(token->value);
 	free(token);
+}
+
+void	free_token_list(t_token *head)
+{
+	t_token	*tmp;
+
+	while (head)
+	{
+		tmp = head->next;
+		free_token(head);
+		head = tmp;
+	}
 }
 
 /* Lexer operations */
@@ -133,6 +159,41 @@ int	check_quotes_balance(const char *input)
 	if (in_single_quote)
 		return (1);
 	if (in_double_quote)
+		return (2);
+	return (0);
+}
+
+int	check_parenthesis_balance(const char *input)
+{
+	int	i;
+	int	in_single_quote;
+	int	in_double_quote;
+	int	paren_count;
+
+	i = 0;
+	in_single_quote = 0;
+	in_double_quote = 0;
+	paren_count = 0;
+	while (input[i])
+	{
+		if (input[i] == '\'' && !in_double_quote)
+			in_single_quote = !in_single_quote;
+		else if (input[i] == '"' && !in_single_quote)
+			in_double_quote = !in_double_quote;
+		else if (!in_single_quote && !in_double_quote)
+		{
+			if (input[i] == '(')
+				paren_count++;
+			else if (input[i] == ')')
+			{
+				paren_count--;
+				if (paren_count < 0)
+					return (1);
+			}
+		}
+		i++;
+	}
+	if (paren_count > 0)
 		return (2);
 	return (0);
 }
@@ -271,23 +332,28 @@ t_token_type	classify_token(char *value);
 // char			*collect_quoted(t_lexer *lexer, char quote);
 // char			*collect_operator(t_lexer *lexer);
 // bool			is_operator(char c);
-
-
-
+void	ll(void)
+{
+	system("leaks parser");
+}
 
 int	main(int ac, char **av, char **envp)
 {
 	t_lexer	*lexer;
 	t_token	*head;
 	t_token	*token;
+	t_token	*tmp;
 
+	// atexit(ll);
 	(void)ac;
 	(void)av;
 	(void)envp;
 	head = NULL;
-	lexer = init_lexer(" (cat file1.txt) >>> ls | echo\t\t\t \"$hello\"'world'>test < infile.txt cat file2.txt ");
-	if (!lexer || check_quotes_balance(lexer->input))
+	lexer = init_lexer("( cat file1.txt) >> ls | echo\t\t\t \"$hello\"'world'>test < infile.txt cat file2.txt ");
+	if (!lexer || check_quotes_balance(lexer->input)
+		|| check_parenthesis_balance(lexer->input))
 		return (1);
+	// TODO create tokens list function ();
 	while (true)
 	{
 		token = get_next_token(lexer);
@@ -298,17 +364,40 @@ int	main(int ac, char **av, char **envp)
 		}
 		add_back_token(&head, token);
 	}
-	
+	// TODO validate the syntax function ();
 	while (head->type != TOKEN_EOF)
 	{
-		printf("Token #%d\n", head->n_index);
-		printf("Value     : %s\n", head->value);
-		printf("Type      : %d\n", head->type);
-		printf("Start Pos : %d\n", head->start_pos);
-		printf("End Pos   : %d\n", head->end_pos);
-		printf("\n");
+		if (is_op(head->type) && is_op(head->next->type))
+			return (1);
+		if (is_redir(head->type) && is_redir(head->next->type))
+			return (1);
+		if (head->type == TOKEN_PAREN_L && is_op(head->next->type))
+			return (1);
+		if (is_redir(head->type) && head->next->type == TOKEN_PAREN_L)
+			return (1);
+		if (head->n_index == 0 && is_op(head->type))
+			return (1);
 		head = head->next;
 	}
+	
+	while (head->prev)
+		head = head->prev;
+
+	tmp = head;
+	while (tmp)
+	{
+		printf("Token #%d\n", tmp->n_index);
+		printf("Value     : %s\n", tmp->value);
+		printf("Type      : %d\n", tmp->type);
+		printf("Start Pos : %d\n", tmp->start_pos);
+		printf("End Pos   : %d\n", tmp->end_pos);
+		printf("\n");
+		tmp = tmp->next;
+	}
+	
+	free_token_list(head);
+	free(lexer);
+	
 	return (0);
 }
 

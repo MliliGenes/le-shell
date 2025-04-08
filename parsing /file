@@ -1,6 +1,0 @@
-  PID TTY           TIME CMD
- 1201 ttys001    0:00.60 /bin/zsh -il
- 3652 ttys002    0:00.15 -zsh
- 4622 ttys004    0:00.73 /bin/zsh -il
- 7221 ttys004    0:00.00 cat
- 1110 ttys008    0:00.20 -zsh

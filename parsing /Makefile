@@ -13,6 +13,9 @@ OBJ_FILES = $(SRC_FILES:.c=.o)
 
 all: $(TARGET)
 
+test: all
+	@./parser > test
+
 ${TARGET}: ${OBJ_FILES}
 	$(CC) $(CFLAGS) ${OBJ_FILES} $(LIB) -o ${TARGET}
 
