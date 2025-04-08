@@ -1,90 +1,96 @@
 Token #0
 Value     : (
-Type      : 13
+Type      : 11
 Start Pos : 2
 End Pos   : 3
 
 Token #1
 Value     : cat
-Type      : 3
+Type      : 0
 Start Pos : 2
 End Pos   : 4
 
 Token #2
 Value     : file1.txt
-Type      : 3
+Type      : 0
 Start Pos : 6
 End Pos   : 14
 
 Token #3
 Value     : )
-Type      : 14
+Type      : 12
 Start Pos : 16
 End Pos   : 17
 
 Token #4
-Value     : &&
-Type      : 11
-Start Pos : 18
-End Pos   : 20
+Value     : >>
+Type      : 6
+Start Pos : 19
+End Pos   : 21
 
 Token #5
-Value     : ls
-Type      : 3
-Start Pos : 19
-End Pos   : 20
+Value     : >
+Type      : 5
+Start Pos : 20
+End Pos   : 21
 
 Token #6
-Value     : |
-Type      : 10
-Start Pos : 23
-End Pos   : 24
+Value     : ls
+Type      : 0
+Start Pos : 21
+End Pos   : 22
 
 Token #7
-Value     : echo
-Type      : 3
-Start Pos : 24
-End Pos   : 27
+Value     : |
+Type      : 8
+Start Pos : 25
+End Pos   : 26
 
 Token #8
-Value     : "$hel'l'o"'world'
-Type      : 5
-Start Pos : 32
-End Pos   : 48
+Value     : echo
+Type      : 0
+Start Pos : 26
+End Pos   : 29
 
 Token #9
+Value     : "$hello"'world'
+Type      : 0
+Start Pos : 34
+End Pos   : 48
+
+Token #10
 Value     : >
-Type      : 7
+Type      : 5
 Start Pos : 50
 End Pos   : 51
 
-Token #10
+Token #11
 Value     : test
-Type      : 3
+Type      : 0
 Start Pos : 50
 End Pos   : 53
 
-Token #11
+Token #12
 Value     : <
-Type      : 6
+Type      : 4
 Start Pos : 56
 End Pos   : 57
 
-Token #12
+Token #13
 Value     : infile.txt
-Type      : 3
+Type      : 0
 Start Pos : 57
 End Pos   : 66
 
-Token #13
+Token #14
 Value     : cat
-Type      : 3
+Type      : 0
 Start Pos : 68
 End Pos   : 70
 
-Token #14
+Token #15
 Value     : file2.txt
-Type      : 3
+Type      : 0
 Start Pos : 72
 End Pos   : 80
 

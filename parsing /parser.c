@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 23:35:56 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/07 16:56:08 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/08 18:22:37 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,25 @@ t_token	*create_token(t_token_type type, char *value, int start, int end)
 	token->start_pos = start;
 	token->end_pos = end;
 	token->next = NULL;
+	token->prev = NULL;
 	return (token);
+}
+
+void	add_back_token(t_token **head, t_token *new)
+{
+	t_token	*tmp;
+
+	if (!*head)
+	{
+		*head = new;
+		return ;
+	}
+	tmp = (*head);
+	while (tmp->next)
+		tmp = tmp->next;
+	new->prev = tmp;
+	tmp->next = new;
+	return ;
 }
 
 void	free_token(t_token *token)
@@ -93,24 +111,6 @@ void	advance_lexer(t_lexer *lexer)
 		lexer->pos++;
 		lexer->current_char = lexer->input[lexer->pos];
 	}
-}
-
-bool	check_ops_validity(const char *input)
-{
-	int	i;
-	int	count;
-
-	i = 0;
-	count = 0;
-	while (input[i])
-	{
-		if (is_operator(input[i]))
-			count++;
-		if (count > 2)
-			return false;
-		i++;
-	}
-	return false;
 }
 
 int	check_quotes_balance(const char *input)
@@ -187,11 +187,10 @@ t_token	*handle_word(t_lexer *lexer)
 
 t_token	*handle_quoted(t_lexer *lexer)
 {
-	t_token			*token;
-	char			*value;
-	char			quote_type;
-	int				start;
-	t_token_type	type;
+	t_token	*token;
+	char	*value;
+	char	quote_type;
+	int		start;
 
 	start = lexer->pos;
 	quote_type = lexer->current_char;
@@ -207,10 +206,8 @@ t_token	*handle_quoted(t_lexer *lexer)
 	value = ft_strndup(lexer->input + start, lexer->pos - start);
 	if (!value)
 		return (NULL);
-	type = TOKEN_S_QUOTE;
-	if (quote_type == '"')
-		type = TOKEN_D_QUOTE;
-	token = create_token(type, value, start, lexer->pos - 1);
+	;
+	token = create_token(TOKEN_WORD, value, start, lexer->pos - 1);
 	return (token);
 }
 
@@ -275,28 +272,49 @@ t_token_type	classify_token(char *value);
 // char			*collect_operator(t_lexer *lexer);
 // bool			is_operator(char c);
 
+
+
+
 int	main(int ac, char **av, char **envp)
 {
 	t_lexer	*lexer;
+	t_token	*head;
 	t_token	*token;
 
 	(void)ac;
 	(void)av;
 	(void)envp;
-	lexer = init_lexer(" (cat file1.txt)&& ls | echo\t\t\t \"$hello\"'world'>test < infile.txt cat file2.txt ");
-	// check the ops if valid (len is two and the chars are the same)
+	head = NULL;
+	lexer = init_lexer(" (cat file1.txt) >>> ls | echo\t\t\t \"$hello\"'world'>test < infile.txt cat file2.txt ");
 	if (!lexer || check_quotes_balance(lexer->input))
 		return (1);
-	token = get_next_token(lexer);
-	while (token && token->value)
+	while (true)
 	{
-		printf("Token #%d\n", token->n_index);
-		printf("Value     : %s\n", token->value);
-		printf("Type      : %d\n", token->type);
-		printf("Start Pos : %d\n", token->start_pos);
-		printf("End Pos   : %d\n", token->end_pos);
-		printf("\n");
 		token = get_next_token(lexer);
+		if (token->type == TOKEN_EOF)
+		{
+			add_back_token(&head, token);
+			break ;
+		}
+		add_back_token(&head, token);
+	}
+	
+	while (head->type != TOKEN_EOF)
+	{
+		printf("Token #%d\n", head->n_index);
+		printf("Value     : %s\n", head->value);
+		printf("Type      : %d\n", head->type);
+		printf("Start Pos : %d\n", head->start_pos);
+		printf("End Pos   : %d\n", head->end_pos);
+		printf("\n");
+		head = head->next;
 	}
 	return (0);
 }
+
+// printf("Token #%d\n", token->n_index);
+// printf("Value     : %s\n", token->value);
+// printf("Type      : %d\n", token->type);
+// printf("Start Pos : %d\n", token->start_pos);
+// printf("End Pos   : %d\n", token->end_pos);
+// printf("\n");

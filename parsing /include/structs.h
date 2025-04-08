@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 06:20:05 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/07 16:50:39 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/07 20:47:06 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,10 @@ typedef struct s_lexer
  */
 typedef enum e_token_type
 {
+	TOKEN_WORD,
 	TOKEN_COMMAND,
 	TOKEN_ARG,
 	TOKEN_FILE,
-
-	TOKEN_WORD,
-	TOKEN_S_QUOTE,
-	TOKEN_D_QUOTE,
 
 	TOKEN_REDIR_IN,
 	TOKEN_REDIR_OUT,
@@ -121,13 +118,15 @@ typedef struct s_redir
  * struct s_cmd - Simple command structure
  *
  * @args: Array of command arguments (NULL-terminated)
- * @redirs: List of redirections for this command
+ * @redirs: List of redirection for this command
  * @next: Pointer to next command in pipeline or list
  */
 typedef struct s_cmd
 {
 	char						**args;
-	char						**flags;
+	char						*cmd;
+	int							fds[2];
+	t_redir						*redirs;
 }								t_cmd;
 
 /**
@@ -164,21 +163,21 @@ typedef struct s_processed_token
 	struct s_processed_token	*prev;
 }								t_processed_token;
 
-typedef struct s_stack
-{
-	t_processed_token			*top;
-}								t_stack;
+// typedef struct s_stack
+// {
+// 	t_processed_token			*top;
+// }								t_stack;
 
-typedef struct s_queue
-{
-	t_processed_token			*front;
-	t_processed_token			*rear;
-}								t_queue;
+// typedef struct s_queue
+// {
+// 	t_processed_token			*front;
+// 	t_processed_token			*rear;
+// }								t_queue;
 
 typedef struct s_parser
 {
-	t_stack						op_stack;
-	t_queue						output_queue;
+	t_processed_token			*cmds_stack;
+	t_processed_token			*op_stack;
 	t_token						*last_token;
 }								t_parser;
 
@@ -208,7 +207,6 @@ typedef struct s_ast
 	struct s_ast				*right;
 	t_op_type					op;
 	struct s_ast				*subshell;
-	t_redir						*redirs;
 }								t_ast;
 
 /**
