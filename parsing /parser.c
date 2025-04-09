@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 23:35:56 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/08 20:44:23 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/09 16:57:31 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,39 +163,40 @@ int	check_quotes_balance(const char *input)
 	return (0);
 }
 
+static void	skip_quotes(char c, int *quotes)
+{
+	if (c == '\'' && !quotes[1])
+		quotes[0] = !quotes[0];
+	else if (c == '"' && !quotes[0])
+		quotes[1] = !quotes[1];
+}
+
 int	check_parenthesis_balance(const char *input)
 {
 	int	i;
-	int	in_single_quote;
-	int	in_double_quote;
-	int	paren_count;
+	int	data[3];
 
 	i = 0;
-	in_single_quote = 0;
-	in_double_quote = 0;
-	paren_count = 0;
+	data[0] = 0;
+	data[1] = 0;
+	data[2] = 0;
 	while (input[i])
 	{
-		if (input[i] == '\'' && !in_double_quote)
-			in_single_quote = !in_single_quote;
-		else if (input[i] == '"' && !in_single_quote)
-			in_double_quote = !in_double_quote;
-		else if (!in_single_quote && !in_double_quote)
+		skip_quotes(input[i], data);
+		if (!data[0] && !data[1])
 		{
 			if (input[i] == '(')
-				paren_count++;
+				data[2]++;
 			else if (input[i] == ')')
 			{
-				paren_count--;
-				if (paren_count < 0)
+				data[2]--;
+				if (data[2] < 0)
 					return (1);
 			}
 		}
 		i++;
 	}
-	if (paren_count > 0)
-		return (2);
-	return (0);
+	return (data[2] != 0);
 }
 
 // skipping spaces
@@ -349,7 +350,7 @@ int	main(int ac, char **av, char **envp)
 	(void)av;
 	(void)envp;
 	head = NULL;
-	lexer = init_lexer("( cat file1.txt) >> ls | echo\t\t\t \"$hello\"'world'>test < infile.txt cat file2.txt ");
+	lexer = init_lexer("(ls) && saad || (cat file1.txt) >> ls | echo\t\t\t \"$hello\"'world'>test < infile.txt cat file2.txt ");
 	if (!lexer || check_quotes_balance(lexer->input)
 		|| check_parenthesis_balance(lexer->input))
 		return (1);
@@ -373,31 +374,31 @@ int	main(int ac, char **av, char **envp)
 			return (1);
 		if (head->type == TOKEN_PAREN_L && is_op(head->next->type))
 			return (1);
-		if (is_redir(head->type) && head->next->type == TOKEN_PAREN_L)
+		if (head->type == TOKEN_PAREN_R && !is_op(head->next->type)
+			&& !is_redir(head->next->type))
+			return (1);
+		if (head->n_index > 0 && head->type == TOKEN_PAREN_L
+			&& !is_op(head->prev->type))
 			return (1);
 		if (head->n_index == 0 && is_op(head->type))
 			return (1);
 		head = head->next;
 	}
-	
 	while (head->prev)
 		head = head->prev;
-
 	tmp = head;
 	while (tmp)
 	{
-		printf("Token #%d\n", tmp->n_index);
-		printf("Value     : %s\n", tmp->value);
-		printf("Type      : %d\n", tmp->type);
-		printf("Start Pos : %d\n", tmp->start_pos);
-		printf("End Pos   : %d\n", tmp->end_pos);
+		printf("Token		#%d\n", tmp->n_index);
+		printf("Value		:%s\n", tmp->value);
+		printf("Type		:%d\n", tmp->type);
+		printf("Start Pos	:%d\n", tmp->start_pos);
+		printf("End Pos		:%d\n", tmp->end_pos);
 		printf("\n");
 		tmp = tmp->next;
 	}
-	
 	free_token_list(head);
 	free(lexer);
-	
 	return (0);
 }
 
