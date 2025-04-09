@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 23:35:56 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/09 16:57:31 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/09 17:29:41 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -286,9 +286,7 @@ t_token	*handle_operator(t_lexer *lexer)
 		op[1] = lexer->input[lexer->pos + 1];
 		if ((op[0] == '>' && op[1] == '>') || (op[0] == '<' && op[1] == '<')
 			|| (op[0] == '|' && op[1] == '|') || (op[0] == '&' && op[1] == '&'))
-		{
 			op_len = 2;
-		}
 		else
 		{
 			op_len = 1;
@@ -303,7 +301,8 @@ t_token	*handle_operator(t_lexer *lexer)
 	op_str = ft_strndup(op, op_len);
 	if (!op_str)
 		return (NULL);
-	for (int i = 0; i < op_len; i++)
+	advance_lexer(lexer);
+	if (op_len > 2)
 		advance_lexer(lexer);
 	token = create_token(classify_operator(op_str), op_str, lexer->pos,
 			lexer->pos + op_len);
@@ -350,7 +349,7 @@ int	main(int ac, char **av, char **envp)
 	(void)av;
 	(void)envp;
 	head = NULL;
-	lexer = init_lexer("(ls) && saad || (cat file1.txt) >> ls | echo\t\t\t \"$hello\"'world'>test < infile.txt cat file2.txt ");
+	lexer = init_lexer("(ls) && saad  || (cat file1.txt) >> ls | echo\t\t\t \"$hello\"'world'>test < infile.txt cat file2.txt ");
 	if (!lexer || check_quotes_balance(lexer->input)
 		|| check_parenthesis_balance(lexer->input))
 		return (1);
