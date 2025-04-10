@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 23:35:56 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/10 19:58:13 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/10 20:29:06 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -381,7 +381,6 @@ int	main(int ac, char **av, char **envp)
 {
 	t_lexer	*lexer;
 	t_token	*head;
-	t_token	*tmp;
 
 	// atexit(ll);
 	(void)ac;
@@ -395,18 +394,15 @@ int	main(int ac, char **av, char **envp)
 	create_tokens_list(lexer, &head);
 	if (validate_tokens(head))
 		return (0);
-	while (head->prev)
-		head = head->prev;
-	tmp = head;
-	while (tmp)
+	while (head)
 	{
-		printf("Token		#%d\n", tmp->n_index);
-		printf("Value		:%s\n", tmp->value);
-		printf("Type		:%d\n", tmp->type);
-		printf("Start Pos	:%d\n", tmp->start_pos);
-		printf("End Pos		:%d\n", tmp->end_pos);
+		printf("Token		#%d\n", head->n_index);
+		printf("Value		:%s\n", head->value);
+		printf("Type		:%d\n", head->type);
+		printf("Start Pos	:%d\n", head->start_pos);
+		printf("End Pos		:%d\n", head->end_pos);
 		printf("\n");
-		tmp = tmp->next;
+		head = head->next;
 	}
 	free_token_list(head);
 	free(lexer);
