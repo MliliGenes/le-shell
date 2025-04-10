@@ -6,7 +6,7 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 03:02:50 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/04/10 15:27:38 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/04/10 16:38:01 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,6 @@ void	handle_signal(int sig)
 	}
 }
 
-
-void hadnle_exit(char **args)
-{
-	(void)args;
-	return;
-}
 
 void ll()
 {
@@ -63,7 +57,7 @@ int main(int argc, char *argv[], char *envp[])
 			add_history(expand_input);
 			handle_echo(expand_input);
 			handle_pwd(expand_input);
-			// hadnle_exit(ft_split(input, ' '));
+			handle_exit(expand_input);
 		}
 		free(expand_input);
 		free(input);
