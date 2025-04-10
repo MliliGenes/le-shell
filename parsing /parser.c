@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 23:35:56 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/09 18:26:49 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/10 19:58:13 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -324,47 +324,24 @@ t_token	*get_next_token(t_lexer *lexer)
 	return (handle_word(lexer));
 }
 
-// TODO day 2
-/* Token classification */
-t_token_type	classify_token(char *value);
-
-/* Specialized collectors */
-// char			*collect_quoted(t_lexer *lexer, char quote);
-// char			*collect_operator(t_lexer *lexer);
-// bool			is_operator(char c);
-void	ll(void)
+void	create_tokens_list(t_lexer *lexer, t_token **head)
 {
-	system("leaks parser");
-}
-
-int	main(int ac, char **av, char **envp)
-{
-	t_lexer	*lexer;
-	t_token	*head;
 	t_token	*token;
-	t_token	*tmp;
 
-	// atexit(ll);
-	(void)ac;
-	(void)av;
-	(void)envp;
-	head = NULL;
-	lexer = init_lexer("(ls) || saad || (cat file1.txt) >> ls | echo\t\t\t \"$hello\"'world'>test < infile.txt cat file2.txt ");
-	if (!lexer || check_quotes_balance(lexer->input)
-		|| check_parenthesis_balance(lexer->input))
-		return (1);
-	// TODO create tokens list function ();
 	while (true)
 	{
 		token = get_next_token(lexer);
 		if (token->type == TOKEN_EOF)
 		{
-			add_back_token(&head, token);
+			add_back_token(head, token);
 			break ;
 		}
-		add_back_token(&head, token);
+		add_back_token(head, token);
 	}
-	// TODO validate the syntax function ();
+}
+
+int	validate_tokens(t_token *head)
+{
 	while (head->type != TOKEN_EOF)
 	{
 		if (is_op(head->type) && is_op(head->next->type))
@@ -383,6 +360,41 @@ int	main(int ac, char **av, char **envp)
 			return (1);
 		head = head->next;
 	}
+	return (0);
+}
+
+// TODO day 2
+/* Token classification */
+t_token_type	classify_token(char *value);
+
+/* Specialized collectors */
+// char			*collect_quoted(t_lexer *lexer, char quote);
+// char			*collect_operator(t_lexer *lexer);
+// bool			is_operator(char c);
+
+void	ll(void)
+{
+	system("leaks parser");
+}
+
+int	main(int ac, char **av, char **envp)
+{
+	t_lexer	*lexer;
+	t_token	*head;
+	t_token	*tmp;
+
+	// atexit(ll);
+	(void)ac;
+	(void)av;
+	(void)envp;
+	head = NULL;
+	lexer = init_lexer("(ls) || saad || (cat file1.txt) >> ls | echo\t\t\t \"$hello\"'world'>test < infile.txt cat file2.txt ");
+	if (!lexer || check_quotes_balance(lexer->input)
+		|| check_parenthesis_balance(lexer->input))
+		return (1);
+	create_tokens_list(lexer, &head);
+	if (validate_tokens(head))
+		return (0);
 	while (head->prev)
 		head = head->prev;
 	tmp = head;
