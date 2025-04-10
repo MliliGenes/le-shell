@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 23:35:56 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/10 20:29:06 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/10 23:42:24 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ t_lexer	*init_lexer(char *input)
 }
 
 /* Token creation/destruction */
-t_token	*create_token(t_token_type type, char *value, int start, int end)
+t_token	*create_token(t_token_type type, char *value)
 {
 	t_token		*token;
 	static int	index;
@@ -86,8 +86,6 @@ t_token	*create_token(t_token_type type, char *value, int start, int end)
 	token->value = value;
 	token->type = type;
 	token->n_index = index++;
-	token->start_pos = start;
-	token->end_pos = end;
 	token->next = NULL;
 	token->prev = NULL;
 	return (token);
@@ -199,6 +197,31 @@ int	check_parenthesis_balance(const char *input)
 	return (data[2] != 0);
 }
 
+bool	check_m_percent(char *input)
+{
+	int	i;
+	int	in_single_quote;
+	int	in_double_quote;
+
+	i = 0;
+	in_single_quote = 0;
+	in_double_quote = 0;
+	while (input[i])
+	{
+		if (input[i] == '\'' && !in_double_quote)
+			in_single_quote = !in_single_quote;
+		else if (input[i] == '"' && !in_single_quote)
+			in_double_quote = !in_double_quote;
+		else if (!in_double_quote && !in_double_quote && input[i] == '&')
+		{
+			if (input[i + 1] && input[i + 1] != '&')
+				return (true);
+		}
+		i++;
+	}
+	return (false);
+}
+
 // skipping spaces
 void	skip_whitespace(t_lexer *lexer)
 {
@@ -243,7 +266,7 @@ t_token	*handle_word(t_lexer *lexer)
 	value = ft_strndup(lexer->input + start, lexer->pos - start);
 	if (!value)
 		return (NULL);
-	token = create_token(TOKEN_WORD, value, start, lexer->pos - 1);
+	token = create_token(TOKEN_WORD, value);
 	return (token);
 }
 
@@ -262,14 +285,14 @@ t_token	*handle_quoted(t_lexer *lexer)
 	if (lexer->current_char != quote_type)
 		return (NULL);
 	advance_lexer(lexer);
-	while (!is_white_space(lexer->current_char)
+	while (lexer->current_char && !is_white_space(lexer->current_char)
 		&& !is_operator(lexer->current_char))
 		advance_lexer(lexer);
 	value = ft_strndup(lexer->input + start, lexer->pos - start);
 	if (!value)
 		return (NULL);
 	;
-	token = create_token(TOKEN_WORD, value, start, lexer->pos - 1);
+	token = create_token(TOKEN_WORD, value);
 	return (token);
 }
 
@@ -304,8 +327,7 @@ t_token	*handle_operator(t_lexer *lexer)
 	advance_lexer(lexer);
 	if (op_len == 2)
 		advance_lexer(lexer);
-	token = create_token(classify_operator(op_str), op_str, lexer->pos,
-			lexer->pos + op_len);
+	token = create_token(classify_operator(op_str), op_str);
 	if (!token)
 		free(op_str);
 	return (token);
@@ -316,7 +338,7 @@ t_token	*get_next_token(t_lexer *lexer)
 {
 	skip_whitespace(lexer);
 	if (lexer->current_char == '\0')
-		return (create_token(TOKEN_EOF, NULL, lexer->pos, lexer->pos));
+		return (create_token(TOKEN_EOF, NULL));
 	if (lexer->current_char == '\'' || lexer->current_char == '"')
 		return (handle_quoted(lexer));
 	if (is_operator(lexer->current_char) && is_full_operator(lexer))
@@ -344,6 +366,8 @@ int	validate_tokens(t_token *head)
 {
 	while (head->type != TOKEN_EOF)
 	{
+		if (is_redir(head->type) && head->next->type != TOKEN_WORD)
+			return (1);
 		if (is_op(head->type) && is_op(head->next->type))
 			return (1);
 		if (is_redir(head->type) && is_redir(head->next->type))
@@ -356,16 +380,25 @@ int	validate_tokens(t_token *head)
 		if (head->n_index > 0 && head->type == TOKEN_PAREN_L
 			&& !is_op(head->prev->type))
 			return (1);
-		if (head->n_index == 0 && is_op(head->type))
+		if ((head->n_index == 0 && is_op(head->type)) || (is_op(head->type)
+				&& head->next->type == TOKEN_EOF))
 			return (1);
 		head = head->next;
 	}
 	return (0);
 }
 
-// TODO day 2
-/* Token classification */
-t_token_type	classify_token(char *value);
+// TODO 11/04
+/* Tokens classification */
+void			classify_tokens(t_token *head);
+void	classify_tokens(t_token *head)
+{
+	(void)head;
+	// any word after redir is a file name
+	// any word after an op or a left_paren is a command
+	// any word after a cmd is a arg
+	// any word at index 0 is a cmd
+}
 
 /* Specialized collectors */
 // char			*collect_quoted(t_lexer *lexer, char quote);
@@ -382,36 +415,21 @@ int	main(int ac, char **av, char **envp)
 	t_lexer	*lexer;
 	t_token	*head;
 
-	// atexit(ll);
+	atexit(ll);
 	(void)ac;
 	(void)av;
 	(void)envp;
 	head = NULL;
-	lexer = init_lexer("(ls) || saad || (cat file1.txt) >> ls | echo\t\t\t \"$hello\"'world'>test < infile.txt cat file2.txt ");
+	lexer = init_lexer(TEST);
 	if (!lexer || check_quotes_balance(lexer->input)
-		|| check_parenthesis_balance(lexer->input))
+		|| check_parenthesis_balance(lexer->input)
+		|| check_m_percent(lexer->input))
 		return (1);
 	create_tokens_list(lexer, &head);
 	if (validate_tokens(head))
-		return (0);
-	while (head)
-	{
-		printf("Token		#%d\n", head->n_index);
-		printf("Value		:%s\n", head->value);
-		printf("Type		:%d\n", head->type);
-		printf("Start Pos	:%d\n", head->start_pos);
-		printf("End Pos		:%d\n", head->end_pos);
-		printf("\n");
-		head = head->next;
-	}
+		return (1);
+	print_tokens(head);
 	free_token_list(head);
 	free(lexer);
 	return (0);
 }
-
-// printf("Token #%d\n", token->n_index);
-// printf("Value     : %s\n", token->value);
-// printf("Type      : %d\n", token->type);
-// printf("Start Pos : %d\n", token->start_pos);
-// printf("End Pos   : %d\n", token->end_pos);
-// printf("\n");

@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 06:20:05 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/07 20:47:06 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/10 23:39:09 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,11 @@
  */
 typedef struct s_lexer
 {
-	char						*input;
-	int							len;
-	int							pos;
-	char						current_char;
-}								t_lexer;
+	char					*input;
+	int						len;
+	int						pos;
+	char					current_char;
+}							t_lexer;
 
 /**
  * enum e_token_type - Types of tokens in lexical analysis
@@ -64,7 +64,7 @@ typedef enum e_token_type
 	TOKEN_PAREN_R,
 
 	TOKEN_EOF
-}								t_token_type;
+}							t_token_type;
 
 /**
  * struct s_token - Token structure for lexical analysis
@@ -75,14 +75,12 @@ typedef enum e_token_type
  */
 typedef struct s_token
 {
-	char						*value;
-	t_token_type				type;
-	int							n_index;
-	int							start_pos;
-	int							end_pos;
-	struct s_token				*next;
-	struct s_token				*prev;
-}								t_token;
+	char					*value;
+	t_token_type			type;
+	int						n_index;
+	struct s_token			*next;
+	struct s_token			*prev;
+}							t_token;
 
 /**
  * enum e_redir_type - Types of redirection operations
@@ -98,7 +96,7 @@ typedef enum e_redir_type
 	REDIR_OUT,
 	REDIR_APPEND,
 	REDIR_HEREDOC
-}								t_redir_type;
+}							t_redir_type;
 
 /**
  * struct s_redir - Redirection operation structure
@@ -109,10 +107,10 @@ typedef enum e_redir_type
  */
 typedef struct s_redir
 {
-	t_redir_type				type;
-	char						*file_or_limiter;
-	struct s_redir				*next;
-}								t_redir;
+	t_redir_type			type;
+	char					*file_or_limiter;
+	struct s_redir			*next;
+}							t_redir;
 
 /**
  * struct s_cmd - Simple command structure
@@ -123,11 +121,11 @@ typedef struct s_redir
  */
 typedef struct s_cmd
 {
-	char						**args;
-	char						*cmd;
-	int							fds[2];
-	t_redir						*redirs;
-}								t_cmd;
+	char					**args;
+	char					*cmd;
+	int						fds[2];
+	t_redir					*redirs;
+}							t_cmd;
 
 /**
  * enum e_op_type - Types of AST node operations
@@ -143,43 +141,43 @@ typedef enum e_op_type
 	OP_PIPE,
 	OP_AND,
 	OP_OR
-}								t_op_type;
+}							t_op_type;
 
 typedef struct s_op
 {
-	char						*op;
-	t_op_type					type;
-}								t_op;
+	char					*op;
+	t_op_type				type;
+}							t_op;
 
-typedef struct s_processed_token
+typedef struct s_ready_token
 {
 	enum
 	{
 		P_TOKEN_CMD,
 		P_TOKEN_OP,
 	} type;
-	void						*p_token;
-	struct s_processed_token	*next;
-	struct s_processed_token	*prev;
-}								t_processed_token;
+	void					*p_token;
+	struct s_ready_token	*next;
+	struct s_ready_token	*prev;
+}							t_ready_token;
 
 // typedef struct s_stack
 // {
-// 	t_processed_token			*top;
+// 	t_ready_token			*top;
 // }								t_stack;
 
 // typedef struct s_queue
 // {
-// 	t_processed_token			*front;
-// 	t_processed_token			*rear;
+// 	t_ready_token			*front;
+// 	t_ready_token			*rear;
 // }								t_queue;
 
 typedef struct s_parser
 {
-	t_processed_token			*cmds_stack;
-	t_processed_token			*op_stack;
-	t_token						*last_token;
-}								t_parser;
+	t_ready_token			*cmds_stack;
+	t_ready_token			*op_stack;
+	t_token					*last_token;
+}							t_parser;
 
 /**
  * struct s_ast - Abstract Syntax Tree node structure
@@ -202,12 +200,12 @@ typedef struct s_ast
 		AST_SUBSHELL
 	} type;
 
-	t_cmd						*cmd;
-	struct s_ast				*left;
-	struct s_ast				*right;
-	t_op_type					op;
-	struct s_ast				*subshell;
-}								t_ast;
+	t_cmd					*cmd;
+	struct s_ast			*left;
+	struct s_ast			*right;
+	t_op_type				op;
+	struct s_ast			*subshell;
+}							t_ast;
 
 /**
  * struct s_env_var - Environment variable entry
@@ -218,10 +216,10 @@ typedef struct s_ast
  */
 typedef struct s_env_var
 {
-	char						*key;
-	char						*value;
-	struct s_env_var			*next;
-}								t_env_var;
+	char					*key;
+	char					*value;
+	struct s_env_var		*next;
+}							t_env_var;
 
 /**
  * struct s_shell - Shell global state structure
@@ -234,11 +232,11 @@ typedef struct s_env_var
  */
 typedef struct s_shell
 {
-	t_env_var					*env;
-	int							last_status;
-	char						**path;
-	t_ast						*ast;
-	int							running;
-}								t_shell;
+	t_env_var				*env;
+	int						last_status;
+	char					**path;
+	t_ast					*ast;
+	int						running;
+}							t_shell;
 
 #endif
