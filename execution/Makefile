@@ -1,4 +1,4 @@
-M_SRCS = main.c
+M_SRCS = main.c builtins.c utils.c
 M_OBJS = $(M_SRCS:.c=.o)
 
 NAME = minishell
