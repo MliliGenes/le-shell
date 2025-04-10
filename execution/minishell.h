@@ -6,7 +6,7 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 03:20:58 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/04/10 18:37:27 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/04/10 21:09:41 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,12 @@ void free_2d(char **arr);
 char *expand_exit_status(char *input);
 
 // builtins functions:
-void exec_builtins(char *input);
+void exec_builtins(char *input, t_env_var *env_list);
 void handle_pwd(char *input);
 void handle_echo(char *input);
-void	handle_exit(char *input);
+void handle_exit(char *input);
+void handle_env(char *input, t_env_var *env_list);
+
+// env
+t_env_var	*init_env(char *envp[]);
+void free_env_list(t_env_var *head);

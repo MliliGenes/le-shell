@@ -6,7 +6,7 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 03:02:50 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/04/10 18:38:36 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/04/10 21:10:56 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	handle_signal(int sig)
 
 void ll()
 {
-	system("leaks minishell");
+	system("leaks -q minishell");
 }
 
 int main(int argc, char *argv[], char *envp[])
@@ -36,9 +36,10 @@ int main(int argc, char *argv[], char *envp[])
 	atexit(ll);
 	char *input;
 	char *expand_input;
+	t_env_var *env_list;
 	(void)argc;
 	(void)argv;
-	(void)envp;
+	env_list = init_env(envp);
 	signal(SIGINT, handle_signal);
 	signal(SIGQUIT, SIG_IGN);
 	while (1)
@@ -52,10 +53,11 @@ int main(int argc, char *argv[], char *envp[])
 			break ;
 		}
 		if (ft_strlen(expand_input) > 0 && expand_input)
-			exec_builtins(expand_input);
+			exec_builtins(expand_input, env_list);
 		free(expand_input);
 		free(input);
 	}
 	rl_clear_history();
+	free_env_list(env_list);
 	return (0);
 }
