@@ -1,238 +1,179 @@
-# Minishell Project Guide
+# Minishell Project Guide (Updated)
 
 ## Project Architecture Overview
 
-For your Minishell project, splitting the work into parsing and execution is a sensible approach. This guide provides a comprehensive overview for both parts, focusing on the structures, algorithms, and workflows you'll need.
+### Core Components:
+1. **Lexical Analysis** - Tokenize input string
+2. **Syntax Parsing** - Build command structures
+3. **Execution** - Run commands with proper piping/redirection
 
-## Parsing Section (Using Shunting Yard Algorithm)
+## Parsing Section
 
-### Data Structures
+### Data Structures (from your header)
 
 ```c
-// Token types for lexical analysis
-typedef enum e_token_type {
-    TOKEN_WORD,        // Commands and arguments
-    TOKEN_PIPE,        // |
-    TOKEN_REDIR_IN,    // <
-    TOKEN_REDIR_OUT,   // >
-    TOKEN_APPEND,      // >>
-    TOKEN_HEREDOC,     // <<
-    TOKEN_AND,         // && (bonus)
-    TOKEN_OR,          // || (bonus)
-    TOKEN_LPAREN,      // ( (bonus)
-    TOKEN_RPAREN,      // ) (bonus)
-    TOKEN_EOF          // End of input
-} t_token_type;
-
-// Token structure
-typedef struct s_token {
-    t_token_type type;
-    char *value;
-    struct s_token *next;
-} t_token;
-
-// AST node types
-typedef enum e_node_type {
-    NODE_COMMAND,      // Simple command with args
-    NODE_PIPE,         // Pipe operator
-    NODE_REDIR,        // Redirection
-    NODE_AND,          // AND operator (bonus)
-    NODE_OR,           // OR operator (bonus)
-} t_node_type;
-
-// AST node structure
-typedef struct s_ast_node {
-    t_node_type type;
-    
-    // For command nodes
-    char **args;       // Command and its arguments
-    
-    // For redirection nodes
-    int redir_type;    // <, >, >>, <<
-    char *file;        // Filename or delimiter
-    
-    // Tree structure
-    struct s_ast_node *left;
-    struct s_ast_node *right;
-} t_ast_node;
-
-// Environment variable structure
-typedef struct s_env {
-    char *key;
-    char *value;
-    struct s_env *next;
-} t_env;
-
-// Main shell structure
-typedef struct s_shell {
-    t_token *tokens;   // Linked list of tokens
-    t_ast_node *ast;   // Abstract Syntax Tree root
-    t_env *env;        // Environment variables
-    int last_exit_code;    // $? value
-    int signal_received;   // Global for signal handling
-} t_shell;
+// Key structures already defined in your header:
+// - t_lexer: Handles input processing state
+// - t_token: Token linked list with type/value
+// - t_cmd: Command with args and redirections  
+// - t_ast: Abstract syntax tree nodes
+// - t_shell: Main shell state container
 ```
 
-### Tokenizer Process
+### Updated Parsing Workflow
 
-1. **Input Reading**:
-   - Use `readline()` to get user input
-   - Add to history with `add_history()`
+1. **Lexical Analysis**:
+```c
+t_token *tokenize_input(t_lexer *lexer)
+{
+    // Implement using your t_lexer structure
+    // Return linked list of t_token
+}
+```
 
-2. **Lexical Analysis (Tokenizer)**:
-   - Process one character at a time
-   - Handle quotes (single and double) properly
-   - Recognize operators (`|`, `<`, `>`, `>>`, `<<`, etc.)
-   - Expand environment variables within double quotes but not in single quotes
-   - Create a linked list of tokens
+2. **Command Grouping**:
+```c
+t_ready_token *group_tokens(t_token *tokens)
+{
+    // Convert token stream to command/operator sequence
+    // Uses your t_ready_token structure
+}
+```
 
-3. **Shunting Yard Algorithm Implementation**:
-   - Operator precedence (from highest to lowest):
-     - `(`, `)`
-     - Redirections (`<`, `>`, `>>`, `<<`)
-     - `&&`, `||` (for bonus part)
-     - `|` (pipe)
-   - Convert infix notation to AST directly
-   - Handle command groups and arguments appropriately
-
-4. **Environment Variable Expansion**:
-   - Expand `$VAR_NAME` into the corresponding value
-   - Special handling for `$?` to expand to last exit status
-
-### Parsing Steps
-
-1. **Tokenization**: Convert input string to token linked list
-2. **Syntax Validation**: Check for syntax errors (unclosed quotes, invalid operator sequences)
-3. **AST Building**: Apply shunting yard to build the abstract syntax tree
-4. **Variable Expansion**: Process environment variables in appropriate contexts
+3. **AST Construction**:
+```c
+t_ast *build_ast(t_ready_token *ready_tokens)
+{
+    // Implement using shunting yard algorithm
+    // Returns root of AST using your t_ast structure
+}
+```
 
 ## Execution Section
 
-### Data Structures (Additional)
+### Execution Flow
 
+1. **AST Traversal**:
 ```c
-// Command execution context
-typedef struct s_exec_context {
-    int stdin_fd;          // Input file descriptor
-    int stdout_fd;         // Output file descriptor
-    int pipe_fds[2];       // Pipe file descriptors
-    pid_t pid;             // Process ID
-    char **envp;           // Environment variables array
-    char *path;            // Executable path
-    int exit_status;       // Command exit status
-} t_exec_context;
+int execute_ast(t_ast *node, t_shell *shell)
+{
+    // Recursive execution based on node type
+    // Handles pipes, redirections, and logical operators
+}
 ```
 
-### Execution Process
-
-1. **Tree Traversal**:
-   - Post-order traversal of the AST
-   - Execute children before parents (especially important for pipes)
-
-2. **Redirection Handling**:
-   - Implement all required redirections (`<`, `>`, `>>`, `<<`)
-   - Save and restore file descriptors properly
-   - Handle heredoc (`<<`) with proper delimiter recognition
-
-3. **Pipe Implementation**:
-   - Create pipes between commands
-   - Connect stdout of one process to stdin of the next
-   - Properly close unused file descriptors
-
-4. **Built-in Commands**:
-   - Implement all required builtins:
-     - `echo` with `-n` option
-     - `cd` with relative/absolute paths
-     - `pwd`, `export`, `unset`, `env`, `exit`
-   - Execute builtins in the current process (no forking needed)
-
-5. **External Commands**:
-   - Search for executable in PATH
-   - Use `fork()` and `execve()`
-   - Handle execution errors properly
-
-6. **Signal Handling**:
-   - Handle SIGINT (Ctrl+C), SIGQUIT (Ctrl+\\), and EOF (Ctrl+D)
-   - Implement different behavior for interactive mode vs. command execution
-
-7. **Bonus Implementation**:
-   - Logical operators (`&&`, `||`) execution with short-circuit evaluation
-   - Wildcard expansion (`*`) for current directory
-
-## Implementation Guide for Parser (Person 1)
-
-1. **Reading Input**: Use readline() to get input and add_history() to maintain history.
-
-2. **Tokenizer**: Process input character by character to create tokens. Be mindful of:
-   - Quotes (both single and double)
-   - Special characters and operators
-   - Word splitting and argument recognition
-
-3. **Shunting Yard Implementation**: Since you'll be using the Shunting Yard algorithm:
-   - Define operator precedence carefully
-   - Use stacks for operators and operands
-   - Build tree nodes as you pop operators
-
-4. **Environment Variable Expansion**: Expand variables:
-   - Only in appropriate contexts (not in single quotes)
-   - Store current exit status for $? expansion
-   - Handle variable names properly (alphanumeric + underscore)
-
-5. **AST Construction**: Build a binary tree where:
-   - Internal nodes are operators (pipe, redirections, etc.)
-   - Leaf nodes are commands with arguments
-   - The tree structure reflects execution precedence
-
-## Implementation Guide for Executor (Person 2)
-
-1. **Tree Traversal**: Implement post-order traversal of the AST to execute commands.
-
-2. **Executing Commands**:
-   - Distinguish between builtins and external commands
-   - For builtins: implement in the shell process
-   - For external commands: fork and execve
+2. **Command Execution**:
+```c
+int execute_command(t_cmd *cmd, t_shell *shell)
+{
+    // Handle redirections (using your t_redir list)
+    // Execute builtins or external commands
+    // Manage file descriptors
+}
+```
 
 3. **Redirection Handling**:
-   - Save original file descriptors
-   - Apply redirections as specified
-   - Restore original file descriptors after command execution
+```c
+void setup_redirections(t_redir *redirs)
+{
+    // Process each redirection in the list
+    // Uses your t_redir_type enum
+}
+```
 
-4. **Pipe Implementation**:
-   - Create pipes between commands using pipe()
-   - Connect output of one command to input of the next
-   - Close unused file descriptors
+## Implementation Guide
 
-5. **Signal Handling**:
-   - Set up signal handlers for SIGINT, SIGQUIT
-   - Implement different behavior for interactive mode vs command execution
+### For Parser Developer:
 
-6. **Error Handling**:
-   - Check return values of system calls
-   - Set appropriate exit statuses
-   - Print error messages with perror() or custom errors
+1. **Lexer Implementation**:
+   - Complete `t_lexer` functions to handle:
+     - Quote handling (single/double)
+     - Operator recognition
+     - Word splitting
 
-## Integration Strategy
+2. **Token Processing**:
+   - Implement `group_tokens()` to create command/operator sequence
+   - Handle operator precedence according to:
+     ```
+     1. Parentheses
+     2. Redirections
+     3. Logical AND/OR
+     4. Pipes
+     ```
 
-1. Create a shared header with all structure definitions.
-2. Define clear interfaces between parsing and execution modules.
-3. Use a common shell structure to pass data between components.
-4. Agree on AST format and traversal method before implementation.
-5. Implement incremental features - start with simple commands, then add complexity.
+3. **AST Construction**:
+   - Use stack-based approach as in your `t_parser` structure
+   - Build proper tree structure accounting for precedence
+
+### For Executor Developer:
+
+1. **Tree Execution**:
+   - Implement post-order traversal of AST
+   - Handle different node types (CMD, PIPE, AND_OR)
+
+2. **Command Execution**:
+   - Builtins vs external commands
+   - Proper file descriptor management
+   - Exit status propagation
+
+3. **Redirection/Piping**:
+   - Implement all redirection types from `t_redir_type`
+   - Proper pipe chain creation
+   - File descriptor cleanup
+
+## Integration Points
+
+1. **Shared Structures**:
+   - Use your existing `t_ast`, `t_cmd`, and `t_token` structures
+   - Agree on AST node format before implementation
+
+2. **Interface Functions**:
+```c
+// Parser exposes:
+t_ast *parse_input(char *input, t_shell *shell);
+
+// Executor exposes: 
+int execute_shell(t_shell *shell);
+```
 
 ## Testing Strategy
 
-1. Test parser with various inputs, including edge cases.
-2. Test executor with simple commands first, then add pipes and redirections.
-3. Use valgrind to check for memory leaks.
-4. Compare behavior with bash for any unclear cases.
+1. **Unit Tests**:
+   - Test lexer with various input patterns
+   - Verify AST construction with different command combinations
 
-## Project Timeline Suggestion
+2. **Integration Tests**:
+   - Test full pipeline: input → tokens → AST → execution
+   - Compare behavior with bash for complex cases
 
-1. Week 1: Basic structures and tokenizer
-2. Week 2: Parsing and AST building
-3. Week 3: Simple command execution and builtins
-4. Week 4: Pipes, redirections, and signal handling
-5. Week 5: Integration, testing, and debugging
-6. Week 6: Bonus features and final polishing
+3. **Memory Management**:
+   - Use your existing `ft_*` memory functions
+   - Implement consistent cleanup routines
 
-This guide should give you a solid foundation for implementing your Minishell project. Remember to communicate regularly with your partner to ensure the parsing and execution parts integrate smoothly.
+## Suggested Timeline
+
+1. **Week 1**:
+   - Complete lexer and basic tokenizer
+   - Implement simple command grouping
+
+2. **Week 2**:
+   - Complete AST construction
+   - Implement basic command execution
+
+3. **Week 3**:
+   - Add redirection support
+   - Implement pipes
+
+4. **Week 4**:
+   - Add logical operators (&&, ||)
+   - Implement subshell support
+
+5. **Week 5**:
+   - Complete builtin commands
+   - Final integration and testing
+
+Key advantages of this updated guide:
+1. Better aligns with your existing header structure
+2. More focused implementation path
+3. Clearer separation of parsing/execution responsibilities
+4. Maintains all the key functionality from original guide
