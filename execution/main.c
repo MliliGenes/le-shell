@@ -6,7 +6,7 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 03:02:50 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/04/05 00:22:01 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/04/10 12:02:11 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,9 @@ void	handle_signal(int sig)
 
 void hadnle_exit(char **args)
 {
-	if (ft_strcmp(args[0], "exit") == 0)
+	if (ft_strcmp(args[0], "exit") == 0 && !)
 	{
-		ft_putstr_fd("exit\n", 2);
-		exit(0);
+		
 	}
 }
 
@@ -136,10 +135,10 @@ void	handle_env(char *input, char **env)
 	return;
 }
 
-// void ll()
-// {
-// 	system("leaks minishell");
-// }
+void ll()
+{
+	system("leaks minishell");
+}
 
 int main(int argc, char *argv[], char *envp[])
 {
