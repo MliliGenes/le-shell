@@ -17,8 +17,8 @@ Start Pos	:4
 End Pos		:5
 
 Token		#3
-Value		:&&
-Type		:9
+Value		:||
+Type		:10
 Start Pos	:7
 End Pos		:9
 

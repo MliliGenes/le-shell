@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 23:35:56 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/09 18:14:49 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/09 18:26:49 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -349,7 +349,7 @@ int	main(int ac, char **av, char **envp)
 	(void)av;
 	(void)envp;
 	head = NULL;
-	lexer = init_lexer("(ls) && saad || (cat file1.txt) >> ls | echo\t\t\t \"$hello\"'world'>test < infile.txt cat file2.txt ");
+	lexer = init_lexer("(ls) || saad || (cat file1.txt) >> ls | echo\t\t\t \"$hello\"'world'>test < infile.txt cat file2.txt ");
 	if (!lexer || check_quotes_balance(lexer->input)
 		|| check_parenthesis_balance(lexer->input))
 		return (1);
