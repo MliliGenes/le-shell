@@ -1,20 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtins.c                                         :+:      :+:    :+:   */
+/*   ft_pwd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/10 12:11:12 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/04/10 18:38:20 by ssbaytri         ###   ########.fr       */
+/*   Created: 2025/04/10 18:34:31 by ssbaytri          #+#    #+#             */
+/*   Updated: 2025/04/10 18:35:43 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
-void exec_builtins(char *input)
+void handle_pwd(char *input)
 {
-    handle_pwd(input);
-    handle_echo(input);
-    handle_exit(input);
+	char *pwd;
+	
+	if ((ft_strcmp(input, "pwd") == 0))
+	{
+		pwd = getcwd(NULL, 0);
+		if (pwd)
+			printf("%s\n", pwd);
+		else
+			perror("getcwd");
+		free(pwd);
+	}
 }

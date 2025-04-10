@@ -1,4 +1,10 @@
-M_SRCS = main.c builtins.c utils.c
+M_SRCS = 	main.c \
+			builtins.c \
+			utils.c \
+			builtins/ft_echo.c \
+			builtins/ft_exit.c \
+			builtins/ft_pwd.c \
+
 M_OBJS = $(M_SRCS:.c=.o)
 
 NAME = minishell

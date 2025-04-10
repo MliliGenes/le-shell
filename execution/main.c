@@ -6,7 +6,7 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 03:02:50 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/04/10 16:38:01 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/04/10 18:38:36 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ void ll()
 int main(int argc, char *argv[], char *envp[])
 {
 	atexit(ll);
-	
 	char *input;
 	char *expand_input;
 	(void)argc;
@@ -53,12 +52,7 @@ int main(int argc, char *argv[], char *envp[])
 			break ;
 		}
 		if (ft_strlen(expand_input) > 0 && expand_input)
-		{
-			add_history(expand_input);
-			handle_echo(expand_input);
-			handle_pwd(expand_input);
-			handle_exit(expand_input);
-		}
+			exec_builtins(expand_input);
 		free(expand_input);
 		free(input);
 	}
