@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 23:35:56 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/10 23:42:24 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/11 20:03:53 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -212,10 +212,12 @@ bool	check_m_percent(char *input)
 			in_single_quote = !in_single_quote;
 		else if (input[i] == '"' && !in_single_quote)
 			in_double_quote = !in_double_quote;
-		else if (!in_double_quote && !in_double_quote && input[i] == '&')
+		else if (!in_single_quote && !in_double_quote && input[i] == '&')
 		{
-			if (input[i + 1] && input[i + 1] != '&')
+			if (input[i + 1] != '&')
 				return (true);
+			else
+				i += 2;
 		}
 		i++;
 	}
@@ -375,7 +377,7 @@ int	validate_tokens(t_token *head)
 		if (head->type == TOKEN_PAREN_L && is_op(head->next->type))
 			return (1);
 		if (head->type == TOKEN_PAREN_R && !is_op(head->next->type)
-			&& !is_redir(head->next->type))
+			&& !is_redir(head->next->type) && head->next->type != TOKEN_EOF)
 			return (1);
 		if (head->n_index > 0 && head->type == TOKEN_PAREN_L
 			&& !is_op(head->prev->type))
@@ -388,16 +390,21 @@ int	validate_tokens(t_token *head)
 	return (0);
 }
 
-// TODO 11/04
-/* Tokens classification */
-void			classify_tokens(t_token *head);
 void	classify_tokens(t_token *head)
 {
-	(void)head;
-	// any word after redir is a file name
-	// any word after an op or a left_paren is a command
-	// any word after a cmd is a arg
-	// any word at index 0 is a cmd
+	while (head->type != TOKEN_EOF)
+	{
+		if (head->type == TOKEN_WORD && head->prev && is_redir(head->prev->type))
+			head->type = TOKEN_FILE;
+		if ((head->n_index == 0 && head->type == TOKEN_WORD)
+			|| (head->type == TOKEN_WORD && head->prev && (is_op(head->prev->type)
+					|| head->prev->type == TOKEN_PAREN_L))
+			|| (head->type == TOKEN_WORD && head->prev && head->prev->type == TOKEN_FILE))
+			head->type = TOKEN_COMMAND;
+		if (head->type == TOKEN_WORD)
+			head->type = TOKEN_ARG;
+		head = head->next;
+	}
 }
 
 /* Specialized collectors */
@@ -415,7 +422,7 @@ int	main(int ac, char **av, char **envp)
 	t_lexer	*lexer;
 	t_token	*head;
 
-	atexit(ll);
+	// atexit(ll);
 	(void)ac;
 	(void)av;
 	(void)envp;
@@ -428,6 +435,7 @@ int	main(int ac, char **av, char **envp)
 	create_tokens_list(lexer, &head);
 	if (validate_tokens(head))
 		return (1);
+	classify_tokens(head);
 	print_tokens(head);
 	free_token_list(head);
 	free(lexer);

@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 09:14:40 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/10 23:22:54 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/11 20:04:59 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,17 @@
 # include "lib.h"
 # include "structs.h"
 
-#ifndef TEST
-# define TEST "(ls) || > hello || (cat file1.txt) >> ls | echo\t\t\t \"$hello\"'world'>test < infile.txt cat file2.txt "
-#endif 
+# ifndef TEST
+#  define TEST "(ls -la | grep \"txt\" > text_files.list) && echo \"Text files found:\" && cat text_files.list || (echo \"No text files found\" >> error.log && exit 1) | wc -l < input.txt >> results.log"
+# endif
 
-
-t_token *create_token(t_token_type type, char *value);
+t_token	*create_token(t_token_type type, char *value);
 void	free_token(t_token *token);
 t_lexer	*init_lexer(char *input);
 void	advance_lexer(t_lexer *lexer);
 void	skip_whitespace(t_lexer *lexer);
 t_token	*handle_word(t_lexer *lexer);
 t_token	*get_next_token(t_lexer *lexer);
+void	classify_tokens(t_token *head);
 
 #endif
