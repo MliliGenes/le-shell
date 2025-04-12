@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 09:14:40 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/11 20:04:59 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/12 18:06:24 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@
 # include "structs.h"
 
 # ifndef TEST
-#  define TEST "(ls -la | grep \"txt\" > text_files.list) && echo \"Text files found:\" && cat text_files.list || (echo \"No text files found\" >> error.log && exit 1) | wc -l < input.txt >> results.log"
+#  define TEST "(ls -la | grep \"txt\" > text_files.list && (cat < Makefile -e) ) && echo \"Text files found:\" && cat text_files.list || (echo \"No text files found\" >> error.log && exit 1) | wc -l < input.txt >> results.log"
+// #  define TEST "ls | | wc -l | grep"
 # endif
 
 t_token	*create_token(t_token_type type, char *value);

@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 23:35:56 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/11 20:03:53 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/12 17:59:51 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -377,7 +377,7 @@ int	validate_tokens(t_token *head)
 		if (head->type == TOKEN_PAREN_L && is_op(head->next->type))
 			return (1);
 		if (head->type == TOKEN_PAREN_R && !is_op(head->next->type)
-			&& !is_redir(head->next->type) && head->next->type != TOKEN_EOF)
+			&& !is_redir(head->next->type) && head->next->type != TOKEN_PAREN_R && head->next->type != TOKEN_EOF)
 			return (1);
 		if (head->n_index > 0 && head->type == TOKEN_PAREN_L
 			&& !is_op(head->prev->type))
