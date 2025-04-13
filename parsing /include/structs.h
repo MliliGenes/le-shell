@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 06:20:05 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/11 18:24:41 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/13 23:45:12 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,6 @@ typedef enum e_op_type
 
 typedef struct s_op
 {
-	char					*op;
 	t_op_type				type;
 }							t_op;
 
@@ -197,13 +196,14 @@ typedef struct s_ast
 		AST_CMD,
 		AST_PIPE,
 		AST_AND_OR,
-		AST_SUBSHELL
+		AST_SUB_SHELL
 	} type;
 
 	t_cmd					*cmd;
+	t_op_type				op;
 	struct s_ast			*left;
 	struct s_ast			*right;
-	t_op_type				op;
+	struct s_ast			*sub_shell;
 }							t_ast;
 
 /**
