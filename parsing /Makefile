@@ -5,9 +5,11 @@ LIB = #-lreadline
 TARGET = parser
 
 LIB_DIR = lib
+TOKENIZER_DIR = tokenizer
 
 SRC_FILES = parser.c \
-	$(LIB_DIR)/string_utils_1.c $(LIB_DIR)/printing_tools.c
+	$(LIB_DIR)/string_utils_1.c $(LIB_DIR)/printing_tools.c \
+	$(TOKENIZER_DIR)/tokenizer.c
 
 OBJ_FILES = $(SRC_FILES:.c=.o)
 
