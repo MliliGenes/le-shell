@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 21:27:08 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/12 21:37:20 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/14 20:49:18 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,15 @@ bool	is_op(t_token_type type)
 	return (type == TOKEN_AND || type == TOKEN_OR || type == TOKEN_PIPE);
 }
 
-bool	is_redir(t_token_type type)
+bool	is_redirection(t_token_type type)
 {
-	return (type == TOKEN_REDIR_IN || type == TOKEN_HEREDOC
-		|| type == TOKEN_REDIR_OUT || type == TOKEN_APPEND);
+	return (type == TOKEN_REDIR_IN || type == TOKEN_REDIR_OUT
+		|| type == TOKEN_APPEND || type == TOKEN_HEREDOC);
+}
+
+bool	is_word_or_arg(t_token_type type)
+{
+	return (type == TOKEN_COMMAND || type == TOKEN_ARG || type == TOKEN_FILE);
 }
 
 bool	is_paren(t_token_type type)
@@ -91,20 +96,20 @@ t_token	*create_token(t_token_type type, char *value)
 	return (token);
 }
 
-void	add_back_token(t_token **head, t_token *new)
+void	add_back_token(t_token **head, t_token *node)
 {
 	t_token	*tmp;
 
 	if (!*head)
 	{
-		*head = new;
+		*head = node;
 		return ;
 	}
 	tmp = (*head);
 	while (tmp->next)
 		tmp = tmp->next;
-	tmp->next = new;
-	new->prev = tmp;
+	tmp->next = node;
+	node->prev = tmp;
 }
 
 void	free_token(t_token *token)
@@ -368,22 +373,27 @@ int	validate_tokens(t_token *head)
 {
 	while (head->type != TOKEN_EOF)
 	{
-		if (is_redir(head->type) && head->next->type != TOKEN_WORD)
+		if (is_redirection(head->type) && (!head->next
+				|| head->next->type != TOKEN_WORD))
 			return (1);
-		if (is_op(head->type) && is_op(head->next->type))
+		if (is_op(head->type) && head->next && is_op(head->next->type))
 			return (1);
-		if (is_redir(head->type) && is_redir(head->next->type))
+		if (is_redirection(head->type) && head->next
+			&& is_redirection(head->next->type))
 			return (1);
-		if (head->type == TOKEN_PAREN_L && is_op(head->next->type))
+		if (head->type == TOKEN_PAREN_L && head->next
+			&& is_op(head->next->type))
 			return (1);
-		if (head->type == TOKEN_PAREN_R && !is_op(head->next->type)
-			&& !is_redir(head->next->type) && head->next->type != TOKEN_PAREN_R && head->next->type != TOKEN_EOF)
+		if (head->type == TOKEN_PAREN_R && head->next
+			&& !is_op(head->next->type) && !is_redirection(head->next->type)
+			&& head->next->type != TOKEN_PAREN_R
+			&& head->next->type != TOKEN_EOF)
 			return (1);
-		if (head->n_index > 0 && head->type == TOKEN_PAREN_L
-			&& !is_op(head->prev->type))
+		if (head->n_index > 0 && head->type == TOKEN_PAREN_L && head->prev
+			&& !is_op(head->prev->type) && head->prev->type != TOKEN_PAREN_L)
 			return (1);
 		if ((head->n_index == 0 && is_op(head->type)) || (is_op(head->type)
-				&& head->next->type == TOKEN_EOF))
+				&& head->next && head->next->type == TOKEN_EOF))
 			return (1);
 		head = head->next;
 	}
@@ -394,12 +404,15 @@ void	classify_tokens(t_token *head)
 {
 	while (head->type != TOKEN_EOF)
 	{
-		if (head->type == TOKEN_WORD && head->prev && is_redir(head->prev->type))
+		if (head->type == TOKEN_WORD && head->prev
+			&& is_redirection(head->prev->type))
 			head->type = TOKEN_FILE;
 		if ((head->n_index == 0 && head->type == TOKEN_WORD)
-			|| (head->type == TOKEN_WORD && head->prev && (is_op(head->prev->type)
+			|| (head->type == TOKEN_WORD && head->prev
+				&& (is_op(head->prev->type)
 					|| head->prev->type == TOKEN_PAREN_L))
-			|| (head->type == TOKEN_WORD && head->prev && head->prev->type == TOKEN_FILE))
+			|| (head->type == TOKEN_WORD && head->prev
+				&& head->prev->type == TOKEN_FILE))
 			head->type = TOKEN_COMMAND;
 		if (head->type == TOKEN_WORD)
 			head->type = TOKEN_ARG;
