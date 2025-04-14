@@ -6,13 +6,13 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 23:35:56 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/14 20:40:09 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/14 23:46:39 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include/parsing.h"
 
-t_op_type	types_mapper(t_token_type type)
+t_op_type	token_to_op_type(t_token_type type)
 {
 	if (type == TOKEN_PAREN_L)
 		return (OP_PAREN_L);
@@ -24,6 +24,20 @@ t_op_type	types_mapper(t_token_type type)
 		return (OP_AND);
 	if (type == TOKEN_OR)
 		return (OP_OR);
+	return (-1);
+}
+
+// Convert token type to redirection type
+t_redir_type	token_to_redir_type(t_token_type type)
+{
+	if (type == TOKEN_REDIR_IN)
+		return (REDIR_IN);
+	else if (type == TOKEN_REDIR_OUT)
+		return (REDIR_OUT);
+	else if (type == TOKEN_APPEND)
+		return (REDIR_APPEND);
+	else if (type == TOKEN_HEREDOC)
+		return (REDIR_HEREDOC);
 	return (-1);
 }
 
@@ -111,20 +125,6 @@ void	add_back_ready_token(t_ready_token **head, t_ready_token *node)
 	node->prev = tmp;
 }
 
-// Convert token type to redirection type
-t_redir_type	token_to_redir_type(t_token_type type)
-{
-	if (type == TOKEN_REDIR_IN)
-		return (REDIR_IN);
-	else if (type == TOKEN_REDIR_OUT)
-		return (REDIR_OUT);
-	else if (type == TOKEN_APPEND)
-		return (REDIR_APPEND);
-	else if (type == TOKEN_HEREDOC)
-		return (REDIR_HEREDOC);
-	return (-1);
-}
-
 // Free arguments array
 void	free_args_array(char **args, int count)
 {
@@ -165,6 +165,16 @@ bool	process_command_segment(t_token *start, t_token *end,
 
 bool	add_operator_to_list(t_token *current, t_ready_token **head)
 {
+	t_op			*op_node;
+	t_ready_token	*op_token;
+
+	op_node = create_op_node(token_to_op_type(current->type));
+	if (!op_node)
+		return (false);
+	op_token = create_ready_token_node(op_node, P_TOKEN_OP);
+	if (!op_token)
+		return (false);
+	add_back_ready_token(head, op_token);
 	return (true);
 }
 
@@ -177,14 +187,8 @@ bool	extract_tokens(t_token *tokens, t_ready_token **head)
 	current = tokens;
 	while (current->type != TOKEN_EOF)
 	{
-		if (is_op(current->type) || current->type == TOKEN_PAREN_R)
-		{
-			if (current != cmd_start)
-				process_command_segment(cmd_start, current->prev, head);
-			add_operator_to_list(current, head);
-			cmd_start = current->next;
-		}
-		else if (current->type == TOKEN_PAREN_L)
+		if (is_op(current->type) || current->type == TOKEN_PAREN_L
+			|| current->type == TOKEN_PAREN_R)
 		{
 			if (current != cmd_start)
 				process_command_segment(cmd_start, current->prev, head);
@@ -291,8 +295,8 @@ int	main(void)
 {
 	t_lexer	*lexer;
 	t_token	*tokens;
+	t_ready_token	*ready_tokens;
 
-	// t_ready_token	*ready_tokens;
 	atexit(ll);
 	if (check_quotes_balance(TEST) || check_parenthesis_balance(TEST)
 		|| check_m_percent(TEST))
@@ -306,8 +310,8 @@ int	main(void)
 	classify_tokens(tokens);
 	// TODO: trim_cmds_quotes();
 	print_tokens(tokens);
-	// extract_tokens(tokens, &ready_tokens);
-	free_token_list(tokens);
+	extract_tokens(tokens, &ready_tokens);
+	print_ready_tokens(ready_tokens);
 	free(lexer);
 	return (0);
 }

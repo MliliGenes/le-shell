@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 21:27:08 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/14 20:49:18 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/14 23:48:31 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ bool	is_op(t_token_type type)
 	return (type == TOKEN_AND || type == TOKEN_OR || type == TOKEN_PIPE);
 }
 
-bool	is_redirection(t_token_type type)
+bool	is_redir(t_token_type type)
 {
 	return (type == TOKEN_REDIR_IN || type == TOKEN_REDIR_OUT
 		|| type == TOKEN_APPEND || type == TOKEN_HEREDOC);
@@ -373,19 +373,18 @@ int	validate_tokens(t_token *head)
 {
 	while (head->type != TOKEN_EOF)
 	{
-		if (is_redirection(head->type) && (!head->next
+		if (is_redir(head->type) && (!head->next
 				|| head->next->type != TOKEN_WORD))
 			return (1);
 		if (is_op(head->type) && head->next && is_op(head->next->type))
 			return (1);
-		if (is_redirection(head->type) && head->next
-			&& is_redirection(head->next->type))
+		if (is_redir(head->type) && head->next && is_redir(head->next->type))
 			return (1);
 		if (head->type == TOKEN_PAREN_L && head->next
-			&& is_op(head->next->type))
+			&& (is_op(head->next->type) || head->next->type == TOKEN_PAREN_R))
 			return (1);
 		if (head->type == TOKEN_PAREN_R && head->next
-			&& !is_op(head->next->type) && !is_redirection(head->next->type)
+			&& !is_op(head->next->type) && !is_redir(head->next->type)
 			&& head->next->type != TOKEN_PAREN_R
 			&& head->next->type != TOKEN_EOF)
 			return (1);
