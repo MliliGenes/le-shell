@@ -6,11 +6,26 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 23:35:56 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/14 02:45:37 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/14 02:56:06 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include/parsing.h"
+
+t_op_type	types_mapper(t_token_type type)
+{
+	if (type == TOKEN_PAREN_L)
+		return (OP_PAREN_L);
+	if (type == TOKEN_PAREN_R)
+		return (OP_PAREN_R);
+	if (type == TOKEN_PIPE)
+		return (OP_PIPE);
+	if (type == TOKEN_AND)
+		return (OP_AND);
+	if (type == TOKEN_OR)
+		return (OP_OR);
+	return (-1);
+}
 
 t_redir	*create_redir_node(t_redir_type type, char *file_or_limiter)
 {
@@ -47,11 +62,11 @@ t_cmd	*create_cmd_node(char **args, t_redir *redirs)
 	cmd = malloc(sizeof(t_cmd));
 	if (!cmd || !args || !*args || !redirs)
 		return (NULL);
-	cmd->args = args;
 	cmd->cmd = args[0];
+	cmd->args = args;
 	cmd->redirs = redirs;
-	cmd->fds[0] = -1;
-	cmd->fds[1] = -1;
+	cmd->fds[0] = 0;
+	cmd->fds[1] = 1;
 	return (cmd);
 }
 
@@ -96,33 +111,20 @@ void	add_back_ready_token(t_ready_token **head, t_ready_token *node)
 	node->prev = tmp;
 }
 
-int	types_mapper(t_token_type type)
-{
-	if (type == TOKEN_PAREN_L)
-		return (OP_PAREN_L);
-	if (type == TOKEN_PAREN_R)
-		return (OP_PAREN_R);
-	if (type == TOKEN_PIPE)
-		return (OP_PIPE);
-	if (type == TOKEN_AND)
-		return (OP_AND);
-	if (type == TOKEN_OR)
-		return (OP_OR);
-	return (-1);
-}
-
 t_cmd	*handle_cmd(t_token *head)
 {
 	static int	last_index;
-	int			size;
 	t_cmd		*cmd;
+	char		**args;
+	int			size;
 
 	while (head->prev)
 	{
+		
 		head = head->prev;
 	}
 	last_index = head->n_index;
-	return cmd;
+	return (cmd);
 }
 
 bool	ready_tokens_list(t_token *tokens, t_ready_token **head)
