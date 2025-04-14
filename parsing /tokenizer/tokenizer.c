@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 21:27:08 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/14 23:48:31 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/14 23:50:23 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ bool	is_word_or_arg(t_token_type type)
 
 bool	is_paren(t_token_type type)
 {
-	return (type == TOKEN_PAREN_L || type == TOKEN_PAREN_R);
+	return (type == TOKEN_PL || type == TOKEN_PR);
 }
 
 bool	is_full_operator(t_lexer *lexer)
@@ -253,9 +253,9 @@ t_token_type	classify_operator(char *op)
 	if (ft_strcmp(op, ">>") == 0)
 		return (TOKEN_APPEND);
 	if (ft_strcmp(op, "(") == 0)
-		return (TOKEN_PAREN_L);
+		return (TOKEN_PL);
 	if (ft_strcmp(op, ")") == 0)
-		return (TOKEN_PAREN_R);
+		return (TOKEN_PR);
 	return (TOKEN_WORD);
 }
 
@@ -380,16 +380,15 @@ int	validate_tokens(t_token *head)
 			return (1);
 		if (is_redir(head->type) && head->next && is_redir(head->next->type))
 			return (1);
-		if (head->type == TOKEN_PAREN_L && head->next
-			&& (is_op(head->next->type) || head->next->type == TOKEN_PAREN_R))
+		if (head->type == TOKEN_PL && head->next && (is_op(head->next->type)
+				|| head->next->type == TOKEN_PR))
 			return (1);
-		if (head->type == TOKEN_PAREN_R && head->next
-			&& !is_op(head->next->type) && !is_redir(head->next->type)
-			&& head->next->type != TOKEN_PAREN_R
+		if (head->type == TOKEN_PR && head->next && !is_op(head->next->type)
+			&& !is_redir(head->next->type) && head->next->type != TOKEN_PR
 			&& head->next->type != TOKEN_EOF)
 			return (1);
-		if (head->n_index > 0 && head->type == TOKEN_PAREN_L && head->prev
-			&& !is_op(head->prev->type) && head->prev->type != TOKEN_PAREN_L)
+		if (head->n_index > 0 && head->type == TOKEN_PL && head->prev
+			&& !is_op(head->prev->type) && head->prev->type != TOKEN_PL)
 			return (1);
 		if ((head->n_index == 0 && is_op(head->type)) || (is_op(head->type)
 				&& head->next && head->next->type == TOKEN_EOF))
@@ -404,12 +403,11 @@ void	classify_tokens(t_token *head)
 	while (head->type != TOKEN_EOF)
 	{
 		if (head->type == TOKEN_WORD && head->prev
-			&& is_redirection(head->prev->type))
+			&& is_redir(head->prev->type))
 			head->type = TOKEN_FILE;
 		if ((head->n_index == 0 && head->type == TOKEN_WORD)
 			|| (head->type == TOKEN_WORD && head->prev
-				&& (is_op(head->prev->type)
-					|| head->prev->type == TOKEN_PAREN_L))
+				&& (is_op(head->prev->type) || head->prev->type == TOKEN_PL))
 			|| (head->type == TOKEN_WORD && head->prev
 				&& head->prev->type == TOKEN_FILE))
 			head->type = TOKEN_COMMAND;

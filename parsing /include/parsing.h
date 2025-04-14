@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 09:14:40 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/14 23:46:08 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/14 23:50:38 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@
 # include "structs.h"
 
 # ifndef TEST
-#  define TEST "()"
-// #  define TEST "((ls -la) | grep \"txt\" > \"text_files\" ) && (cat < Makefile-e)&& echo \"Text files found:\"&& cat text_files.list|| (echo \"No text files found\" >> error.log && exit 1) | wc -l < input.txt >> results.log"
+// #  define TEST "()"
+#  define TEST "((ls -la) | grep \"txt\" > \"text_files\" ) && (cat < Makefile-e)&& echo \"Text files found:\"&& cat text_files.list|| (echo \"No text files found\" >> error.log && exit 1) | wc -l < input.txt >> results.log"
 # endif
 
 t_lexer			*init_lexer(char *input);
@@ -34,7 +34,7 @@ void			free_token_list(t_token *head);
 bool			is_white_space(char c);
 bool			is_operator(char c);
 bool			is_op(t_token_type type);
-bool			is_redirection(t_token_type type);
+bool			is_redir(t_token_type type);
 bool			is_word_or_arg(t_token_type type);
 bool			is_paren(t_token_type type);
 bool			is_full_operator(t_lexer *lexer);

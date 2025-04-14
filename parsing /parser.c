@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 23:35:56 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/14 23:46:39 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/14 23:51:27 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 t_op_type	token_to_op_type(t_token_type type)
 {
-	if (type == TOKEN_PAREN_L)
+	if (type == TOKEN_PL)
 		return (OP_PAREN_L);
-	if (type == TOKEN_PAREN_R)
+	if (type == TOKEN_PR)
 		return (OP_PAREN_R);
 	if (type == TOKEN_PIPE)
 		return (OP_PIPE);
@@ -187,8 +187,8 @@ bool	extract_tokens(t_token *tokens, t_ready_token **head)
 	current = tokens;
 	while (current->type != TOKEN_EOF)
 	{
-		if (is_op(current->type) || current->type == TOKEN_PAREN_L
-			|| current->type == TOKEN_PAREN_R)
+		if (is_op(current->type) || current->type == TOKEN_PL
+			|| current->type == TOKEN_PR)
 		{
 			if (current != cmd_start)
 				process_command_segment(cmd_start, current->prev, head);
@@ -202,89 +202,6 @@ bool	extract_tokens(t_token *tokens, t_ready_token **head)
 	return (true);
 }
 
-void	print_ready_tokens(t_ready_token *head)
-{
-	t_ready_token	*current;
-	int				index;
-	t_cmd			*cmd;
-	t_redir			*redir;
-	char			*redir_str;
-	t_op			*op;
-	char			*op_str;
-
-	current = head;
-	index = 0;
-	printf("\n--- Ready Tokens List ---\n");
-	while (current)
-	{
-		printf("[%d] Type: %s\n", index++,
-			current->type == P_TOKEN_CMD ? "COMMAND" : "OPERATOR");
-		if (current->type == P_TOKEN_CMD)
-		{
-			cmd = (t_cmd *)current->p_token;
-			printf("  Command: %s\n", cmd->cmd ? cmd->cmd : "(null)");
-			// Print arguments
-			printf("  Arguments: ");
-			if (cmd->args)
-			{
-				for (int i = 0; cmd->args[i]; i++)
-				{
-					printf("'%s'", cmd->args[i]);
-					if (cmd->args[i + 1])
-						printf(", ");
-				}
-			}
-			else
-			{
-				printf("(none)");
-			}
-			printf("\n");
-			// Print redirections
-			printf("  Redirections:\n");
-			redir = cmd->redirs;
-			if (!redir)
-			{
-				printf("    (none)\n");
-			}
-			else
-			{
-				while (redir)
-				{
-					if (redir->type == REDIR_IN)
-						redir_str = "<";
-					else if (redir->type == REDIR_OUT)
-						redir_str = ">";
-					else if (redir->type == REDIR_APPEND)
-						redir_str = ">>";
-					else
-						redir_str = "<<";
-					printf("    %s '%s'\n", redir_str, redir->file_or_limiter);
-					redir = redir->next;
-				}
-			}
-		}
-		else if (current->type == P_TOKEN_OP)
-		{
-			op = (t_op *)current->p_token;
-			if (op->type == OP_PIPE)
-				op_str = "PIPE (|)";
-			else if (op->type == OP_AND)
-				op_str = "AND (&&)";
-			else if (op->type == OP_OR)
-				op_str = "OR (||)";
-			else if (op->type == OP_PAREN_L)
-				op_str = "LEFT PARENTHESIS (";
-			else if (op->type == OP_PAREN_R)
-				op_str = "RIGHT PARENTHESIS )";
-			else
-				op_str = "UNKNOWN";
-			printf("  Operator: %s\n", op_str);
-		}
-		printf("\n");
-		current = current->next;
-	}
-	printf("--- End of Ready Tokens ---\n\n");
-}
 
 void	ll(void)
 {
@@ -297,7 +214,7 @@ int	main(void)
 	t_token	*tokens;
 	t_ready_token	*ready_tokens;
 
-	atexit(ll);
+	// atexit(ll);
 	if (check_quotes_balance(TEST) || check_parenthesis_balance(TEST)
 		|| check_m_percent(TEST))
 		return (1);

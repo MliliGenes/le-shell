@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 08:48:06 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/10 22:02:12 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/14 23:54:49 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ char		*ft_strndup(const char *s, size_t n);
 const char	*token_type_name(t_token_type type);
 const char	*token_type_color(t_token_type type);
 void		print_tokens(t_token *head);
+void		print_ready_tokens(t_ready_token *head);
 
 int			is_and_op(char *src);
 int			is_or_op(char *src);

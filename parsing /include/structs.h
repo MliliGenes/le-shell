@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 06:20:05 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/14 01:48:51 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/14 23:49:34 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,8 @@ typedef struct s_lexer
  * @TOKEN_HEREDOC: Here document '<<'
  * @TOKEN_AND: Logical AND '&&'
  * @TOKEN_OR: Logical OR '||'
- * @TOKEN_PAREN_L: Left parenthesis '('
- * @TOKEN_PAREN_R: Right parenthesis ')'
+ * @TOKEN_PL: Left parenthesis '('
+ * @TOKEN_PR: Right parenthesis ')'
  * @TOKEN_EOF: End of input marker
  */
 typedef enum e_token_type
@@ -60,8 +60,8 @@ typedef enum e_token_type
 	TOKEN_AND,
 	TOKEN_OR,
 
-	TOKEN_PAREN_L,
-	TOKEN_PAREN_R,
+	TOKEN_PL,
+	TOKEN_PR,
 
 	TOKEN_EOF
 }							t_token_type;
