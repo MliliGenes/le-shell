@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 21:57:52 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/14 23:54:26 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/15 12:44:24 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,10 +86,10 @@ void	print_ready_tokens(t_ready_token *head)
 	while (current)
 	{
 		printf("[%d] Type: %s%s%s\n", index++,
-			current->type == P_TOKEN_CMD ? GREEN : YELLOW,
-			current->type == P_TOKEN_CMD ? "COMMAND" : "OPERATOR",
+			current->type == CMD ? GREEN : YELLOW,
+			current->type == CMD ? "COMMAND" : "OPERATOR",
 			RESET);
-		if (current->type == P_TOKEN_CMD)
+		if (current->type == CMD)
 		{
 			cmd = (t_cmd *)current->p_token;
 			printf("  %sCommand%s: %s%s%s\n", GREEN, RESET, WHITE, 
@@ -135,7 +135,7 @@ void	print_ready_tokens(t_ready_token *head)
 				}
 			}
 		}
-		else if (current->type == P_TOKEN_OP)
+		else if (current->type == OP)
 		{
 			op = (t_op *)current->p_token;
 			if (op->type == OP_PIPE)

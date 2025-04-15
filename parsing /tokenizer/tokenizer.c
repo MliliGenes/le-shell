@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 21:27:08 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/14 23:50:23 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/15 13:29:38 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ bool	is_redir(t_token_type type)
 		|| type == TOKEN_APPEND || type == TOKEN_HEREDOC);
 }
 
-bool	is_word_or_arg(t_token_type type)
+bool	is_word(t_token_type type)
 {
 	return (type == TOKEN_COMMAND || type == TOKEN_ARG || type == TOKEN_FILE);
 }
@@ -100,6 +100,8 @@ void	add_back_token(t_token **head, t_token *node)
 {
 	t_token	*tmp;
 
+	if (!head || !node)
+		return ;
 	if (!*head)
 	{
 		*head = node;
@@ -360,6 +362,8 @@ void	create_tokens_list(t_lexer *lexer, t_token **head)
 	while (true)
 	{
 		token = get_next_token(lexer);
+		// if (!token)
+		// free and retuen
 		if (token->type == TOKEN_EOF)
 		{
 			add_back_token(head, token);
