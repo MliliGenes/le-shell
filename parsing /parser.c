@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 23:35:56 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/15 17:20:01 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/15 17:42:21 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,131 +155,82 @@ void	free_redirs(t_redir *redirs)
 	}
 }
 
-// t_redir	*get_redirs(t_token *start, t_token *end)
-// {
-// 	return (NULL);
-// }
-
-// char	**get_args(t_token *start, t_token *end)
-// {
-// 	return (NULL);
-// }
-
 t_redir	*get_redirs(t_token *start, t_token *end)
 {
-	t_redir			*redirs;
-	t_token			*current;
-	t_redir_type	redir_type;
-	t_redir			*redir_node;
+	t_redir	*redirs;
+	t_redir	*redir_node;
 
 	redirs = NULL;
-	current = start;
-	while (current && (end == NULL || current <= end))
+	while (start && (end == NULL || start <= end))
 	{
-		if (is_redir(current->type))
+		if (is_redir(start->type))
 		{
-			// Convert token type to redirection type
-			if (current->type == TOKEN_REDIR_IN)
-				redir_type = REDIR_IN;
-			else if (current->type == TOKEN_REDIR_OUT)
-				redir_type = REDIR_OUT;
-			else if (current->type == TOKEN_APPEND)
-				redir_type = REDIR_APPEND;
-			else // TOKEN_HEREDOC
-				redir_type = REDIR_HEREDOC;
-			// Move to the file/limiter token
-			current = current->next;
-			if (current && (end == NULL || current <= end))
+			redir_node = create_redir_node(token_to_redir_type(start->type),
+					ft_strdup(start->next->value));
+			if (!redir_node)
 			{
-				// Create a redirection node
-				redir_node = create_redir_node(redir_type,
-						ft_strdup(current->value));
-				if (!redir_node)
-				{
-					// Handle error - free already created redirections
-					free_redirs(redirs);
-					return (NULL);
-				}
-				// Add to redirections list
-				add_back_redir_node(&redirs, redir_node);
+				free_redirs(redirs);
+				return (NULL);
 			}
+			add_back_redir_node(&redirs, redir_node);
 		}
-		current = current->next;
+		start = start->next;
 	}
-	return (redirs); // May be NULL if no redirections found, which is valid
+	return (redirs);
 }
 
 bool	has_redirections(t_token *start, t_token *end)
 {
-	t_token	*current;
-
-	current = start;
-	while (current && (end == NULL || current <= end))
+	while (start && (end == NULL || start <= end))
 	{
-		if (is_redir(current->type))
+		if (is_redir(start->type))
 			return (true);
-		current = current->next;
+		start = start->next;
 	}
 	return (false);
 }
 
+int	count_args(t_token *start, t_token *end)
+{
+	int	size;
+
+	size = 0;
+	while (start && (end == NULL || start <= end))
+	{
+		if (is_word(start->type))
+			size++;
+		start = start->next;
+	}
+	return (size);
+}
+
 char	**get_args(t_token *start, t_token *end)
 {
-	int		arg_count;
-	t_token	*current;
-	int		arg_index;
 	char	**args;
+	int		i;
 
-	arg_count = 0;
-	current = start;
-	while (current && (end == NULL || current <= end))
-	{
-		if (is_redir(current->type))
-		{
-			current = current->next;
-			if (current && (end == NULL || current <= end))
-				current = current->next;
-		}
-		else if (is_word(current->type))
-		{
-			arg_count++;
-			current = current->next;
-		}
-		else
-			current = current->next;
-	}
-	if (arg_count == 0)
+	if (!count_args(start, end))
 		return (NULL);
-	args = malloc(sizeof(char *) * (arg_count + 1));
+	
+	args = malloc(sizeof(char *) * (count_args(start, end) + 1));
 	if (!args)
 		return (NULL);
-	current = start;
-	arg_index = 0;
-	while (current && (end == NULL || current <= end))
+	i = 0;
+	while (start && (end == NULL || start <= end))
 	{
-		if (is_redir(current->type))
+		if (is_word(start->type))
 		{
-			current = current->next;
-			if (current && (end == NULL || current <= end))
-				current = current->next;
-		}
-		else if (is_word(current->type))
-		{
-			args[arg_index++] = ft_strdup(current->value);
-			if (!args[arg_index - 1])
+			args[i++] = ft_strdup(start->value);
+			if (!args[i - 1])
 			{
-				while (--arg_index >= 0)
-					free(args[arg_index]);
-				free(args);
-				return (NULL);
+				while (--i >= 0)
+					free(args[i]);
+				return (free(args), NULL);
 			}
-			current = current->next;
 		}
-		else
-			current = current->next;
+		start = start->next;
 	}
-	args[arg_index] = NULL;
-	return (args);
+	return (args[i] = NULL, args);
 }
 
 t_cmd	*extract_cmd_data(t_token *start, t_token *end)

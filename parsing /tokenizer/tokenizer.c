@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 21:27:08 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/15 13:29:38 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/15 17:35:55 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ bool	is_redir(t_token_type type)
 
 bool	is_word(t_token_type type)
 {
-	return (type == TOKEN_COMMAND || type == TOKEN_ARG || type == TOKEN_FILE);
+	return (type == TOKEN_COMMAND || type == TOKEN_ARG);
 }
 
 bool	is_paren(t_token_type type)
