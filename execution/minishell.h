@@ -6,7 +6,7 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 03:20:58 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/04/10 21:09:41 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/04/15 18:06:42 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 #include "include/readline.h"
 #include "include/history.h"
 
-int exit_status;
+extern int exit_status;
 
 typedef struct s_env_var
 {
