@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 23:35:56 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/16 20:54:28 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/16 22:48:02 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,12 @@
 void	ll(void)
 {
 	system("leaks parser");
+}
+
+bool	check_balance(char *input)
+{
+	return (check_quotes_balance(input) || check_parenthesis_balance(input)
+		|| check_m_percent(input));
 }
 
 int	main(void)
@@ -27,15 +33,14 @@ int	main(void)
 	lexer = NULL;
 	tokens = NULL;
 	ready_tokens = NULL;
-	if (check_quotes_balance(TEST) || check_parenthesis_balance(TEST)
-		|| check_m_percent(TEST))
+	if (check_balance(TEST))
 		return (1);
 	lexer = init_lexer(TEST);
 	if (!lexer)
 		return (1);
 	create_tokens_list(lexer, &tokens);
 	if (validate_tokens(tokens))
-		return (free(lexer),free_token_list(tokens), 1);
+		return (free(lexer), free_token_list(tokens), 1);
 	classify_tokens(tokens);
 	print_tokens(tokens);
 	extract_tokens(tokens, &ready_tokens);

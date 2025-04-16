@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 06:20:05 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/15 12:43:37 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/16 21:09:44 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,6 +156,7 @@ typedef struct s_ready_token
 		OP,
 	} type;
 	void					*p_token;
+	bool					to_expend;
 	struct s_ready_token	*next;
 	struct s_ready_token	*prev;
 }							t_ready_token;
