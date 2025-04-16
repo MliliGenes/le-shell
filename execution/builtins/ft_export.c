@@ -6,7 +6,7 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 21:42:50 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/04/16 17:32:05 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/04/16 22:21:17 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,12 +68,140 @@ void	print_export(t_env_var *env_list)
 	free(arr);
 }
 
+int is_valid_key(char *str)
+{
+	int i;
+
+	i = 0;
+	if (!str || !str[i])
+		return 0;
+	if (!ft_isalpha(str[i]) && str[i] != '_')
+		return 0;
+	while (str[i] && str[i] != '=')
+	{
+		if (!ft_isalnum(str[i]) && str[i] != '_')
+			return 0;
+		i++;
+	}
+	return (1);
+}
+
+t_env_kv split_key_value(char *arg)
+{
+	t_env_kv kv;
+	int i;
+
+	i = 0;
+	while (arg[i] && arg[i] != '=')
+		i++;
+	kv.key = ft_substr(arg, 0, i);
+	if (arg[i] == '=')
+	{
+		kv.value = ft_substr(arg, i + 1, ft_strlen(arg));
+		kv.has_value = 1;
+	}
+	else
+	{
+		kv.value = NULL;
+		kv.has_value = 0;
+	}
+	return kv;
+}
+
+int key_exist(t_env_var *env_list, char *key)
+{
+	t_env_var *tmp;
+
+	tmp = env_list;
+	while (tmp)
+	{
+		if (ft_strcmp(tmp->key, key) == 0)
+			return 1;
+		tmp = tmp->next;
+	}
+	return 0;
+}
+
+void	env_update(t_env_var *env_list, char *key, char *value)
+{
+	t_env_var *tmp;
+
+	tmp = env_list;
+	while (tmp)
+	{
+		if (ft_strcmp(tmp->key, key) == 0)
+		{
+			free(tmp->value);
+			tmp->value = ft_strdup(value);
+			return ;
+		}
+		tmp = tmp->next;
+	}
+}
+
+void	add_env_back(t_env_var **env_list, t_env_var *new)
+{
+	t_env_var *tmp;
+
+	if (!*env_list)
+	{
+		*env_list = new;
+		return ;
+	}
+	tmp = *env_list;
+	while (tmp->next)
+		tmp = tmp->next;
+	tmp->next = new;
+}
+
 void	handle_export(char *input, t_env_var *env_list)
 {
+	int i;
+
+	i = 1;
 	char **args = ft_split(input, ' ');
 	if (!args)
 		return ;
-	if (ft_strcmp(args[0], "export") == 0 && !args[1])
-		print_export(env_list);
+	if (ft_strcmp(args[0], "export") == 0)
+	{
+		if (!args[i])
+			print_export(env_list);
+		else
+		{
+			while (args[i])
+			{
+				t_env_kv kv = split_key_value(args[i]);
+
+				if (!is_valid_key(args[i]))
+				{
+					ft_putstr_fd("export: `", 2);
+					ft_putstr_fd(kv.key, 2);
+					ft_putstr_fd("': not a valid identifier\n", 2);
+				}
+				else
+				{
+					if (key_exist(env_list, kv.key))
+					{
+						if (kv.has_value)
+							env_update(env_list, kv.key, kv.value);
+					}
+					else
+					{
+						t_env_var *new = malloc(sizeof(t_env_var));
+						if (!new)
+							return ;
+						new->key = ft_strdup(kv.key);
+						new->value = kv.has_value ? ft_strdup(kv.value) : NULL;
+						new->next = NULL;
+						add_env_back(&env_list, new);
+					}
+				}
+
+				free(kv.key);
+				free(kv.value);
+				i++;
+			}
+		}
+	}
 	free_2d(args);
 }

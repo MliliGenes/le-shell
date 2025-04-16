@@ -6,7 +6,7 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 03:20:58 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/04/16 17:28:57 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/04/16 19:57:00 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,13 @@ typedef struct s_env_var
 	char						*value;
 	struct s_env_var			*next;
 }								t_env_var;
+
+typedef struct s_env_kv
+{
+	char						*key;
+	char						*value;
+	int has_value;
+}							t_env_kv;
 
 // utils functions:
 int count_2d(char **arr);
