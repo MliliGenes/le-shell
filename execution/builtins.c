@@ -6,7 +6,7 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 12:11:12 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/04/10 21:10:00 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/04/16 17:29:09 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,4 +18,5 @@ void exec_builtins(char *input, t_env_var *env_list)
     handle_echo(input);
     handle_exit(input);
     handle_env(input, env_list);
+    handle_export(input, env_list);
 }

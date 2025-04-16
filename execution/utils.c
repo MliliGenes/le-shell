@@ -6,7 +6,7 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 12:17:28 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/04/15 18:06:15 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/04/16 17:30:28 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,4 +85,3 @@ char *expand_exit_status(char *input)
 	free(status_str);
 	return (res);
 }
-
