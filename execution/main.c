@@ -6,7 +6,7 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 03:02:50 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/04/15 18:08:51 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/04/16 15:15:06 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void ll()
 
 int main(int argc, char *argv[], char *envp[])
 {
-	// atexit(ll);
+	atexit(ll);
 	char *input;
 	char *expand_input;
 	t_env_var *env_list;
