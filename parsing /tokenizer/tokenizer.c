@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 21:27:08 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/15 17:35:55 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/16 20:55:01 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -373,6 +373,8 @@ void	create_tokens_list(t_lexer *lexer, t_token **head)
 	}
 }
 
+
+// TODO
 int	validate_tokens(t_token *head)
 {
 	while (head->type != TOKEN_EOF)
@@ -404,19 +406,28 @@ int	validate_tokens(t_token *head)
 
 void	classify_tokens(t_token *head)
 {
+	bool	is_cmd_found;
+
+	is_cmd_found = false;
 	while (head->type != TOKEN_EOF)
 	{
 		if (head->type == TOKEN_WORD && head->prev
 			&& is_redir(head->prev->type))
 			head->type = TOKEN_FILE;
-		if ((head->n_index == 0 && head->type == TOKEN_WORD)
-			|| (head->type == TOKEN_WORD && head->prev
-				&& (is_op(head->prev->type) || head->prev->type == TOKEN_PL))
-			|| (head->type == TOKEN_WORD && head->prev
-				&& head->prev->type == TOKEN_FILE))
+		if (!is_cmd_found && ((head->n_index == 0 && head->type == TOKEN_WORD)
+				|| (head->type == TOKEN_WORD && head->prev
+					&& (is_op(head->prev->type)
+						|| head->prev->type == TOKEN_PL))
+				|| (head->type == TOKEN_WORD && head->prev
+					&& head->prev->type == TOKEN_FILE)))
+		{
 			head->type = TOKEN_COMMAND;
+			is_cmd_found = true;
+		}
 		if (head->type == TOKEN_WORD)
 			head->type = TOKEN_ARG;
+		if (is_op(head->type))
+			is_cmd_found = false;
 		head = head->next;
 	}
 }

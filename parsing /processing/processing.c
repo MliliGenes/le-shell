@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 20:09:35 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/16 20:20:51 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/16 20:56:27 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,6 +155,45 @@ void	free_redirs(t_redir *redirs)
 	}
 }
 
+static int	count_args_in_cmd(t_cmd *cmd)
+{
+	int	count;
+
+	count = 0;
+	if (!cmd || !cmd->args)
+		return (0);
+	while (cmd->args[count])
+		count++;
+	return (count);
+}
+
+void	free_ready_tokens_list(t_ready_token *head)
+{
+	t_ready_token	*next;
+	t_cmd			*cmd;
+
+	if (!head)
+		return ;
+	while (head)
+	{
+		next = head->next;
+		if (head->type == CMD && head->p_token)
+		{
+			cmd = (t_cmd *)head->p_token;
+			if (cmd->args)
+				free_args_array(cmd->args, count_args_in_cmd(cmd));
+			if (cmd->redirs)
+				free_redirs(cmd->redirs);
+			free(cmd);
+		}
+		else if (head->type == OP && head->p_token)
+
+			free(head->p_token);
+		free(head);
+		head = next;
+	}
+}
+
 t_redir	*get_redirs(t_token *start, t_token *end)
 {
 	t_redir	*redirs;
@@ -211,7 +250,6 @@ char	**get_args(t_token *start, t_token *end)
 
 	if (!count_args(start, end))
 		return (NULL);
-	
 	args = malloc(sizeof(char *) * (count_args(start, end) + 1));
 	if (!args)
 		return (NULL);
@@ -294,8 +332,8 @@ bool	add_operator_to_list(t_token *current, t_ready_token **head)
 
 bool	extract_tokens(t_token *tokens, t_ready_token **head)
 {
-	t_token	*cmd_start;
-	t_token	*current;
+	t_token *cmd_start;
+	t_token *current;
 
 	cmd_start = tokens;
 	current = tokens;

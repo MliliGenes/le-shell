@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 23:35:56 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/16 20:26:20 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/16 20:54:28 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ int	main(void)
 	t_ready_token	*ready_tokens;
 
 	atexit(ll);
+	lexer = NULL;
 	tokens = NULL;
 	ready_tokens = NULL;
 	if (check_quotes_balance(TEST) || check_parenthesis_balance(TEST)
@@ -34,11 +35,12 @@ int	main(void)
 		return (1);
 	create_tokens_list(lexer, &tokens);
 	if (validate_tokens(tokens))
-		return (1);
+		return (free(lexer),free_token_list(tokens), 1);
 	classify_tokens(tokens);
 	print_tokens(tokens);
 	extract_tokens(tokens, &ready_tokens);
 	print_ready_tokens(ready_tokens);
+	free_ready_tokens_list(ready_tokens);
 	free(lexer);
 	return (0);
 }
