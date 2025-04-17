@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 21:27:08 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/17 23:00:26 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/17 23:10:12 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ bool	is_var(char *chunk)
 
 bool	has_var(char *token)
 {
-	int		i;
+	int	i;
 
 	i = 0;
 	while (token && token[i])
@@ -78,7 +78,8 @@ bool	has_var(char *token)
 		}
 		if (!token[i])
 			return (false);
-		if (token[i] == '$' && token[i])
+		if (token[i] == '$' && (token[i + 1] && token[i + 1] != '"'
+				&& !is_white_space(token[i + 1])))
 			return (true);
 		i++;
 	}

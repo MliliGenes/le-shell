@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 21:57:52 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/17 22:55:11 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/17 23:04:58 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	print_tokens(t_token *head)
 		printf("[%02d] %s%s%s:\t%s\n", t->n_index,
 				color, token_type_name(t->type), RESET,
 				t->value ? t->value : "NULL");
-		if(is_word(t->type))
+		if(is_word(t->type) || t->type == TOKEN_FILE)
 		{
 			printf("is var: %s\n",has_var(t->value) ? "yes" : "no");
 		}
