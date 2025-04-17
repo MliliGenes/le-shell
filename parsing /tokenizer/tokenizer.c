@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 21:27:08 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/16 20:55:01 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/17 23:00:26 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,47 @@ bool	is_word(t_token_type type)
 bool	is_paren(t_token_type type)
 {
 	return (type == TOKEN_PL || type == TOKEN_PR);
+}
+
+bool	has_quotes(char *token)
+{
+	while (token && *token)
+	{
+		if (*token == '\'' || *token == '"')
+			return (true);
+		token++;
+	}
+	return (false);
+}
+
+bool	is_var(char *chunk)
+{
+	int	i;
+
+	i = 0;
+	return (chunk[i] == '$' && chunk[i + 1]);
+}
+
+bool	has_var(char *token)
+{
+	int		i;
+
+	i = 0;
+	while (token && token[i])
+	{
+		if (token[i] == '\'')
+		{
+			i++;
+			while (token[i] != '\'')
+				i++;
+		}
+		if (!token[i])
+			return (false);
+		if (token[i] == '$' && token[i])
+			return (true);
+		i++;
+	}
+	return (false);
 }
 
 bool	is_full_operator(t_lexer *lexer)
@@ -373,8 +414,6 @@ void	create_tokens_list(t_lexer *lexer, t_token **head)
 	}
 }
 
-
-// TODO
 int	validate_tokens(t_token *head)
 {
 	while (head->type != TOKEN_EOF)
@@ -431,3 +470,14 @@ void	classify_tokens(t_token *head)
 		head = head->next;
 	}
 }
+
+// void	trim_quotes(t_token *head)
+// {
+// 	while (head && head->type != TOKEN_EOF)
+// 	{
+// 		if (is_word(head->type) &&)
+// 		{
+// 		}
+// 		head = head->next;
+// 	}
+// }

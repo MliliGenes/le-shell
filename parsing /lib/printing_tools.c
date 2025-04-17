@@ -6,11 +6,12 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 21:57:52 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/15 12:44:24 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/17 22:55:11 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/structs.h"
+#include "../include/parsing.h"
 
 #define RESET       "\033[0m"
 #define RED         "\033[31m"
@@ -65,6 +66,10 @@ void	print_tokens(t_token *head)
 		printf("[%02d] %s%s%s:\t%s\n", t->n_index,
 				color, token_type_name(t->type), RESET,
 				t->value ? t->value : "NULL");
+		if(is_word(t->type))
+		{
+			printf("is var: %s\n",has_var(t->value) ? "yes" : "no");
+		}
 	}
 	printf("%s----------------\n%s", BOLDWHITE, RESET);
 }

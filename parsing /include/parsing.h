@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 09:14:40 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/16 21:08:37 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/17 23:03:25 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@
 # include "structs.h"
 
 # ifndef TEST
-#  define TEST "export xi9alwa=zaba && echo \"$var\"awdaw | (cat Makefile -e | grep 9alwa > tesing ) && echo \"done\" | (ls -l)"
-// #  define TEST "( 'cat' > 7arzan -e | grep \"txt\" > \"text_files\" )&& ( cat < Makefile-e) && echo \"Text files found:\"&& cat text_files.list|| (echo \"No text files found\" >> error.log && exit 1) | wc -l < input.txt >> results.log"
+#  define TEST "\"cat\" '$var'\"$var\" saad$var '$var'"
+// #  define TEST "( '$cat' > 7arzan -e | grep \"$txt\" > \"text_files\" )&& ( cat < Makefile-e) && echo \"Text files found:\"&& cat text_files.list|| (echo \"$No text files found\" >> error.log && exit 1) | wc -l < input.txt >> results.log"
 # endif
 
 t_lexer			*init_lexer(char *input);
@@ -37,6 +37,8 @@ bool			is_op(t_token_type type);
 bool			is_redir(t_token_type type);
 bool			is_word(t_token_type type);
 bool			is_paren(t_token_type type);
+bool			is_var(char *chunk);
+bool			has_var(char *token);
 bool			is_full_operator(t_lexer *lexer);
 t_token_type	classify_operator(char *op);
 
