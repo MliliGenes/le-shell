@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 21:27:08 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/17 23:10:12 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/17 23:18:27 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,11 +66,18 @@ bool	is_var(char *chunk)
 bool	has_var(char *token)
 {
 	int	i;
+	bool d_quoted;
 
 	i = 0;
+	d_quoted = false;
 	while (token && token[i])
 	{
-		if (token[i] == '\'')
+		if (token[i] == '"')
+		{
+			d_quoted = !d_quoted;
+			i++;
+		}
+		if (!d_quoted && token[i] == '\'')
 		{
 			i++;
 			while (token[i] != '\'')
