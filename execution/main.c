@@ -6,7 +6,7 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 03:02:50 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/04/16 15:15:06 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/04/17 22:22:44 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,11 @@ int main(int argc, char *argv[], char *envp[])
 	{
 		input = readline("minishell> ");
 		expand_input = expand_exit_status(input);
+		add_history(input);
 		if (!expand_input)
 		{
 			printf("exit\n");
+			rl_clear_history();
 			free(input);
 			break ;
 		}

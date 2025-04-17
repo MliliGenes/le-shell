@@ -6,6 +6,7 @@ M_SRCS = 	main.c \
 			builtins/ft_pwd.c \
 			builtins/ft_env.c \
 			builtins/ft_export.c \
+			builtins/ft_unset.c \
 
 M_OBJS = $(M_SRCS:.c=.o)
 
