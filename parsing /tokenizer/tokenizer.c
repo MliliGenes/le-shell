@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 21:27:08 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/18 01:04:09 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/18 23:48:32 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,25 @@ bool	is_paren(t_token_type type)
 
 bool	has_quotes(char *token)
 {
-	while (token && *token)
+	int		pos[2];
+	char	quote;
+
+	quote = 0;
+	pos[0] = 0;
+	while (token && token[pos[0]])
 	{
-		if (*token == '\'' || *token == '"')
-			return (true);
-		token++;
+		if (token[pos[0]] == '\'' || token[pos[0]] == '"')
+		{
+			pos[1] = pos[0];
+			quote = token[pos[0]];
+			while (token[pos[1]])
+			{
+				if (token[pos[1]] == quote)
+					return (true);
+				pos[1]++;
+			}
+		}
+		pos[0]++;
 	}
 	return (false);
 }
@@ -65,8 +79,8 @@ bool	is_var(char *chunk)
 
 bool	has_var(char *token)
 {
-	int	i;
-	bool d_quoted;
+	int		i;
+	bool	d_quoted;
 
 	i = 0;
 	d_quoted = false;
@@ -477,13 +491,47 @@ void	classify_tokens(t_token *head)
 	}
 }
 
+char	*remove_quotes(char *value)
+{
+	char	*trim;
+	int		pos[2] = {0};
+	int		quotes[2] = {0};
+
+	trim = ft_strdup(value);
+	if (!trim)
+		return (NULL);
+	while (value[pos[0]])
+	{
+		if (value[pos[0]] == '\'' && !quotes[1])
+		{
+			quotes[0] = !quotes[0];
+			pos[0]++;
+		}
+		else if (value[pos[0]] == '"' && !quotes[0])
+		{
+			quotes[1] = !quotes[1];
+			pos[0]++;
+		}
+		else
+			trim[pos[1]++] = value[pos[0]++];
+	}
+	trim[pos[1]] = 0;
+	free(value);
+	return (trim);
+}
+
 void	trim_quotes(t_token *head)
 {
+	char *tmp;
+
 	while (head && head->type != TOKEN_EOF)
 	{
-		if (is_word(head->type) && has_var(head->value))
+		if (head->value && has_quotes(head->value) && !has_var(head->value))
 		{
-			
+			tmp = remove_quotes(head->value);
+			if (!tmp)
+				return ;
+			head->value = tmp;
 		}
 		head = head->next;
 	}

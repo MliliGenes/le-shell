@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 21:57:52 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/17 23:04:58 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/18 22:52:01 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,10 @@ void	print_tokens(t_token *head)
 		{
 			printf("is var: %s\n",has_var(t->value) ? "yes" : "no");
 		}
+		if(is_word(t->type) || t->type == TOKEN_FILE)
+		{
+			printf("is quotes: %s\n",has_quotes(t->value) ? "yes" : "no");
+		}
 	}
 	printf("%s----------------\n%s", BOLDWHITE, RESET);
 }
@@ -105,7 +109,7 @@ void	print_ready_tokens(t_ready_token *head)
 			{
 				for (int i = 0; cmd->args[i]; i++)
 				{
-					printf("%s'%s'%s", CYAN, cmd->args[i], RESET);
+					printf("%s%s%s", CYAN, cmd->args[i], RESET);
 					if (cmd->args[i + 1])
 						printf(", ");
 				}
@@ -134,7 +138,7 @@ void	print_ready_tokens(t_ready_token *head)
 						redir_str = ">>";
 					else
 						redir_str = "<<";
-					printf("    %s%s%s %s'%s'%s\n", MAGENTA, redir_str, RESET,
+					printf("    %s%s%s %s%s%s\n", MAGENTA, redir_str, RESET,
 						BLUE, redir->file_or_limiter, RESET);
 					redir = redir->next;
 				}

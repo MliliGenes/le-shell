@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 23:35:56 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/16 22:48:02 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/18 23:50:58 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,15 @@ int	main(void)
 	t_lexer			*lexer;
 	t_token			*tokens;
 	t_ready_token	*ready_tokens;
-
+	// t_parser	*parser = malloc(sizeof(t_parser));
+	// parser->cmds_stack = NULL;
+	// parser->ops_stack = NULL;
+	
 	atexit(ll);
 	lexer = NULL;
 	tokens = NULL;
 	ready_tokens = NULL;
-	if (check_balance(TEST))
+	if (check_balance(TEST))	
 		return (1);
 	lexer = init_lexer(TEST);
 	if (!lexer)
@@ -43,9 +46,11 @@ int	main(void)
 		return (free(lexer), free_token_list(tokens), 1);
 	classify_tokens(tokens);
 	print_tokens(tokens);
+	trim_quotes(tokens);
+	print_tokens(tokens);
 	extract_tokens(tokens, &ready_tokens);
-	print_ready_tokens(ready_tokens);
 	free_ready_tokens_list(ready_tokens);
+	// print_ready_tokens(ready_tokens);
 	free(lexer);
 	return (0);
 }
