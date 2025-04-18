@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 21:27:08 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/17 23:18:27 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/04/18 01:04:09 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,6 @@ bool	has_var(char *token)
 			while (token[i] != '\'')
 				i++;
 		}
-		if (!token[i])
-			return (false);
 		if (token[i] == '$' && (token[i + 1] && token[i + 1] != '"'
 				&& !is_white_space(token[i + 1])))
 			return (true);
@@ -479,13 +477,14 @@ void	classify_tokens(t_token *head)
 	}
 }
 
-// void	trim_quotes(t_token *head)
-// {
-// 	while (head && head->type != TOKEN_EOF)
-// 	{
-// 		if (is_word(head->type) &&)
-// 		{
-// 		}
-// 		head = head->next;
-// 	}
-// }
+void	trim_quotes(t_token *head)
+{
+	while (head && head->type != TOKEN_EOF)
+	{
+		if (is_word(head->type) && has_var(head->value))
+		{
+			
+		}
+		head = head->next;
+	}
+}

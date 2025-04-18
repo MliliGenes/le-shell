@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 09:14:40 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/17 23:19:29 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/04/17 23:54:49 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@
 # include "structs.h"
 
 # ifndef TEST
-#  define TEST "\"cat\" $ >> \"$ \" \"'$var'$var\" saad$var \"'$var'''\""
-// #  define TEST "( '$cat' > 7arzan -e | grep \"$txt\" > \"text_files\" )&& ( cat < Makefile-e) && echo \"Text files found:\"&& cat text_files.list|| (echo \"$No text files found\" >> error.log && exit 1) | wc -l < input.txt >> results.log"
+// #  define TEST "\"cat\" $ >> \"$ \" \"'$var'$var\" saad$var \"var'''\"$var"
+#  define TEST "( '$cat' > 7arzan -e | grep \"$txt\" > \"text_files\" )&& ( cat < Makefile-e) && echo \"Text files found:\"&& cat text_files.list|| (echo \"$No text files found\" >> error.log && exit 1) | wc -l < input.txt >> results.log"
 # endif
 
 t_lexer			*init_lexer(char *input);
