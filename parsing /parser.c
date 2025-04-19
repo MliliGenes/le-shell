@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 23:35:56 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/19 23:54:25 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/19 23:55:41 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	build_post_fix(t_parser *parser)
 	t_ready_token	*head;
 
 	if (!parser)
-		return;
+		return ;
 	head = parser->infix_note;
 	while (head)
 	{
@@ -61,7 +61,8 @@ void	build_post_fix(t_parser *parser)
 		{
 			op = (t_op *)head->p_token;
 			if (op->type == OP_PAREN_R)
-				// pop all ops till the open parent
+				return ;
+			// pop all ops till the open parent
 		}
 		head = head->next;
 	}
