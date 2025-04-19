@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 06:20:05 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/19 22:16:06 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/19 23:23:03 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,9 +173,7 @@ typedef struct s_ready_token
 
 typedef struct s_parser
 {
-	t_ready_token			*cmds_stack;
 	t_ready_token			*ops_stack;
-
 	t_ready_token			*infix_note;
 	t_ready_token			*postfix_note;
 }							t_parser;

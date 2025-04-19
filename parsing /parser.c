@@ -6,18 +6,27 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 23:35:56 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/19 22:31:15 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/19 23:33:31 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include/parsing.h"
 
+void	add_front_ready_token(t_ready_token **head, t_ready_token *node)
+{
+	if (!head || !node)
+		return ;
+	node->prev = NULL;
+	node->next = *head;
+	if (*head)
+		(*head)->prev = node;
+	*head = node;
+}
+
 void	ll(void)
 {
 	system("leaks parser");
 }
-
-
 
 t_parser	*init_parser(t_ready_token *head)
 {
@@ -28,9 +37,25 @@ t_parser	*init_parser(t_ready_token *head)
 		return (NULL);
 	parser->infix_note = head;
 	parser->postfix_note = NULL;
-	parser->cmds_stack = NULL;
 	parser->ops_stack = NULL;
 	return (parser);
+}
+
+void	build_post_fix(t_parser *parser)
+{
+	while (parser && parser->infix_note)
+	{
+		if (parser->infix_note->type == CMD)
+		{
+			// TODO: push to post fix parser->postfix_note
+		}
+		else if (parser->infix_note->type == OP)
+		{
+			// TODO handle parenthesis
+			// TODO handle priority
+		}
+		parser->infix_note = parser->infix_note->next;
+	}
 }
 
 bool	check_balance(char *input)
