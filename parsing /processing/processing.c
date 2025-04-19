@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 20:09:35 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/19 22:24:56 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/19 22:36:08 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,9 @@ t_redir_type	token_to_redir_type(t_token_type type)
 		return (REDIR_APPEND);
 	else if (type == TOKEN_HEREDOC)
 		return (REDIR_HEREDOC);
-		return (-1);
+	return (-1);
 }
-	
+
 // ###################################################################
 
 t_redir	*create_redir_node(t_redir_type type, char *file_or_limiter)
@@ -56,7 +56,6 @@ t_redir	*create_redir_node(t_redir_type type, char *file_or_limiter)
 	return (redir);
 }
 
-
 t_cmd	*create_cmd_node(char **args, t_redir *redirs)
 {
 	t_cmd	*cmd;
@@ -67,7 +66,7 @@ t_cmd	*create_cmd_node(char **args, t_redir *redirs)
 	cmd->args = args;
 	cmd->cmd = NULL;
 	if (args)
-	cmd->cmd = args[0];
+		cmd->cmd = args[0];
 	cmd->redirs = redirs;
 	cmd->fds[0] = 0;
 	cmd->fds[1] = 1;
@@ -77,22 +76,21 @@ t_cmd	*create_cmd_node(char **args, t_redir *redirs)
 t_op	*create_op_node(t_op_type type)
 {
 	t_op	*op;
-	
+
 	op = malloc(sizeof(t_cmd));
 	if (!op)
-	return (NULL);
+		return (NULL);
 	op->type = type;
 	return (op);
 }
 
-
 t_ready_token	*create_ready_token_node(void *token, int type)
 {
 	t_ready_token	*r_token;
-	
+
 	r_token = malloc(sizeof(t_ready_token));
 	if (!r_token || !token)
-	return (NULL);
+		return (NULL);
 	r_token->p_token = token;
 	r_token->type = type;
 	r_token->next = NULL;
@@ -100,9 +98,7 @@ t_ready_token	*create_ready_token_node(void *token, int type)
 	return (r_token);
 }
 
-
 // ###################################################################
-
 
 void	add_back_redir_node(t_redir **head, t_redir *node)
 {
@@ -122,7 +118,7 @@ void	add_back_redir_node(t_redir **head, t_redir *node)
 void	add_back_ready_token(t_ready_token **head, t_ready_token *node)
 {
 	t_ready_token	*tmp;
-	
+
 	if (!*head)
 	{
 		*head = node;
@@ -176,7 +172,6 @@ void	free_redirs(t_redir *redirs)
 		free(temp);
 	}
 }
-
 
 void	free_ready_tokens_list(t_ready_token *head)
 {
@@ -317,7 +312,7 @@ bool	process_command_segment(t_token *start, t_token *end,
 		return (false);
 	cmd_token = create_ready_token_node(cmd, CMD);
 	if (!cmd_token)
-	{	
+	{
 		if (cmd->args)
 			free_args_array(cmd->args, count_args_in_cmd(cmd->args));
 		if (cmd->redirs)

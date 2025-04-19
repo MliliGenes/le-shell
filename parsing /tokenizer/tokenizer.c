@@ -6,12 +6,11 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 21:27:08 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/19 20:48:29 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/19 22:51:37 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/parsing.h"
-#include <ctype.h>
 
 bool	is_white_space(char c)
 {

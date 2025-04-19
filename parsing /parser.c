@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 23:35:56 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/19 22:29:19 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/19 22:31:15 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ void	ll(void)
 {
 	system("leaks parser");
 }
+
+
 
 t_parser	*init_parser(t_ready_token *head)
 {
