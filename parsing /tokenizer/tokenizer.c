@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 21:27:08 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/19 02:55:20 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/19 20:48:29 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -304,23 +304,23 @@ int	validate_tokens(t_token *head)
 t_token_type	classify_operator(char *op)
 {
 	if (ft_strcmp(op, "|") == 0)
-	return (TOKEN_PIPE);
+		return (TOKEN_PIPE);
 	if (ft_strcmp(op, "||") == 0)
 		return (TOKEN_OR);
 	if (ft_strcmp(op, "&&") == 0)
 		return (TOKEN_AND);
 	if (ft_strcmp(op, "<") == 0)
 		return (TOKEN_REDIR_IN);
-		if (ft_strcmp(op, "<<") == 0)
+	if (ft_strcmp(op, "<<") == 0)
 		return (TOKEN_HEREDOC);
 	if (ft_strcmp(op, ">") == 0)
 		return (TOKEN_REDIR_OUT);
 	if (ft_strcmp(op, ">>") == 0)
-	return (TOKEN_APPEND);
+		return (TOKEN_APPEND);
 	if (ft_strcmp(op, "(") == 0)
-	return (TOKEN_PL);
+		return (TOKEN_PL);
 	if (ft_strcmp(op, ")") == 0)
-	return (TOKEN_PR);
+		return (TOKEN_PR);
 	return (TOKEN_WORD);
 }
 
@@ -442,7 +442,7 @@ t_token	*get_next_token(t_lexer *lexer)
 {
 	skip_whitespace(lexer);
 	if (lexer->current_char == '\0')
-	return (create_token(TOKEN_EOF, NULL));
+		return (create_token(TOKEN_EOF, NULL));
 	if (lexer->current_char == '\'' || lexer->current_char == '"')
 		return (handle_quoted(lexer));
 	if (is_operator(lexer->current_char) && is_full_operator(lexer))
@@ -468,10 +468,10 @@ void	create_tokens_list(t_lexer *lexer, t_token **head)
 
 // ###################################################################
 
-
 // static bool	is_var_checker(char *token, int i)
 // {
-// 	return (token[i] && token[i] == '$' && token[i + 1] && !is_white_space(token[i + 1])
+// 	return (token[i] && token[i] == '$' && token[i + 1]
+//		 && !is_white_space(token[i + 1])
 // 		&& token[i + 1] != '"');
 // }
 
