@@ -6,13 +6,13 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 23:35:56 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/19 23:33:31 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/19 23:54:25 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include/parsing.h"
 
-void	add_front_ready_token(t_ready_token **head, t_ready_token *node)
+void	add_front_ops_queue(t_ready_token **head, t_ready_token *node)
 {
 	if (!head || !node)
 		return ;
@@ -43,18 +43,27 @@ t_parser	*init_parser(t_ready_token *head)
 
 void	build_post_fix(t_parser *parser)
 {
-	while (parser && parser->infix_note)
+	t_op			*op;
+	t_cmd			*cmd;
+	t_ready_token	*head;
+
+	if (!parser)
+		return;
+	head = parser->infix_note;
+	while (head)
 	{
-		if (parser->infix_note->type == CMD)
+		if (head->type == CMD)
 		{
+			cmd = (t_cmd *)head->p_token;
 			// TODO: push to post fix parser->postfix_note
 		}
-		else if (parser->infix_note->type == OP)
+		else if (head->type == OP)
 		{
-			// TODO handle parenthesis
-			// TODO handle priority
+			op = (t_op *)head->p_token;
+			if (op->type == OP_PAREN_R)
+				// pop all ops till the open parent
 		}
-		parser->infix_note = parser->infix_note->next;
+		head = head->next;
 	}
 }
 
