@@ -29,9 +29,10 @@ int	main(void)
 	t_token			*tokens;
 	t_ready_token	*ready_tokens;
 
-	// t_parser	*parser = malloc(sizeof(t_parser));
-	// parser->cmds_stack = NULL;
-	// parser->ops_stack = NULL;
+	t_parser	*parser = malloc(sizeof(t_parser));
+	parser->cmds_stack = NULL;
+	parser->ops_stack = NULL;
+
 	// atexit(ll);
 	lexer = NULL;
 	tokens = NULL;
@@ -49,7 +50,7 @@ int	main(void)
 	trim_quotes(tokens);
 	print_tokens(tokens);
 	extract_tokens(tokens, &ready_tokens);
-	// print_ready_tokens(ready_tokens);
+	print_ready_tokens(ready_tokens);
 	free_ready_tokens_list(ready_tokens);
 	free(lexer);
 	return (0);

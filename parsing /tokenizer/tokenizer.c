@@ -456,97 +456,99 @@ void	classify_tokens(t_token *head)
 	}
 }
 
-static bool	is_var_checker(char *token, int i)
-{
-	return (token[i] && token[i] == '$' && token[i + 1] && !is_white_space(token[i + 1])
-		&& token[i + 1] != '"');
-}
+// static bool	is_var_checker(char *token, int i)
+// {
+// 	return (token[i] && token[i] == '$' && token[i + 1] && !is_white_space(token[i + 1])
+// 		&& token[i + 1] != '"');
+// }
 
-static bool	handle_double_quotes(char c, bool d_quoted)
-{
-    if (c == '"')
-        return (!d_quoted);
-    return (d_quoted);
-}
+// static bool	handle_double_quotes(char c, bool d_quoted)
+// {
+//     if (c == '"')
+//         return (!d_quoted);
+//     return (d_quoted);
+// }
 
-static int	skip_single_quotes(char *token, int i)
-{
-    if (token[i] == '\'')
-    {
-        i++;
-        while (token[i] && token[i] != '\'')
-            i++;
-        if (token[i] == '\'')
-            i++;
-    }
-    return (i);
-}
+// static int	skip_single_quotes(char *token, int i)
+// {
+//     if (token[i] == '\'')
+//     {
+//         i++;
+//         while (token[i] && token[i] != '\'')
+//             i++;
+//         if (token[i] == '\'')
+//             i++;
+//     }
+//     return (i);
+// }
 
-bool	has_var(char *token)
-{
-    int		i;
-    bool	d_quoted;
+// bool	has_var(char *token)
+// {
+//     int		i;
+//     bool	d_quoted;
 
-    i = 0;
-    d_quoted = false;
-    while (token && token[i])
-    {
-        d_quoted = handle_double_quotes(token[i], d_quoted);
-        if (token[i] == '\'' && !d_quoted)
-        {
-            i = skip_single_quotes(token, i);
-            continue ;
-        }
-        if (is_var_checker(token, i))
-            return (true);
-        i++;
-    }
-    return (false);
-}
+//     i = 0;
+//     d_quoted = false;
+//     while (token && token[i])
+//     {
+//         d_quoted = handle_double_quotes(token[i], d_quoted);
+//         if (token[i] == '\'' && !d_quoted)
+//         {
+//             i = skip_single_quotes(token, i);
+//             continue ;
+//         }
+//         if (is_var_checker(token, i))
+//             return (true);
+//         i++;
+//     }
+//     return (false);
+// }
 
-char	*remove_quotes(char *value)
-{
-	char	*trim;
-	int		pos[2];
-	int		quotes[2];
+// char	*remove_quotes(char *value)
+// {
+// 	char	*trim;
+// 	int		pos[2];
+// 	int		quotes[2];
 
-	quotes[0] = 0, quotes[1]= 0,pos[0] = 0, pos[1] = 0;
-	trim = ft_strdup(value);
-	if (!trim)
-		return (NULL);
-	while (value[pos[0]])
-	{
-		if (value[pos[0]] == '\'' && !quotes[1])
-		{
-			quotes[0] = !quotes[0];
-			pos[0]++;
-		}
-		else if (value[pos[0]] == '"' && !quotes[0])
-		{
-			quotes[1] = !quotes[1];
-			pos[0]++;
-		}
-		else
-			trim[pos[1]++] = value[pos[0]++];
-	}
-	trim[pos[1]] = 0;
-	free(value);
-	return (trim);
-}
+// 	quotes[0] = 0, quotes[1]= 0,pos[0] = 0, pos[1] = 0;
+// 	trim = ft_strdup(value);
+// 	if (!trim)
+// 		return (NULL);
+// 	while (value[pos[0]])
+// 	{
+// 		if (value[pos[0]] == '\'' && !quotes[1])
+// 		{
+// 			quotes[0] = !quotes[0];
+// 			pos[0]++;
+// 		}
+// 		else if (value[pos[0]] == '"' && !quotes[0])
+// 		{
+// 			quotes[1] = !quotes[1];
+// 			pos[0]++;
+// 		}
+// 		else
+// 			trim[pos[1]++] = value[pos[0]++];
+// 	}
+// 	trim[pos[1]] = 0;
+// 	free(value);
+// 	return (trim);
+// }
 
-void	trim_quotes(t_token *head)
-{
-	char *tmp;
+// void	trim_quotes(t_token *head)
+// {
+// 	char *tmp;
 
-	while (head && head->type != TOKEN_EOF)
-	{
-		if (head->value && has_quotes(head->value) && !has_var(head->value))
-		{
-			tmp = remove_quotes(head->value);
-			if (!tmp)
-				return ;
-			head->value = tmp;
-		}
-		head = head->next;
-	}
-}
+// 	while (head && head->type != TOKEN_EOF)
+// 	{
+// 		if (head->value && has_quotes(head->value) && !has_var(head->value))
+// 		{
+// 			tmp = remove_quotes(head->value);
+// 			if (!tmp)
+// 				return ;
+// 			head->value = tmp;
+// 		}
+// 		head = head->next;
+// 	}
+// }
+
+// WTF AM I DOING
