@@ -19,7 +19,7 @@
 
 # ifndef TEST
 // #  define TEST " '$var' \"$var\" \"'$var'\" $var '$var'$var "
-#  define TEST "( ls '$cat' > \"testing\"'$the'test\"\"\"\"'''''''''''''''' -e | \"$grep\" \"$txt\" > \"text_files\" ) && ( cat < Makefile-e) && echo \"Text files found\"&& cat text_files.list|| (echo \"$No text files found\" >> error.log && exit 1) | wc -l < input.txt >> results.log"
+#  define TEST "( ls *.c > \"testing\"'$the'test\"\"\"\"'''''''''''''''' -e | \"$grep\" \"$txt\" > \"text_files\" ) && ( cat < Makefile-e) && echo \"Text files found\"&& cat text_files.list|| (echo \"$No text files found\" >> error.log && exit 1) | wc -l < input.txt >> results.log"
 # endif
 
 t_lexer			*init_lexer(char *input);
@@ -68,7 +68,7 @@ void			add_back_ready_token(t_ready_token **head, t_ready_token *node);
 
 void			free_args_array(char **args, int count);
 void			free_redirs(t_redir *redirs);
-static int		count_args_in_cmd(t_cmd *cmd);
+static int		count_args_in_cmd(char **args);
 void			free_ready_tokens_list(t_ready_token *head);
 
 t_redir			*get_redirs(t_token *start, t_token *end);

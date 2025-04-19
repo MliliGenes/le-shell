@@ -46,9 +46,8 @@ int	main(void)
 	if (validate_tokens(tokens))
 		return (free(lexer), free_token_list(tokens), 1);
 	classify_tokens(tokens);
-	print_tokens(tokens);
-	trim_quotes(tokens);
-	print_tokens(tokens);
+	// trim_quotes(tokens);
+	// print_tokens(tokens);
 	extract_tokens(tokens, &ready_tokens);
 	print_ready_tokens(ready_tokens);
 	free_ready_tokens_list(ready_tokens);

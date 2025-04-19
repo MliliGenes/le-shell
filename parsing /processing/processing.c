@@ -38,8 +38,10 @@ t_redir_type	token_to_redir_type(t_token_type type)
 		return (REDIR_APPEND);
 	else if (type == TOKEN_HEREDOC)
 		return (REDIR_HEREDOC);
-	return (-1);
+		return (-1);
 }
+	
+// ###################################################################
 
 t_redir	*create_redir_node(t_redir_type type, char *file_or_limiter)
 {
@@ -53,6 +55,54 @@ t_redir	*create_redir_node(t_redir_type type, char *file_or_limiter)
 	redir->next = NULL;
 	return (redir);
 }
+
+
+t_cmd	*create_cmd_node(char **args, t_redir *redirs)
+{
+	t_cmd	*cmd;
+
+	cmd = malloc(sizeof(t_cmd));
+	if (!cmd)
+		return (NULL);
+	cmd->args = args;
+	cmd->cmd = NULL;
+	if (args)
+	cmd->cmd = args[0];
+	cmd->redirs = redirs;
+	cmd->fds[0] = 0;
+	cmd->fds[1] = 1;
+	return (cmd);
+}
+
+t_op	*create_op_node(t_op_type type)
+{
+	t_op	*op;
+	
+	op = malloc(sizeof(t_cmd));
+	if (!op)
+	return (NULL);
+	op->type = type;
+	return (op);
+}
+
+
+t_ready_token	*create_ready_token_node(void *token, int type)
+{
+	t_ready_token	*r_token;
+	
+	r_token = malloc(sizeof(t_ready_token));
+	if (!r_token || !token)
+	return (NULL);
+	r_token->p_token = token;
+	r_token->type = type;
+	r_token->next = NULL;
+	r_token->prev = NULL;
+	return (r_token);
+}
+
+
+// ###################################################################
+
 
 void	add_back_redir_node(t_redir **head, t_redir *node)
 {
@@ -69,52 +119,10 @@ void	add_back_redir_node(t_redir **head, t_redir *node)
 	tmp->next = node;
 }
 
-t_cmd	*create_cmd_node(char **args, t_redir *redirs)
-{
-	t_cmd	*cmd;
-
-	cmd = malloc(sizeof(t_cmd));
-	if (!cmd)
-		return (NULL);
-	cmd->args = args;
-	cmd->cmd = NULL;
-	if (args)
-		cmd->cmd = args[0];
-	cmd->redirs = redirs;
-	cmd->fds[0] = 0;
-	cmd->fds[1] = 1;
-	return (cmd);
-}
-
-t_op	*create_op_node(t_op_type type)
-{
-	t_op	*op;
-
-	op = malloc(sizeof(t_cmd));
-	if (!op)
-		return (NULL);
-	op->type = type;
-	return (op);
-}
-
-t_ready_token	*create_ready_token_node(void *token, int type)
-{
-	t_ready_token	*r_token;
-
-	r_token = malloc(sizeof(t_ready_token));
-	if (!r_token || !token)
-		return (NULL);
-	r_token->p_token = token;
-	r_token->type = type;
-	r_token->next = NULL;
-	r_token->prev = NULL;
-	return (r_token);
-}
-
 void	add_back_ready_token(t_ready_token **head, t_ready_token *node)
 {
 	t_ready_token	*tmp;
-
+	
 	if (!*head)
 	{
 		*head = node;
@@ -125,6 +133,20 @@ void	add_back_ready_token(t_ready_token **head, t_ready_token *node)
 		tmp = tmp->next;
 	tmp->next = node;
 	node->prev = tmp;
+}
+
+// ###################################################################
+
+static int	count_args_in_cmd(char **args)
+{
+	int	count;
+
+	count = 0;
+	if (!args)
+		return (0);
+	while (args[count])
+		count++;
+	return (count);
 }
 
 // Free arguments array
@@ -155,17 +177,6 @@ void	free_redirs(t_redir *redirs)
 	}
 }
 
-static int	count_args_in_cmd(t_cmd *cmd)
-{
-	int	count;
-
-	count = 0;
-	if (!cmd || !cmd->args)
-		return (0);
-	while (cmd->args[count])
-		count++;
-	return (count);
-}
 
 void	free_ready_tokens_list(t_ready_token *head)
 {
@@ -177,9 +188,9 @@ void	free_ready_tokens_list(t_ready_token *head)
 		next = head->next;
 		if (head->type == CMD && head->p_token)
 		{
-			cmd = (t_cmd *)head->p_token;
+			cmd = head->p_token;
 			if (cmd->args)
-				free_args_array(cmd->args, count_args_in_cmd(cmd));
+				free_args_array(cmd->args, count_args_in_cmd(cmd->args));
 			if (cmd->redirs)
 				free_redirs(cmd->redirs);
 			free(cmd);
@@ -189,6 +200,19 @@ void	free_ready_tokens_list(t_ready_token *head)
 		free(head);
 		head = next;
 	}
+}
+
+// ###################################################################
+
+bool	has_redirections(t_token *start, t_token *end)
+{
+	while (start && (end == NULL || start <= end))
+	{
+		if (is_redir(start->type))
+			return (true);
+		start = start->next;
+	}
+	return (false);
 }
 
 t_redir	*get_redirs(t_token *start, t_token *end)
@@ -213,17 +237,6 @@ t_redir	*get_redirs(t_token *start, t_token *end)
 		start = start->next;
 	}
 	return (redirs);
-}
-
-bool	has_redirections(t_token *start, t_token *end)
-{
-	while (start && (end == NULL || start <= end))
-	{
-		if (is_redir(start->type))
-			return (true);
-		start = start->next;
-	}
-	return (false);
 }
 
 int	count_args(t_token *start, t_token *end)
@@ -268,6 +281,8 @@ char	**get_args(t_token *start, t_token *end)
 	return (args[i] = NULL, args);
 }
 
+// ###################################################################
+
 t_cmd	*extract_cmd_data(t_token *start, t_token *end)
 {
 	t_cmd	*cmd;
@@ -285,12 +300,7 @@ t_cmd	*extract_cmd_data(t_token *start, t_token *end)
 	cmd = create_cmd_node(args, redirs);
 	if (!cmd)
 	{
-		if (args)
-		{
-			for (int i = 0; args[i]; i++)
-				free(args[i]);
-			free(args);
-		}
+		free_args_array(args, count_args_in_cmd(args));
 		free_redirs(redirs);
 	}
 	return (cmd);
@@ -307,10 +317,19 @@ bool	process_command_segment(t_token *start, t_token *end,
 		return (false);
 	cmd_token = create_ready_token_node(cmd, CMD);
 	if (!cmd_token)
+	{	
+		if (cmd->args)
+			free_args_array(cmd->args, count_args_in_cmd(cmd->args));
+		if (cmd->redirs)
+			free_redirs(cmd->redirs);
+		free(cmd);
 		return (false);
+	}
 	add_back_ready_token(head, cmd_token);
 	return (true);
 }
+
+// ###################################################################
 
 bool	add_operator_to_list(t_token *current, t_ready_token **head)
 {
@@ -322,10 +341,12 @@ bool	add_operator_to_list(t_token *current, t_ready_token **head)
 		return (false);
 	op_token = create_ready_token_node(op_node, OP);
 	if (!op_token)
-		return (false); // freeing op_node
+		return (free(op_node), false);
 	add_back_ready_token(head, op_token);
 	return (true);
 }
+
+// ###################################################################
 
 bool	extract_tokens(t_token *tokens, t_ready_token **head)
 {
