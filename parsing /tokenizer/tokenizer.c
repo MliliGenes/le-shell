@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 21:27:08 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/19 02:01:11 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/19 02:02:14 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,11 +96,11 @@ bool	has_var(char *token)
 			i++;
 			while (token[i] && token[i] != '\'')
 				i++;
+			if (!token[i])
+				return (false);
 		}
-		if (!token[i])
-			return (false);
-		if (token[i] == '$' && !token[i + 1] && token[i + 1] != '"' && !is_white_space(token[i
-				+ 1]))
+		if (token[i] == '$' && !token[i + 1] && token[i + 1] != '"'
+			&& !is_white_space(token[i + 1]))
 			return (true);
 		i++;
 	}
