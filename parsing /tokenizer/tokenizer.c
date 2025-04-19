@@ -70,49 +70,6 @@ bool	has_quotes(char *token)
 	return (false);
 }
 
-bool	is_var(char *chunk)
-{
-	int	i;
-
-	i = 0;
-	return (chunk[i] == '$' && chunk[i + 1]);
-}
-
-bool	is_var_checker(char *token, int i)
-{
-	return (token[i] == '$' && token[i + 1] && !is_white_space(token[i + 1])
-		&& token[i + 1] != '"');
-}
-
-bool	has_var(char *token)
-{
-	int		i;
-	bool	d_quoted;
-
-	i = 0;
-	d_quoted = false;
-	while (token && token[i])
-	{
-		if (token[i] == '"')
-		{
-			d_quoted = !d_quoted;
-			i++;
-			continue ;
-		}
-		if (token[i] == '\'' && !d_quoted)
-		{
-			i++;
-			while (token[i] && token[i] != '\'')
-				i++;
-			continue ;
-		}
-		if (is_var_checker(token, i))
-			return (true);
-		i++;
-	}
-	return (false);
-}
-
 bool	is_full_operator(t_lexer *lexer)
 {
 	char	c;
@@ -497,6 +454,43 @@ void	classify_tokens(t_token *head)
 			is_cmd_found = false;
 		head = head->next;
 	}
+}
+
+static bool	is_var_checker(char *token, int i)
+{
+	return (token[i] && token[i] == '$' && token[i + 1] && !is_white_space(token[i + 1])
+		&& token[i + 1] != '"');
+}
+
+bool	has_var(char *token)
+{
+	int		i;
+	bool	d_quoted;
+
+	i = 0;
+	d_quoted = false;
+	while (token && token[i])
+	{
+		if (token[i] == '"')
+		{
+			d_quoted = !d_quoted;
+			i++;
+			continue ;
+		}
+		if (token[i] == '\'' && !d_quoted)
+		{
+			i++;
+			while (token[i] && token[i] != '\'')
+				i++;
+			if (token[i] == '\'')
+				i++;
+			continue ;
+		}
+		if (is_var_checker(token, i))
+			return (true);
+		i++;
+	}
+	return (false);
 }
 
 char	*remove_quotes(char *value)

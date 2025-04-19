@@ -18,8 +18,8 @@
 # include "structs.h"
 
 # ifndef TEST
-// #  define TEST " '$var' "
-#  define TEST "( ls '$cat' > \"testing\"'$the'$test\"\"\"\"'''''''''''''''' -e | \"$grep\" \"$txt\" > \"text_files\" ) && ( cat < Makefile-e) && echo \"Text files found\"&& cat text_files.list|| (echo \"$No text files found\" >> error.log && exit 1) | wc -l < input.txt >> results.log"
+// #  define TEST " '$var' \"$var\" \"'$var'\" $var '$var'$var "
+#  define TEST "( ls '$cat' > \"testing\"'$the'test\"\"\"\"'''''''''''''''' -e | \"$grep\" \"$txt\" > \"text_files\" ) && ( cat < Makefile-e) && echo \"Text files found\"&& cat text_files.list|| (echo \"$No text files found\" >> error.log && exit 1) | wc -l < input.txt >> results.log"
 # endif
 
 t_lexer			*init_lexer(char *input);
@@ -36,8 +36,7 @@ bool			is_operator(char c);
 bool			is_op(t_token_type type);
 bool			is_redir(t_token_type type);
 bool			is_word(t_token_type type);
-bool			is_paren(t_token_type type);
-bool			is_var(char *chunk);
+bool			is_paren(t_token_type type); 
 bool			has_var(char *token);
 bool			has_quotes(char *token);
 bool			is_full_operator(t_lexer *lexer);
