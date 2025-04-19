@@ -6,11 +6,12 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 21:27:08 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/19 02:02:14 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/19 02:55:20 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/parsing.h"
+#include <ctype.h>
 
 bool	is_white_space(char c)
 {
@@ -77,6 +78,12 @@ bool	is_var(char *chunk)
 	return (chunk[i] == '$' && chunk[i + 1]);
 }
 
+bool	is_var_checker(char *token, int i)
+{
+	return (token[i] == '$' && token[i + 1] && !is_white_space(token[i + 1])
+		&& token[i + 1] != '"');
+}
+
 bool	has_var(char *token)
 {
 	int		i;
@@ -90,17 +97,16 @@ bool	has_var(char *token)
 		{
 			d_quoted = !d_quoted;
 			i++;
+			continue ;
 		}
-		if (!d_quoted && token[i] == '\'')
+		if (token[i] == '\'' && !d_quoted)
 		{
 			i++;
 			while (token[i] && token[i] != '\'')
 				i++;
-			if (!token[i])
-				return (false);
+			continue ;
 		}
-		if (token[i] == '$' && !token[i + 1] && token[i + 1] != '"'
-			&& !is_white_space(token[i + 1]))
+		if (is_var_checker(token, i))
 			return (true);
 		i++;
 	}
