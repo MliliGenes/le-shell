@@ -90,6 +90,8 @@ bool	is_full_operator(t_lexer *lexer)
 	return (false);
 }
 
+// ###################################################################
+
 /* Lexer initialization */
 t_lexer	*init_lexer(char *input)
 {
@@ -104,6 +106,25 @@ t_lexer	*init_lexer(char *input)
 	lexer->len = ft_strlen(input);
 	return (lexer);
 }
+
+/* Lexer operations */
+void	advance_lexer(t_lexer *lexer)
+{
+	if (lexer->pos < lexer->len)
+	{
+		lexer->pos++;
+		lexer->current_char = lexer->input[lexer->pos];
+	}
+}
+
+// skipping spaces
+void	skip_whitespace(t_lexer *lexer)
+{
+	while (lexer->pos < lexer->len && is_white_space(lexer->current_char))
+		advance_lexer(lexer);
+}
+
+// ###################################################################
 
 /* Token creation/destruction */
 t_token	*create_token(t_token_type type, char *value)
@@ -160,15 +181,7 @@ void	free_token_list(t_token *head)
 	}
 }
 
-/* Lexer operations */
-void	advance_lexer(t_lexer *lexer)
-{
-	if (lexer->pos < lexer->len)
-	{
-		lexer->pos++;
-		lexer->current_char = lexer->input[lexer->pos];
-	}
-}
+// ###################################################################
 
 int	check_quotes_balance(const char *input)
 {
@@ -257,35 +270,89 @@ bool	check_m_percent(char *input)
 	return (false);
 }
 
-// skipping spaces
-void	skip_whitespace(t_lexer *lexer)
+int	validate_tokens(t_token *head)
 {
-	while (lexer->pos < lexer->len && is_white_space(lexer->current_char))
-		advance_lexer(lexer);
+	while (head->type != TOKEN_EOF)
+	{
+		if (is_redir(head->type) && (!head->next
+				|| head->next->type != TOKEN_WORD))
+			return (1);
+		if (is_op(head->type) && head->next && is_op(head->next->type))
+			return (1);
+		if (is_redir(head->type) && head->next && is_redir(head->next->type))
+			return (1);
+		if (head->type == TOKEN_PL && head->next && (is_op(head->next->type)
+				|| head->next->type == TOKEN_PR))
+			return (1);
+		if (head->type == TOKEN_PR && head->next && !is_op(head->next->type)
+			&& !is_redir(head->next->type) && head->next->type != TOKEN_PR
+			&& head->next->type != TOKEN_EOF)
+			return (1);
+		if (head->n_index > 0 && head->type == TOKEN_PL && head->prev
+			&& !is_op(head->prev->type) && head->prev->type != TOKEN_PL)
+			return (1);
+		if ((head->n_index == 0 && is_op(head->type)) || (is_op(head->type)
+				&& head->next && head->next->type == TOKEN_EOF))
+			return (1);
+		head = head->next;
+	}
+	return (0);
 }
+
+// ###################################################################
 
 t_token_type	classify_operator(char *op)
 {
 	if (ft_strcmp(op, "|") == 0)
-		return (TOKEN_PIPE);
+	return (TOKEN_PIPE);
 	if (ft_strcmp(op, "||") == 0)
 		return (TOKEN_OR);
 	if (ft_strcmp(op, "&&") == 0)
 		return (TOKEN_AND);
 	if (ft_strcmp(op, "<") == 0)
 		return (TOKEN_REDIR_IN);
-	if (ft_strcmp(op, "<<") == 0)
+		if (ft_strcmp(op, "<<") == 0)
 		return (TOKEN_HEREDOC);
 	if (ft_strcmp(op, ">") == 0)
 		return (TOKEN_REDIR_OUT);
 	if (ft_strcmp(op, ">>") == 0)
-		return (TOKEN_APPEND);
+	return (TOKEN_APPEND);
 	if (ft_strcmp(op, "(") == 0)
-		return (TOKEN_PL);
+	return (TOKEN_PL);
 	if (ft_strcmp(op, ")") == 0)
-		return (TOKEN_PR);
+	return (TOKEN_PR);
 	return (TOKEN_WORD);
 }
+
+void	classify_tokens(t_token *head)
+{
+	bool	is_cmd_found;
+
+	is_cmd_found = false;
+	while (head->type != TOKEN_EOF)
+	{
+		if (head->type == TOKEN_WORD && head->prev
+			&& is_redir(head->prev->type))
+			head->type = TOKEN_FILE;
+		if (!is_cmd_found && ((head->n_index == 0 && head->type == TOKEN_WORD)
+				|| (head->type == TOKEN_WORD && head->prev
+					&& (is_op(head->prev->type)
+						|| head->prev->type == TOKEN_PL))
+				|| (head->type == TOKEN_WORD && head->prev
+					&& head->prev->type == TOKEN_FILE)))
+		{
+			head->type = TOKEN_COMMAND;
+			is_cmd_found = true;
+		}
+		if (head->type == TOKEN_WORD)
+			head->type = TOKEN_ARG;
+		if (is_op(head->type))
+			is_cmd_found = false;
+		head = head->next;
+	}
+}
+
+// ###################################################################
 
 // collect words
 t_token	*handle_word(t_lexer *lexer)
@@ -368,12 +435,14 @@ t_token	*handle_operator(t_lexer *lexer)
 	return (token);
 }
 
+// ###################################################################
+
 /* Main tokenization */
 t_token	*get_next_token(t_lexer *lexer)
 {
 	skip_whitespace(lexer);
 	if (lexer->current_char == '\0')
-		return (create_token(TOKEN_EOF, NULL));
+	return (create_token(TOKEN_EOF, NULL));
 	if (lexer->current_char == '\'' || lexer->current_char == '"')
 		return (handle_quoted(lexer));
 	if (is_operator(lexer->current_char) && is_full_operator(lexer))
@@ -388,8 +457,6 @@ void	create_tokens_list(t_lexer *lexer, t_token **head)
 	while (true)
 	{
 		token = get_next_token(lexer);
-		// if (!token)
-		// free and retuen
 		if (token->type == TOKEN_EOF)
 		{
 			add_back_token(head, token);
@@ -399,62 +466,8 @@ void	create_tokens_list(t_lexer *lexer, t_token **head)
 	}
 }
 
-int	validate_tokens(t_token *head)
-{
-	while (head->type != TOKEN_EOF)
-	{
-		if (is_redir(head->type) && (!head->next
-				|| head->next->type != TOKEN_WORD))
-			return (1);
-		if (is_op(head->type) && head->next && is_op(head->next->type))
-			return (1);
-		if (is_redir(head->type) && head->next && is_redir(head->next->type))
-			return (1);
-		if (head->type == TOKEN_PL && head->next && (is_op(head->next->type)
-				|| head->next->type == TOKEN_PR))
-			return (1);
-		if (head->type == TOKEN_PR && head->next && !is_op(head->next->type)
-			&& !is_redir(head->next->type) && head->next->type != TOKEN_PR
-			&& head->next->type != TOKEN_EOF)
-			return (1);
-		if (head->n_index > 0 && head->type == TOKEN_PL && head->prev
-			&& !is_op(head->prev->type) && head->prev->type != TOKEN_PL)
-			return (1);
-		if ((head->n_index == 0 && is_op(head->type)) || (is_op(head->type)
-				&& head->next && head->next->type == TOKEN_EOF))
-			return (1);
-		head = head->next;
-	}
-	return (0);
-}
+// ###################################################################
 
-void	classify_tokens(t_token *head)
-{
-	bool	is_cmd_found;
-
-	is_cmd_found = false;
-	while (head->type != TOKEN_EOF)
-	{
-		if (head->type == TOKEN_WORD && head->prev
-			&& is_redir(head->prev->type))
-			head->type = TOKEN_FILE;
-		if (!is_cmd_found && ((head->n_index == 0 && head->type == TOKEN_WORD)
-				|| (head->type == TOKEN_WORD && head->prev
-					&& (is_op(head->prev->type)
-						|| head->prev->type == TOKEN_PL))
-				|| (head->type == TOKEN_WORD && head->prev
-					&& head->prev->type == TOKEN_FILE)))
-		{
-			head->type = TOKEN_COMMAND;
-			is_cmd_found = true;
-		}
-		if (head->type == TOKEN_WORD)
-			head->type = TOKEN_ARG;
-		if (is_op(head->type))
-			is_cmd_found = false;
-		head = head->next;
-	}
-}
 
 // static bool	is_var_checker(char *token, int i)
 // {
