@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 08:45:31 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/04 14:17:27 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/19 00:19:47 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ char	*ft_strdup(const char *s)
 	size_t	i;
 	char	*dup;
 
+	if (!s)
+		return (NULL);
 	len = ft_strlen(s);
 	dup = malloc(len + 1);
 	if (!dup)
@@ -66,7 +68,7 @@ char	*ft_strndup(const char *s, size_t n)
 
 int	ft_strncmp(const char *s1, const char *s2, size_t n)
 {
-	size_t i;
+	size_t	i;
 
 	if (n == 0)
 		return (0);
@@ -82,12 +84,12 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 	return (0);
 }
 
-int ft_strcmp(const char *s1, const char *s2)
+int	ft_strcmp(const char *s1, const char *s2)
 {
-    while (*s1 && (*s1 == *s2))
-    {
-        s1++;
-        s2++;
-    }
-    return *(const unsigned char *)s1 - *(const unsigned char *)s2;
+	while (*s1 && (*s1 == *s2))
+	{
+		s1++;
+		s2++;
+	}
+	return (*(const unsigned char *)s1 - *(const unsigned char *)s2);
 }

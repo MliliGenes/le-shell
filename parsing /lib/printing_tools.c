@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 21:57:52 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/18 22:52:01 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/19 01:54:07 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,10 +70,10 @@ void	print_tokens(t_token *head)
 		{
 			printf("is var: %s\n",has_var(t->value) ? "yes" : "no");
 		}
-		if(is_word(t->type) || t->type == TOKEN_FILE)
-		{
-			printf("is quotes: %s\n",has_quotes(t->value) ? "yes" : "no");
-		}
+		// if(is_word(t->type) || t->type == TOKEN_FILE)
+		// {
+		// 	printf("is quotes: %s\n",has_quotes(t->value) ? "yes" : "no");
+		// }
 	}
 	printf("%s----------------\n%s", BOLDWHITE, RESET);
 }

@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 20:09:35 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/16 20:56:27 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/19 00:23:02 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,8 +172,6 @@ void	free_ready_tokens_list(t_ready_token *head)
 	t_ready_token	*next;
 	t_cmd			*cmd;
 
-	if (!head)
-		return ;
 	while (head)
 	{
 		next = head->next;
@@ -187,7 +185,6 @@ void	free_ready_tokens_list(t_ready_token *head)
 			free(cmd);
 		}
 		else if (head->type == OP && head->p_token)
-
 			free(head->p_token);
 		free(head);
 		head = next;
@@ -332,9 +329,11 @@ bool	add_operator_to_list(t_token *current, t_ready_token **head)
 
 bool	extract_tokens(t_token *tokens, t_ready_token **head)
 {
-	t_token *cmd_start;
-	t_token *current;
+	t_token	*cmd_start;
+	t_token	*current;
 
+	if (!tokens)
+		return (false);
 	cmd_start = tokens;
 	current = tokens;
 	while (current->type != TOKEN_EOF)
