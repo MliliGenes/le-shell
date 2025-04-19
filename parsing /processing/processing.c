@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 20:09:35 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/19 00:23:02 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/19 22:24:56 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -371,6 +371,5 @@ bool	extract_tokens(t_token *tokens, t_ready_token **head)
 	}
 	if (cmd_start && cmd_start->type != TOKEN_EOF)
 		process_command_segment(cmd_start, NULL, head);
-	free_token_list(tokens);
 	return (true);
 }
