@@ -48,14 +48,14 @@ void	ll(void)
 	system("leaks parser");
 }
 
-t_parser	*init_parser(t_ready_token *head)
+t_parser	*init_parser()
 {
 	t_parser	*parser;
 
 	parser = malloc(sizeof(t_parser));
 	if (!parser)
 		return (NULL);
-	parser->infix_note = head;
+	parser->infix_note = NULL;
 	parser->postfix_note = NULL;
 	parser->ops_stack = NULL;
 	return (parser);
@@ -92,13 +92,13 @@ void build_post_fix(t_parser *parser)
         }
         else if (current_node->type == OP)
         {
-			if (get_operator_precedence(parser->ops_stack->p_token->type) >= get_operator_precedence(current_node->p_token->type))
+			// if (get_operator_precedence(parser->ops_stack->p_token->type) >= get_operator_precedence(current_node->p_token->type))
             add_front_ops_stack(&parser->ops_stack, current_node);
         }
     }
 }
 
-bool	check_balance(char *input)
+bool	check_input(char *input)
 {
 	return (check_quotes_balance(input) || check_parenthesis_balance(input)
 		|| check_m_percent(input));
@@ -108,33 +108,31 @@ int	main(void)
 {
 	t_lexer			*lexer;
 	t_token			*tokens;
-	t_ready_token	*ready_tokens;
 	t_parser		*parser;
 
 	// atexit(ll);
-	if (check_balance(TEST))
+	if (check_input(TEST))
 		return (1);
 	lexer = NULL;
 	tokens = NULL;
-	ready_tokens = NULL;
 	parser = NULL;
 	lexer = init_lexer(TEST);
 	if (!lexer)
 		return (1);
 	create_tokens_list(lexer, &tokens);
-	if (validate_tokens(tokens))
+	if (!tokens->value || validate_tokens(tokens))
 		return (free(lexer), free_token_list(tokens), 1);
-	classify_tokens(tokens);
-	extract_tokens(tokens, &ready_tokens);
-	parser = init_parser(ready_tokens);
+	parser = init_parser();
 	if (!parser)
-		return (printf("wtf\n"), 1);
+		return (1);
+	classify_tokens(tokens);
+	extract_tokens(tokens, &parser->infix_note);
 	print_ready_tokens(parser->infix_note);
 	build_post_fix(parser);
-	print_ready_tokens(parser->postfix_note);
-	print_ready_tokens(parser->ops_stack);
+	// print_ready_tokens(parser->postfix_note);
+	// print_ready_tokens(parser->ops_stack);
 	// trim_quotes(tokens); TODO
-	// print_tokens(tokens);
+	print_tokens(tokens);
 	// print_ready_tokens(parser->postfix_note);
 	// free_ready_tokens_list(ready_tokens);
 	free_token_list(tokens);

@@ -18,8 +18,8 @@
 # include "structs.h"
 
 # ifndef TEST
-// #  define TEST " '$var' \"$var\" \"'$var'\" $var '$var'$var "
-#  define TEST "( ls *.c > \"testing\"'$the'test\"\"\"\"'''''''''''''''' -e | \"$grep\" \"$txt\" > \"text_files\" ) && ( cat < Makefile-e) && echo \"Text files found\"&& cat text_files.list|| (echo \"$No text files found\" >> error.log && exit 1) | wc -l < input.txt >> results.log"
+#  define TEST " << heredoc hello > file >> appending arg && cat Makefile > testing || echo 'no file' "
+// #  define TEST "( ls *.c > \"testing\"'$the'test\"\"\"\"'''''''''''''''' -e | \"$grep\" \"$txt\" > \"text_files\" ) && ( cat < Makefile-e) && echo \"Text files found\"&& cat text_files.list|| (echo \"$No text files found\" >> error.log && exit 1) | wc -l < input.txt >> results.log"
 # endif
 
 t_lexer			*init_lexer(char *input);
