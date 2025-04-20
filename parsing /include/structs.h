@@ -173,8 +173,8 @@ typedef struct s_ready_token
 
 typedef struct s_parser
 {
-	t_ready_token			*ops_stack;
 	t_ready_token			*infix_note;
+	t_ready_token			*ops_stack;
 	t_ready_token			*postfix_note;
 }							t_parser;
 
