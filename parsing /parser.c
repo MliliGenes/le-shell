@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 23:35:56 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/19 23:55:41 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/20 22:19:59 by le-saad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,11 @@ t_ready_token *pop_infix_note(t_parser *parser)
     return (popped_node);
 }
 
+// void handle_op(t_parser *parser)
+// {
+	
+// }
+
 void build_post_fix(t_parser *parser)
 {
     t_ready_token *current_node;
@@ -92,8 +97,9 @@ void build_post_fix(t_parser *parser)
         }
         else if (current_node->type == OP)
         {
-			// if (get_operator_precedence(parser->ops_stack->p_token->type) >= get_operator_precedence(current_node->p_token->type))
+			// if (get_operator_precedence(parser->ops_stack->p_token->type) >= get_operator_precedence(curr	ent_node->p_token->type))
             add_front_ops_stack(&parser->ops_stack, current_node);
+			
         }
     }
 }
