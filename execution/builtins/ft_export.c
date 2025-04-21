@@ -6,7 +6,7 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 21:42:50 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/04/16 22:46:05 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/04/21 23:11:04 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,7 +159,7 @@ void	process_export_arg(char *arg, t_env_var **env_list)
 	t_env_kv kv;
 
 	kv = split_key_value(arg);
-	if (key_exist(*env_list, kv.key))
+	if (*env_list && key_exist(*env_list, kv.key))
 	{
 		if (kv.has_value)
 			env_update(*env_list, kv.key, kv.value);
@@ -182,7 +182,7 @@ void	process_export_arg(char *arg, t_env_var **env_list)
 	free(kv.value);
 }
 
-void	handle_export(char *input, t_env_var *env_list)
+void	handle_export(char *input, t_env_var **env_list)
 {
 	int i;
 
@@ -193,7 +193,7 @@ void	handle_export(char *input, t_env_var *env_list)
 	if (ft_strcmp(args[0], "export") == 0)
 	{
 		if (!args[i])
-			print_export(env_list);
+			print_export(*env_list);
 		else
 		{
 			while (args[i])
@@ -205,7 +205,7 @@ void	handle_export(char *input, t_env_var *env_list)
 					ft_putstr_fd("': not a valid identifier\n", 2);
 				}
 				else
-					process_export_arg(args[i], &env_list);
+					process_export_arg(args[i], env_list);
 				i++;
 			}
 		}

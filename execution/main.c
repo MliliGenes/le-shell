@@ -6,7 +6,7 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 03:02:50 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/04/17 22:22:44 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/04/21 23:07:57 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int main(int argc, char *argv[], char *envp[])
 			break ;
 		}
 		if (ft_strlen(expand_input) > 0 && expand_input)
-			exec_builtins(expand_input, env_list);
+			exec_builtins(expand_input, &env_list);
 		free(expand_input);
 		free(input);
 	}

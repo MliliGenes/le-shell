@@ -6,7 +6,7 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 03:20:58 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/04/17 22:36:46 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/04/21 23:08:15 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,12 @@ int	is_valid_key(char *str);
 int key_exist(t_env_var *env_list, char *key);
 
 // builtins functions:
-void exec_builtins(char *input, t_env_var *env_list);
+void exec_builtins(char *input, t_env_var **env_list);
 void handle_pwd(char *input);
 void handle_echo(char *input);
 void handle_exit(char *input);
 void handle_env(char *input, t_env_var *env_list);
-void handle_export(char *input, t_env_var *env_list);
+void handle_export(char *input, t_env_var **env_list);
 void handle_unset(char *input, t_env_var **env_list);
 
 // env
