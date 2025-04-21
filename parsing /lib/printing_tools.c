@@ -6,12 +6,11 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 21:57:52 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/19 02:47:42 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/21 04:45:01 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/structs.h"
-#include "../include/parsing.h"
 
 #define RESET       "\033[0m"
 #define RED         "\033[31m"
@@ -83,7 +82,6 @@ void	print_ready_tokens(t_ready_token *head)
 
 	current = head;
 	index = 0;
-	printf("\n%s--- Ready Tokens List ---%s\n", BOLDWHITE, RESET);
 	while (current)
 	{
 		printf("[%d] Type: %s%s%s\n", index++,
@@ -156,5 +154,4 @@ void	print_ready_tokens(t_ready_token *head)
 		printf("\n");
 		current = current->next;
 	}
-	printf("%s--- End of Ready Tokens ---%s\n\n", BOLDWHITE, RESET);
 }

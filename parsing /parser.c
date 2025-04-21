@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 23:35:56 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/21 03:30:51 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/21 04:51:00 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ void	op_to_postfix(t_ready_token *op, t_parser *parser)
 	add_front_ops_stack(&parser->ops_stack, op);
 }
 
-void	build_post_fix(t_parser *parser)
+void	shunting_yard(t_parser *parser)
 {
 	t_ready_token	*current_node;
 
@@ -139,7 +139,6 @@ void	print_postfix_notation(t_ready_token *head)
 	t_op			*op;
 
 	current = head;
-	printf("--- Postfix Notation ---\n");
 	while (current)
 	{
 		if (current->type == CMD)
@@ -163,7 +162,7 @@ void	print_postfix_notation(t_ready_token *head)
 		}
 		current = current->next;
 	}
-	printf("\n--- End of Postfix Notation ---\n");
+	printf("\n");
 }
 
 int	main(void)
@@ -190,7 +189,8 @@ int	main(void)
 	classify_tokens(tokens);
 	extract_tokens(tokens, &parser->infix_note);
 	print_postfix_notation(parser->infix_note);
-	build_post_fix(parser);
+	shunting_yard(parser);
+	print_postfix_notation(parser->postfix_note);
 	print_ready_tokens(parser->postfix_note);
 	// print_tokens(tokens);
 	// free_ready_tokens_list(ready_tokens);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 06:20:05 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/20 19:04:33 by le-saad          ###   ########.fr       */
+/*   Updated: 2025/04/21 04:52:06 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,14 +195,10 @@ typedef struct s_ast
 	{
 		AST_CMD,
 		AST_OP,
-		AST_SUB_SHELL
 	} type;
-
-	t_cmd					*cmd;
-	t_op_type				op;
+	t_ready_token			*node;
 	struct s_ast			*left;
 	struct s_ast			*right;
-	struct s_ast			*sub_shell;
 }							t_ast;
 
 /**
