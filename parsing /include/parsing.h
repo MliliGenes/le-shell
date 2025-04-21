@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 09:14:40 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/21 05:12:50 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/21 05:55:46 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,6 @@
 # include "dependencies.h"
 # include "lib.h"
 # include "structs.h"
-
-# ifndef TEST
-// #  define TEST " << heredoc hello > file >> appending arg && cat Makefile > testing || echo 'no file' | ls | cat | echo 'saxa' && ps | exit 555"
-#  define TEST "( ls *.c > \"testing\"'$the'test\"\"\"\"'''''''''''''''' -e | \"$grep\" \"$txt\" > \"text_files\" ) && ( cat < Makefile-e) && echo \"Text files found\"&& cat text_files.list|| (echo \"$No text files found\" >> error.log && exit 1) | wc -l < input.txt >> results.log"
-# endif
 
 t_lexer			*init_lexer(char *input);
 void			advance_lexer(t_lexer *lexer);
@@ -37,8 +32,6 @@ bool			is_op(t_token_type type);
 bool			is_redir(t_token_type type);
 bool			is_word(t_token_type type);
 bool			is_paren(t_token_type type); 
-// bool			has_var(char *token);
-// bool			has_quotes(char *token);
 bool			is_full_operator(t_lexer *lexer);
 t_token_type	classify_operator(char *op);
 
@@ -53,7 +46,6 @@ int				check_parenthesis_balance(const char *input);
 bool			check_m_percent(char *input);
 int				validate_tokens(t_token *head);
 void			classify_tokens(t_token *head);
-void			trim_quotes(t_token *head);
 
 t_op_type		token_to_op_type(t_token_type type);
 t_redir_type	token_to_redir_type(t_token_type type);

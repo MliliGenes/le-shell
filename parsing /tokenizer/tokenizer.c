@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 21:27:08 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/19 22:51:37 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/21 05:47:14 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -436,7 +436,6 @@ t_token	*handle_operator(t_lexer *lexer)
 
 // ###################################################################
 
-/* Main tokenization */
 t_token	*get_next_token(t_lexer *lexer)
 {
 	skip_whitespace(lexer);
@@ -562,5 +561,3 @@ void	create_tokens_list(t_lexer *lexer, t_token **head)
 // 		head = head->next;
 // 	}
 // }
-
-// WTF AM I DOING

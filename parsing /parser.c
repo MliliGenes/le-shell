@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 23:35:56 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/21 05:38:03 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/21 05:58:30 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,6 @@ t_parser	*init_parser(void)
 	parser->infix_note = NULL;
 	parser->postfix_note = NULL;
 	parser->ops_stack = NULL;
-	parser->garbage = NULL;
 	return (parser);
 }
 
@@ -174,6 +173,11 @@ void	print_postfix_notation(t_ready_token *head)
 	}
 	printf("\n");
 }
+
+# ifndef TEST
+#  define TEST " << heredoc hello > file >> appending arg && cat Makefile > testing || echo 'no file' | ls | cat | echo 'saxa' && ps | exit 555"
+// #  define TEST "( ls *.c > \"testing\"'$the'test\"\"\"\"'''''''''''''''' -e | \"$grep\" \"$txt\" > \"text_files\" ) && ( cat < Makefile-e) && echo \"Text files found\"&& cat text_files.list|| (echo \"$No text files found\" >> error.log && exit 1) | wc -l < input.txt >> results.log"
+# endif
 
 int	main(void)
 {

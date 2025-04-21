@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 06:20:05 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/21 05:15:31 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/21 05:55:35 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,19 +50,15 @@ typedef enum e_token_type
 	TOKEN_COMMAND,
 	TOKEN_ARG,
 	TOKEN_FILE,
-
 	TOKEN_REDIR_IN,
 	TOKEN_REDIR_OUT,
 	TOKEN_APPEND,
 	TOKEN_HEREDOC,
-
 	TOKEN_PIPE,
 	TOKEN_AND,
 	TOKEN_OR,
-
 	TOKEN_PL,
 	TOKEN_PR,
-
 	TOKEN_EOF
 }							t_token_type;
 
@@ -148,35 +144,25 @@ typedef struct s_op
 	t_op_type				type;
 }							t_op;
 
+typedef enum e_ready_token_type
+{
+	CMD,
+	OP,
+}							t_ready_token_type;
+
 typedef struct s_ready_token
 {
-	enum
-	{
-		CMD,
-		OP,
-	} type;
+	t_ready_token_type		type;
 	void					*p_token;
 	struct s_ready_token	*next;
 	struct s_ready_token	*prev;
 }							t_ready_token;
-
-// typedef struct s_stack
-// {
-// 	t_ready_token			*top;
-// }								t_stack;
-
-// typedef struct s_queue
-// {
-// 	t_ready_token			*front;
-// 	t_ready_token			*rear;
-// }								t_queue;
 
 typedef struct s_parser
 {
 	t_ready_token			*infix_note;
 	t_ready_token			*ops_stack;
 	t_ready_token			*postfix_note;
-	t_ready_token			*garbage;
 }							t_parser;
 
 /**
@@ -192,11 +178,6 @@ typedef struct s_parser
  */
 typedef struct s_ast
 {
-	enum
-	{
-		AST_CMD,
-		AST_OP,
-	} type;
 	t_ready_token			*node;
 	struct s_ast			*left;
 	struct s_ast			*right;
