@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 06:20:05 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/19 23:52:36 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/20 19:04:33 by le-saad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,8 +194,7 @@ typedef struct s_ast
 	enum
 	{
 		AST_CMD,
-		AST_PIPE,
-		AST_AND_OR,
+		AST_OP,
 		AST_SUB_SHELL
 	} type;
 
