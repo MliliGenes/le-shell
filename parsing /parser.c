@@ -6,7 +6,7 @@
 /*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 23:35:56 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/21 06:11:51 by le-saad          ###   ########.fr       */
+/*   Updated: 2025/04/21 06:32:32 by le-saad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,7 +181,7 @@ int	main(void)
 	t_token		*tokens;
 	t_parser	*parser;
 
-	atexit(ll);
+	// atexit(ll);
 	if (check_input(TEST))
 		return (1);
 	lexer = NULL;
@@ -201,8 +201,6 @@ int	main(void)
 	print_postfix_notation(parser->infix_note);
 	shunting_yard(parser);
 	print_postfix_notation(parser->postfix_note);
-	// print_ready_tokens(parser->postfix_note);
-	// print_tokens(tokens);
 	// TODO wrap the freeing
 	free_ready_tokens_list(parser->postfix_note);
 	free_token_list(tokens);
