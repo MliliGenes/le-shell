@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 09:14:40 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/21 03:31:27 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/21 05:12:50 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@
 # include "structs.h"
 
 # ifndef TEST
-#  define TEST " << heredoc hello > file >> appending arg && cat Makefile > testing || echo 'no file' | ls | cat | echo 'saxa' && ps | exit 555"
-// #  define TEST "( ls *.c > \"testing\"'$the'test\"\"\"\"'''''''''''''''' -e | \"$grep\" \"$txt\" > \"text_files\" ) && ( cat < Makefile-e) && echo \"Text files found\"&& cat text_files.list|| (echo \"$No text files found\" >> error.log && exit 1) | wc -l < input.txt >> results.log"
+// #  define TEST " << heredoc hello > file >> appending arg && cat Makefile > testing || echo 'no file' | ls | cat | echo 'saxa' && ps | exit 555"
+#  define TEST "( ls *.c > \"testing\"'$the'test\"\"\"\"'''''''''''''''' -e | \"$grep\" \"$txt\" > \"text_files\" ) && ( cat < Makefile-e) && echo \"Text files found\"&& cat text_files.list|| (echo \"$No text files found\" >> error.log && exit 1) | wc -l < input.txt >> results.log"
 # endif
 
 t_lexer			*init_lexer(char *input);

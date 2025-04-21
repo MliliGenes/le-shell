@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 23:35:56 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/21 04:51:00 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/21 05:38:03 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	get_op_precedence(t_ready_token *token)
 
 	op_type = ((t_op *)token->p_token)->type;
 	if (op_type == OP_AND)
-		return (2); 
+		return (2);
 	else if (op_type == OP_OR)
 		return (1);
 	else if (op_type == OP_PIPE)
@@ -46,24 +46,6 @@ void	push_to_postfix(t_ready_token **head, t_ready_token *node)
 	add_back_ready_token(head, node);
 }
 
-void	ll(void)
-{
-	system("leaks parser");
-}
-
-t_parser	*init_parser(void)
-{
-	t_parser	*parser;
-
-	parser = malloc(sizeof(t_parser));
-	if (!parser)
-		return (NULL);
-	parser->infix_note = NULL;
-	parser->postfix_note = NULL;
-	parser->ops_stack = NULL;
-	return (parser);
-}
-
 t_ready_token	*pop_infix_note(t_parser *parser)
 {
 	t_ready_token	*popped_node;
@@ -88,20 +70,30 @@ t_ready_token	*pop_op_stack_note(t_parser *parser)
 	parser->ops_stack = parser->ops_stack->next;
 	if (parser->ops_stack)
 		parser->ops_stack->prev = NULL;
-	popped_node->next =NULL;
+	popped_node->next = NULL;
 	return (popped_node);
 }
 
 void	op_to_postfix(t_ready_token *op, t_parser *parser)
 {
-	t_ready_token	*tmp_op;
-
-	while (parser->ops_stack
-		&& get_op_precedence(parser->ops_stack) > get_op_precedence(op))
+	if (((t_op *)op->p_token)->type == OP_PAREN_L)
 	{
-		tmp_op = pop_op_stack_note(parser);
-		push_to_postfix(&parser->postfix_note, tmp_op);
+		add_front_ops_stack(&parser->ops_stack, op);
+		return ;
 	}
+	if (((t_op *)op->p_token)->type == OP_PAREN_R)
+	{
+		free_ready_tokens_list(op);
+		while (parser->ops_stack
+			&& ((t_op *)parser->ops_stack->p_token)->type != OP_PAREN_L)
+			push_to_postfix(&parser->postfix_note, pop_op_stack_note(parser));
+		if (parser->ops_stack)
+			free_ready_tokens_list(pop_op_stack_note(parser));
+		return ;
+	}
+	while (parser->ops_stack
+		&& get_op_precedence(parser->ops_stack) >= get_op_precedence(op))
+		push_to_postfix(&parser->postfix_note, pop_op_stack_note(parser));
 	add_front_ops_stack(&parser->ops_stack, op);
 }
 
@@ -109,8 +101,6 @@ void	shunting_yard(t_parser *parser)
 {
 	t_ready_token	*current_node;
 
-	if (!parser || !parser->infix_note)
-		return ;
 	while (parser->infix_note)
 	{
 		current_node = pop_infix_note(parser);
@@ -122,7 +112,8 @@ void	shunting_yard(t_parser *parser)
 	while (parser->ops_stack)
 	{
 		current_node = pop_op_stack_note(parser);
-		push_to_postfix(&parser->postfix_note, current_node);
+		if (((t_op *)current_node->p_token)->type != OP_PAREN_L)
+			push_to_postfix(&parser->postfix_note, current_node);
 	}
 }
 
@@ -130,6 +121,25 @@ bool	check_input(char *input)
 {
 	return (check_quotes_balance(input) || check_parenthesis_balance(input)
 		|| check_m_percent(input));
+}
+
+void	ll(void)
+{
+	system("leaks parser");
+}
+
+t_parser	*init_parser(void)
+{
+	t_parser	*parser;
+
+	parser = malloc(sizeof(t_parser));
+	if (!parser)
+		return (NULL);
+	parser->infix_note = NULL;
+	parser->postfix_note = NULL;
+	parser->ops_stack = NULL;
+	parser->garbage = NULL;
+	return (parser);
 }
 
 void	print_postfix_notation(t_ready_token *head)
@@ -171,7 +181,7 @@ int	main(void)
 	t_token		*tokens;
 	t_parser	*parser;
 
-	// atexit(ll);
+	atexit(ll);
 	if (check_input(TEST))
 		return (1);
 	lexer = NULL;
@@ -193,8 +203,10 @@ int	main(void)
 	print_postfix_notation(parser->postfix_note);
 	print_ready_tokens(parser->postfix_note);
 	// print_tokens(tokens);
-	// free_ready_tokens_list(ready_tokens);
+	// TODO wrap the freeing
+	free_ready_tokens_list(parser->postfix_note);
 	free_token_list(tokens);
+	free(parser);
 	free(lexer);
 	return (0);
 }
