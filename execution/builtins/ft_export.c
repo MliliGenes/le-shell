@@ -6,7 +6,7 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 21:42:50 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/04/21 23:11:04 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/04/21 23:27:25 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,6 +154,22 @@ void	add_env_back(t_env_var **env_list, t_env_var *new)
 	tmp->next = new;
 }
 
+t_env_var	*create_env_var(char *key, char *value)
+{
+	t_env_var *new_node;
+
+	new_node = malloc(sizeof(t_env_var));
+	if (!new_node)
+		return (NULL);
+	new_node->key = ft_strdup(key);
+	if (value)
+		new_node->value = ft_strdup(value);
+	else
+		new_node->value = NULL;
+	new_node->next = NULL;
+	return (new_node);
+}
+
 void	process_export_arg(char *arg, t_env_var **env_list)
 {
 	t_env_kv kv;
@@ -166,16 +182,7 @@ void	process_export_arg(char *arg, t_env_var **env_list)
 	}
 	else
 	{
-		t_env_var *new;
-		new = malloc(sizeof(t_env_var));
-		if (!new)
-			return ;
-		new->key = ft_strdup(kv.key);
-		if (kv.has_value)
-			new->value = ft_strdup(kv.value);
-		else
-			new->value = NULL;
-		new->next = NULL;
+		t_env_var *new = create_env_var(kv.key, kv.value);
 		add_env_back(env_list, new);
 	}
 	free(kv.key);

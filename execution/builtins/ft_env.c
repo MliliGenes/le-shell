@@ -6,7 +6,7 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 20:02:52 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/04/21 20:38:51 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/04/21 23:49:08 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,21 @@ static t_env_var *create_node(char *env_var)
 	return (new_node);
 }
 
+t_env_var	*handle_empty_env()
+{
+	t_env_var *head;
+	char *cwd;
+
+	head = NULL;
+	cwd = getcwd(NULL, 0);
+	if (cwd)
+		add_env_back(&head, create_env_var("PWD", cwd));
+	add_env_back(&head, create_env_var("OLDPWD", NULL));
+	add_env_back(&head, create_env_var("PATH", "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"));
+	free(cwd);
+	return (head);
+}
+
 t_env_var	*init_env(char *envp[])
 {
 	t_env_var *head;
@@ -43,7 +58,7 @@ t_env_var	*init_env(char *envp[])
 	int i;
 
 	if (!envp || !envp[0])
-		return NULL;
+		return handle_empty_env();
 	head = NULL;
 	i = 0;
 	head = create_node(envp[i++]);
