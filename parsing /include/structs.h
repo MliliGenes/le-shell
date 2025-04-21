@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 06:20:05 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/21 05:55:35 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/21 22:38:15 by le-saad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,13 +168,9 @@ typedef struct s_parser
 /**
  * struct s_ast - Abstract Syntax Tree node structure
  *
- * @type: Node type (AST_CMD, AST_PIPE, AST_AND_OR, AST_SUBSHELL)
- * @cmd: Command node (valid when type == AST_CMD)
+ * @node: node could be cmd or op
  * @left: Left child node (valid for PIPE/AND_OR nodes)
  * @right: Right child node (valid for PIPE/AND_OR nodes)
- * @op: Operation type (valid for PIPE/AND_OR nodes)
- * @subshell: Subshell node (valid when type == AST_SUBSHELL)
- * @redirs: Redirections that apply to this entire node
  */
 typedef struct s_ast
 {

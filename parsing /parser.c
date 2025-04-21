@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 23:35:56 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/21 07:37:28 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/22 00:04:51 by le-saad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,7 +141,7 @@ t_parser	*init_parser(void)
 	return (parser);
 }
 
-void	print_postfix_notation(t_ready_token *head)
+void	print_notation(t_ready_token *head)
 {
 	t_ready_token	*current;
 	t_cmd			*cmd;
@@ -175,39 +175,71 @@ void	print_postfix_notation(t_ready_token *head)
 }
 
 # ifndef TEST
-#  define TEST " << heredoc hello > file >> appending arg && cat Makefile > testing || echo 'no file' | ls | cat | echo 'saxa' && ps | exit 555"
+#  define TEST "ls || cat | ((ps | cat ) && ls ) | grep || ls"
 // #  define TEST "( ls *.c > \"testing\"'$the'test\"\"\"\"'''''''''''''''' -e | \"$grep\" \"$txt\" > \"text_files\" ) && ( cat < Makefile-e) && echo \"Text files found\"&& cat text_files.list|| (echo \"$No text files found\" >> error.log && exit 1) | wc -l < input.txt >> results.log"
 # endif
+
+t_ast	*ast_recursive(t_ready_token **postfix_tail)
+{
+	t_ready_token	*current;
+	t_ast			*wrapper;
+
+	current = *postfix_tail;
+	if (!current)
+		return (NULL);
+	*postfix_tail = current->prev;
+	wrapper = malloc(sizeof(t_ast));
+	if (!wrapper)
+		return (NULL);
+	wrapper->node = current;
+	if (current->type == OP)
+	{
+		wrapper->left = ast_recursive(postfix_tail);
+		wrapper->right = ast_recursive(postfix_tail);
+	}
+	else
+	{
+		wrapper->left = NULL;
+		wrapper->right = NULL;
+	}
+	return (wrapper);
+}
+
+t_ast *post_to_tree(t_ready_token *postfix)
+{
+    while (postfix && postfix->next)
+		postfix = postfix->next;
+    return ast_recursive(&postfix);
+}
 
 int	main(void)
 {
 	t_lexer		*lexer;
 	t_token		*tokens;
 	t_parser	*parser;
+	t_ast		*holy_tree;
 
-	atexit(ll);
 	if (check_input(TEST))
 		return (1);
 	lexer = NULL;
 	tokens = NULL;
 	parser = NULL;
+	holy_tree = NULL;
 	lexer = init_lexer(TEST);
 	if (!lexer)
 		return (1);
 	create_tokens_list(lexer, &tokens);
 	if (!tokens->value || validate_tokens(tokens))
 		return (free(lexer), free_token_list(tokens), 1);
+	classify_tokens(tokens);
 	parser = init_parser();
 	if (!parser)
-		return (1);
-	classify_tokens(tokens);
+		return (free(lexer), free_token_list(tokens), 1);
 	extract_tokens(tokens, &parser->infix_note);
-	print_postfix_notation(parser->infix_note);
+	print_notation(parser->infix_note);
 	shunting_yard(parser);
-	print_postfix_notation(parser->postfix_note);
-	print_ready_tokens(parser->postfix_note);
-	// print_tokens(tokens);
-	// TODO wrap the freeing
+	print_notation(parser->postfix_note );
+	holy_tree = post_to_tree(parser->postfix_note);
 	free_ready_tokens_list(parser->postfix_note);
 	free_token_list(tokens);
 	free(parser);
