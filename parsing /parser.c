@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 23:35:56 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/21 07:37:28 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/21 07:39:29 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,8 +175,8 @@ void	print_postfix_notation(t_ready_token *head)
 }
 
 # ifndef TEST
-#  define TEST " << heredoc hello > file >> appending arg && cat Makefile > testing || echo 'no file' | ls | cat | echo 'saxa' && ps | exit 555"
-// #  define TEST "( ls *.c > \"testing\"'$the'test\"\"\"\"'''''''''''''''' -e | \"$grep\" \"$txt\" > \"text_files\" ) && ( cat < Makefile-e) && echo \"Text files found\"&& cat text_files.list|| (echo \"$No text files found\" >> error.log && exit 1) | wc -l < input.txt >> results.log"
+// #  define TEST " << heredoc hello > file >> appending arg && cat Makefile > testing || echo 'no file' | ls | cat | echo 'saxa' && ps | exit 555"
+#  define TEST "( ls *.c > \"testing\"'$the'test\"\"\"\"'''''''''''''''' -e | \"$grep\" \"$txt\" > \"text_files\" ) && ( cat < Makefile-e) && echo \"Text files found\"&& cat text_files.list|| (echo \"$No text files found\" >> error.log && exit 1) | wc -l < input.txt >> results.log"
 # endif
 
 int	main(void)
