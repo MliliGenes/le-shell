@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 23:35:56 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/21 05:38:03 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/21 06:11:51 by le-saad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,7 +201,7 @@ int	main(void)
 	print_postfix_notation(parser->infix_note);
 	shunting_yard(parser);
 	print_postfix_notation(parser->postfix_note);
-	print_ready_tokens(parser->postfix_note);
+	// print_ready_tokens(parser->postfix_note);
 	// print_tokens(tokens);
 	// TODO wrap the freeing
 	free_ready_tokens_list(parser->postfix_note);
