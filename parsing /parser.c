@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 23:35:56 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/22 05:53:09 by le-saad          ###   ########.fr       */
+/*   Updated: 2025/04/22 10:20:08 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,12 +192,12 @@ t_ast	*ast_recursive(t_ready_token **postfix_tail)
 	if (!wrapper)
 		return (NULL);
 	wrapper->node = current;
-	wrapper->left = NULL;
 	wrapper->right = NULL;
+	wrapper->left = NULL;
 	if (current->type == OP)
 	{
-		wrapper->left = ast_recursive(postfix_tail);
 		wrapper->right = ast_recursive(postfix_tail);
+		wrapper->left = ast_recursive(postfix_tail);
 	}
 	return (wrapper);
 }
@@ -207,93 +207,6 @@ t_ast *post_to_tree(t_ready_token *postfix)
     while (postfix && postfix->next)
 		postfix = postfix->next;
     return ast_recursive(&postfix);
-}
-
-void print_indentation(int level) {
-    for (int i = 0; i < level * 4; i++) {
-        printf(" ");
-    }
-}
-
-void print_ast_readable_recursive(t_ast *root, int level) {
-    if (root == NULL) {
-        print_indentation(level);
-        printf("└── NULL\n");
-        return;
-    }
-
-    print_indentation(level);
-    printf("└── ");
-
-    if (root->node != NULL) {
-        switch (root->node->type) {
-            case CMD: {
-                t_cmd *cmd = (t_cmd *)root->node->p_token;
-                printf("Type: CMD, Value: %s\n", cmd && cmd->cmd ? cmd->cmd : "(null)");
-                print_indentation(level + 1);
-                printf("├── Left:\n");
-                print_ast_readable_recursive(root->left, level + 2);
-                print_indentation(level + 1);
-                printf("└── Right:\n");
-                print_ast_readable_recursive(root->right, level + 2);
-                break;
-            }
-            case OP: {
-                t_op *op = (t_op *)root->node->p_token;
-                const char *op_str;
-                switch (op->type) {
-                    case OP_PIPE:
-                        op_str = "|";
-                        break;
-                    case OP_AND:
-                        op_str = "&&";
-                        break;
-                    case OP_OR:
-                        op_str = "||";
-                        break;
-                    case OP_PAREN_L:
-                        op_str = "(";
-                        break;
-                    case OP_PAREN_R:
-                        op_str = ")";
-                        break;
-                    default:
-                        op_str = "UNKNOWN";
-                        break;
-                }
-                printf("Type: OP, Value: %s\n", op_str);
-                print_indentation(level + 1);
-                printf("├── Left:\n");
-                print_ast_readable_recursive(root->left, level + 2);
-                print_indentation(level + 1);
-                printf("└── Right:\n");
-                print_ast_readable_recursive(root->right, level + 2);
-                break;
-            }
-            default:
-                printf("Type: UNKNOWN\n");
-                print_indentation(level + 1);
-                printf("├── Left:\n");
-                print_ast_readable_recursive(root->left, level + 2);
-                print_indentation(level + 1);
-                printf("└── Right:\n");
-                print_ast_readable_recursive(root->right, level + 2);
-                break;
-        }
-    } else {
-        printf("Type: NULL\n");
-        print_indentation(level + 1);
-        printf("├── Left:\n");
-        print_ast_readable_recursive(root->left, level + 2);
-        print_indentation(level + 1);
-        printf("└── Right:\n");
-        print_ast_readable_recursive(root->right, level + 2);
-    }
-}
-
-void print_ast(t_ast *root) {
-    printf("Abstract Syntax Tree:\n");
-    print_ast_readable_recursive(root, 0);
 }
 
 void free_ast(t_ast *root)
@@ -313,6 +226,7 @@ int	main(void)
 	t_parser	*parser;
 	t_ast		*holy_tree;
 
+	atexit(ll);
 	if (check_input(TEST))
 		return (1);
 	lexer = NULL;
