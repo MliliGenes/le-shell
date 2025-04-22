@@ -6,7 +6,7 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 03:20:58 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/04/21 23:38:29 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/04/22 00:59:42 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,11 @@ void handle_exit(char *input);
 void handle_env(char *input, t_env_var *env_list);
 void handle_export(char *input, t_env_var **env_list);
 void handle_unset(char *input, t_env_var **env_list);
+void handle_cd(char *input, t_env_var *env_list);
 
 // env
 t_env_var	*init_env(char *envp[]);
 void free_env_list(t_env_var *head);
 t_env_var	*create_env_var(char *key, char *value);
 void add_env_back(t_env_var **head, t_env_var *new);
+void	env_update(t_env_var *env_list, char *key, char *value);
