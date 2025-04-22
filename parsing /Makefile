@@ -2,7 +2,7 @@ CC = cc
 CFLAGS = -fsanitize=address -g -Wall -Wextra -Werror 
 LIB = #-lreadline
 
-TARGET = le-shell
+TARGET = ןǝ-sɥǝןן
 
 LIB_DIR = lib
 TOKENIZER_DIR = tokenizer
