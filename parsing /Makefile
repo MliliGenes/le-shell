@@ -1,8 +1,8 @@
 CC = cc
-CFLAGS = #-fsanitize=address -g #-Wall -Wextra -Werror 
+CFLAGS = -fsanitize=address -g #-Wall -Wextra -Werror 
 LIB = #-lreadline
 
-TARGET = parser
+TARGET = le-shell
 
 LIB_DIR = lib
 TOKENIZER_DIR = tokenizer
@@ -18,10 +18,10 @@ OBJ_FILES = $(SRC_FILES:.c=.o)
 all: $(TARGET)
 
 test: all
-	./parser 
+	./le-shell
 
 ${TARGET}: ${OBJ_FILES}
-	@$(CC) $(CFLAGS) ${OBJ_FILES} $(LIB) -o ${TARGET}
+	@$(CC) $(CFLAGS) ${OBJ_FILES} $(LIB) -o ${TARGET} 
 
 %.o: %.c
 	@$(CC) $(CFLAGS) -c $< -o $@

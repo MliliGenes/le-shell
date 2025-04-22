@@ -6,7 +6,7 @@
 /*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 23:35:56 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/22 01:14:54 by le-saad          ###   ########.fr       */
+/*   Updated: 2025/04/22 02:18:29 by le-saad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -296,6 +296,14 @@ void print_ast(t_ast *root) {
     print_ast_readable_recursive(root, 0);
 }
 
+void free_ast(t_ast *root)
+{
+	if (!root)
+		return;
+	free_ast(root->left);
+	free_ast(root->right);
+	free(root);
+}
 
 int	main(void)
 {
@@ -327,6 +335,7 @@ int	main(void)
 	print_notation(parser->postfix_note);
 	holy_tree = post_to_tree(parser->postfix_note);
 	print_ast(holy_tree);
+	free_ast(holy_tree);
 	free_ready_tokens_list(parser->postfix_note);
 	free_token_list(tokens);
 	free(parser);
