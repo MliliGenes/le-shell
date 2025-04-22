@@ -6,139 +6,15 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 23:35:56 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/22 10:20:08 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/22 13:56:10 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include/parsing.h"
 
-int	get_op_precedence(t_ready_token *token)
-{
-	t_op_type	op_type;
-
-	op_type = ((t_op *)token->p_token)->type;
-	if (op_type == OP_AND)
-		return (2);
-	else if (op_type == OP_OR)
-		return (1);
-	else if (op_type == OP_PIPE)
-		return (3);
-	else if (op_type == OP_PAREN_L || op_type == OP_PAREN_R)
-		return (0);
-	return (-1);
-}
-
-void	add_front_ops_stack(t_ready_token **head, t_ready_token *node)
-{
-	if (!head || !node)
-		return ;
-	node->prev = NULL;
-	node->next = *head;
-	if (*head)
-		(*head)->prev = node;
-	*head = node;
-}
-
-void	push_to_postfix(t_ready_token **head, t_ready_token *node)
-{
-	node->next = NULL;
-	node->prev = NULL;
-	add_back_ready_token(head, node);
-}
-
-t_ready_token	*pop_infix_note(t_parser *parser)
-{
-	t_ready_token	*popped_node;
-
-	if (!parser || !parser->infix_note)
-		return (NULL);
-	popped_node = parser->infix_note;
-	parser->infix_note = parser->infix_note->next;
-	if (parser->infix_note)
-		parser->infix_note->prev = NULL;
-	popped_node->next = NULL;
-	return (popped_node);
-}
-
-t_ready_token	*pop_op_stack_note(t_parser *parser)
-{
-	t_ready_token	*popped_node;
-
-	if (!parser || !parser->ops_stack)
-		return (NULL);
-	popped_node = parser->ops_stack;
-	parser->ops_stack = parser->ops_stack->next;
-	if (parser->ops_stack)
-		parser->ops_stack->prev = NULL;
-	popped_node->next = NULL;
-	return (popped_node);
-}
-
-void	op_to_postfix(t_ready_token *op, t_parser *parser)
-{
-	if (((t_op *)op->p_token)->type == OP_PAREN_L)
-	{
-		add_front_ops_stack(&parser->ops_stack, op);
-		return ;
-	}
-	if (((t_op *)op->p_token)->type == OP_PAREN_R)
-	{
-		free_ready_tokens_list(op);
-		while (parser->ops_stack
-			&& ((t_op *)parser->ops_stack->p_token)->type != OP_PAREN_L)
-			push_to_postfix(&parser->postfix_note, pop_op_stack_note(parser));
-		if (parser->ops_stack)
-			free_ready_tokens_list(pop_op_stack_note(parser));
-		return ;
-	}
-	while (parser->ops_stack
-		&& get_op_precedence(parser->ops_stack) >= get_op_precedence(op))
-		push_to_postfix(&parser->postfix_note, pop_op_stack_note(parser));
-	add_front_ops_stack(&parser->ops_stack, op);
-}
-
-void	shunting_yard(t_parser *parser)
-{
-	t_ready_token	*current_node;
-
-	while (parser->infix_note)
-	{
-		current_node = pop_infix_note(parser);
-		if (current_node->type == CMD)
-			push_to_postfix(&parser->postfix_note, current_node);
-		else if (current_node->type == OP)
-			op_to_postfix(current_node, parser);
-	}
-	while (parser->ops_stack)
-	{
-		current_node = pop_op_stack_note(parser);
-		if (((t_op *)current_node->p_token)->type != OP_PAREN_L)
-			push_to_postfix(&parser->postfix_note, current_node);
-	}
-}
-
-bool	check_input(char *input)
-{
-	return (check_quotes_balance(input) || check_parenthesis_balance(input)
-		|| check_m_percent(input));
-}
-
 void	ll(void)
 {
 	system("leaks parser");
-}
-
-t_parser	*init_parser(void)
-{
-	t_parser	*parser;
-
-	parser = malloc(sizeof(t_parser));
-	if (!parser)
-		return (NULL);
-	parser->infix_note = NULL;
-	parser->postfix_note = NULL;
-	parser->ops_stack = NULL;
-	return (parser);
 }
 
 void	print_notation(t_ready_token *head)
@@ -175,39 +51,10 @@ void	print_notation(t_ready_token *head)
 }
 
 # ifndef TEST
-// #  define TEST " "
-#  define TEST "( ls *.c > \"testing\"'$the'test\"\"\"\"'''''''''''''''' -e | \"$grep\" \"$txt\" > \"text_files\" ) && ( cat < Makefile-e) && echo \"Text files found\"&& cat text_files.list|| (echo \"$No text files found\" >> error.log && exit 1) | wc -l < input.txt >> results.log"
+#  define TEST "(ls -la || hghgdhg) && ls -la | grep hjhjh && (hi && hiii)"
+// #  define TEST "( ls *.c > \"testing\"'$the'test\"\"\"\"'''''''''''''''' -e | \"$grep\" \"$txt\" > \"text_files\" ) && ( cat < Makefile-e) && echo \"Text files found\"&& cat text_files.list|| (echo \"$No text files found\" >> error.log && exit 1) | wc -l < input.txt >> results.log"
 # endif
 
-t_ast	*ast_recursive(t_ready_token **postfix_tail)
-{
-	t_ready_token	*current;
-	t_ast			*wrapper;
-
-	current = *postfix_tail;
-	if (!current)
-		return (NULL);
-	*postfix_tail = current->prev;
-	wrapper = malloc(sizeof(t_ast));
-	if (!wrapper)
-		return (NULL);
-	wrapper->node = current;
-	wrapper->right = NULL;
-	wrapper->left = NULL;
-	if (current->type == OP)
-	{
-		wrapper->right = ast_recursive(postfix_tail);
-		wrapper->left = ast_recursive(postfix_tail);
-	}
-	return (wrapper);
-}
-
-t_ast *post_to_tree(t_ready_token *postfix)
-{
-    while (postfix && postfix->next)
-		postfix = postfix->next;
-    return ast_recursive(&postfix);
-}
 
 void free_ast(t_ast *root)
 {

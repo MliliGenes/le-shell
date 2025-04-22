@@ -40,8 +40,6 @@ bool							is_operator(char c);
 bool							is_op(t_token_type type);
 bool							is_redir(t_token_type type);
 bool							is_word(t_token_type type);
-bool							is_paren(t_token_type type);
-bool							has_quotes(char *token);
 bool							is_full_operator(t_lexer *lexer);
 t_token_type					classify_operator(char *op);
 void							classify_tokens(t_token *head);
@@ -99,6 +97,7 @@ void							free_ready_tokens_list(t_ready_token *head);
 
 void							free_args_array(char **args, int count);
 int								count_args(t_token *start, t_token *end);
+int								count_args_in_cmd(char **args);
 char							**get_args(t_token *start, t_token *end);
 bool							extract_tokens(t_token *tokens,
 									t_ready_token **head);
