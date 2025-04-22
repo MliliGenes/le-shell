@@ -1,5 +1,5 @@
 CC = cc
-CFLAGS = -fsanitize=address -g #-Wall -Wextra -Werror 
+CFLAGS = -fsanitize=address -g -Wall -Wextra -Werror 
 LIB = #-lreadline
 
 TARGET = le-shell
