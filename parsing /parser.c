@@ -6,7 +6,7 @@
 /*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 23:35:56 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/22 00:04:51 by le-saad          ###   ########.fr       */
+/*   Updated: 2025/04/22 01:14:54 by le-saad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,7 +175,7 @@ void	print_notation(t_ready_token *head)
 }
 
 # ifndef TEST
-#  define TEST "ls || cat | ((ps | cat ) && ls ) | grep || ls"
+#  define TEST "( command1 < input1 > output1 ) || ( command2 < input2 2> error2 | command3 > output3 ) && command4 >> append_output < input4 | ( command5 > output5 2>> append_error )"
 // #  define TEST "( ls *.c > \"testing\"'$the'test\"\"\"\"'''''''''''''''' -e | \"$grep\" \"$txt\" > \"text_files\" ) && ( cat < Makefile-e) && echo \"Text files found\"&& cat text_files.list|| (echo \"$No text files found\" >> error.log && exit 1) | wc -l < input.txt >> results.log"
 # endif
 
@@ -192,15 +192,12 @@ t_ast	*ast_recursive(t_ready_token **postfix_tail)
 	if (!wrapper)
 		return (NULL);
 	wrapper->node = current;
+	wrapper->left = NULL;
+	wrapper->right = NULL;
 	if (current->type == OP)
 	{
 		wrapper->left = ast_recursive(postfix_tail);
 		wrapper->right = ast_recursive(postfix_tail);
-	}
-	else
-	{
-		wrapper->left = NULL;
-		wrapper->right = NULL;
 	}
 	return (wrapper);
 }
@@ -212,10 +209,99 @@ t_ast *post_to_tree(t_ready_token *postfix)
     return ast_recursive(&postfix);
 }
 
+void print_indentation(int level) {
+    for (int i = 0; i < level * 4; i++) {
+        printf(" ");
+    }
+}
+
+void print_ast_readable_recursive(t_ast *root, int level) {
+    if (root == NULL) {
+        print_indentation(level);
+        printf("└── NULL\n");
+        return;
+    }
+
+    print_indentation(level);
+    printf("└── ");
+
+    if (root->node != NULL) {
+        switch (root->node->type) {
+            case CMD: {
+                t_cmd *cmd = (t_cmd *)root->node->p_token;
+                printf("Type: CMD, Value: %s\n", cmd && cmd->cmd ? cmd->cmd : "(null)");
+                print_indentation(level + 1);
+                printf("├── Left:\n");
+                print_ast_readable_recursive(root->left, level + 2);
+                print_indentation(level + 1);
+                printf("└── Right:\n");
+                print_ast_readable_recursive(root->right, level + 2);
+                break;
+            }
+            case OP: {
+                t_op *op = (t_op *)root->node->p_token;
+                const char *op_str;
+                switch (op->type) {
+                    case OP_PIPE:
+                        op_str = "|";
+                        break;
+                    case OP_AND:
+                        op_str = "&&";
+                        break;
+                    case OP_OR:
+                        op_str = "||";
+                        break;
+                    case OP_PAREN_L:
+                        op_str = "(";
+                        break;
+                    case OP_PAREN_R:
+                        op_str = ")";
+                        break;
+                    default:
+                        op_str = "UNKNOWN";
+                        break;
+                }
+                printf("Type: OP, Value: %s\n", op_str);
+                print_indentation(level + 1);
+                printf("├── Left:\n");
+                print_ast_readable_recursive(root->left, level + 2);
+                print_indentation(level + 1);
+                printf("└── Right:\n");
+                print_ast_readable_recursive(root->right, level + 2);
+                break;
+            }
+            default:
+                printf("Type: UNKNOWN\n");
+                print_indentation(level + 1);
+                printf("├── Left:\n");
+                print_ast_readable_recursive(root->left, level + 2);
+                print_indentation(level + 1);
+                printf("└── Right:\n");
+                print_ast_readable_recursive(root->right, level + 2);
+                break;
+        }
+    } else {
+        printf("Type: NULL\n");
+        print_indentation(level + 1);
+        printf("├── Left:\n");
+        print_ast_readable_recursive(root->left, level + 2);
+        print_indentation(level + 1);
+        printf("└── Right:\n");
+        print_ast_readable_recursive(root->right, level + 2);
+    }
+}
+
+void print_ast(t_ast *root) {
+    printf("Abstract Syntax Tree:\n");
+    print_ast_readable_recursive(root, 0);
+}
+
+
 int	main(void)
 {
 	t_lexer		*lexer;
 	t_token		*tokens;
+	
 	t_parser	*parser;
 	t_ast		*holy_tree;
 
@@ -238,8 +324,9 @@ int	main(void)
 	extract_tokens(tokens, &parser->infix_note);
 	print_notation(parser->infix_note);
 	shunting_yard(parser);
-	print_notation(parser->postfix_note );
+	print_notation(parser->postfix_note);
 	holy_tree = post_to_tree(parser->postfix_note);
+	print_ast(holy_tree);
 	free_ready_tokens_list(parser->postfix_note);
 	free_token_list(tokens);
 	free(parser);
