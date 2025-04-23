@@ -6,18 +6,11 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 23:08:21 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/04/22 22:33:27 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/04/23 22:38:35 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-// Feature         | Must implement?  | Why?
-// cd ./dir        | ✅ Yes           | Relative path
-// cd /dir         | ✅ Yes           | Absolute path
-// cd .., cd .     | ⚠️ Optional       | Covered by relative logic
-// cd alone / cd ~ | ❌ No            | Not required by subject
-// cd -            | ❌ No            | Also not required
 
 char *get_env_value(t_env_var *env_list, char *key)
 {
@@ -39,60 +32,63 @@ static void cd_error(char *path)
 	ft_putstr_fd(": No such file or directory\n", 2);
 }
 
-char	*advanced_cd(char **args, t_env_var *env_list)
+void handle_cd(char *input, t_env_var *env_list)
 {
-	char *path;
-	
-	if (!args[1] || ft_strcmp(args[1], "~") == 0)
-	{
-		char *home;
-		
-		home = get_env_value(env_list, "HOME");
-		if (!home)
-			return (ft_putstr_fd("cd: HOME not set\n", 2), NULL);
-		path = home;
-	}
-	else if (ft_strcmp(args[1], "-") == 0)
-	{
-		char *oldpwd;
-
-		oldpwd = get_env_value(env_list, "OLDPWD");
-		if (!oldpwd)
-			return (ft_putstr_fd("cd: OLDPWD not set\n", 2), NULL);
-		printf("%s\n", oldpwd);
-		path = oldpwd;
-	}
-	else
-		path = args[1];
-	return path;
-}
-
-void	handle_cd(char *input, t_env_var *env_list)
-{
-	char **args;
-	char *path;
-	char *oldpwd;
-	char *newpwd;
-	
-	args = ft_split(input, ' ');
-	if (!args)
-		return ;
-	path = advanced_cd(args, env_list);
-	if (!path)
-		return (free_2d(args));
-	oldpwd = getcwd(NULL, 0);
-	if (chdir(path) == -1)
-	{
-		cd_error(path);
-		free(oldpwd);
-	}
-	else
-	{
-		newpwd = getcwd(NULL, 0);
-		env_update(env_list, "OLDPWD", oldpwd);
-		env_update(env_list, "PWD", newpwd);
-		free(newpwd);
-	}
-	free(oldpwd);
-	free_2d(args);
+    char **args;
+    char *oldpwd;
+    char *target_dir = NULL;
+    int change_success = 0;
+    
+    args = ft_split(input, ' ');
+    if (!args)
+        return;
+    oldpwd = getcwd(NULL, 0);
+    if (!oldpwd)
+    {
+        ft_putstr_fd("cd: error getting current directory\n", 2);
+        free_2d(args);
+        return;
+    }    
+    if (ft_strcmp(args[0], "cd") == 0 && (!args[1] || ft_strcmp(args[1], "~") == 0))
+    {
+        target_dir = get_env_value(env_list, "HOME");
+        if (!target_dir)
+            ft_putstr_fd("cd: HOME not set\n", 2);
+        else if (chdir(target_dir) == -1)
+            ft_putstr_fd("cd: cannot access HOME directory\n", 2);
+        else
+            change_success = 1;
+    }
+    else if (ft_strcmp(args[0], "cd") == 0 && ft_strcmp(args[1], "-") == 0)
+    {
+        target_dir = get_env_value(env_list, "OLDPWD");
+        if (!target_dir)
+            ft_putstr_fd("cd: OLDPWD not set\n", 2);
+        else if (chdir(target_dir) == -1)
+            ft_putstr_fd("cd: cannot access OLDPWD directory\n", 2);
+        else
+        {
+            printf("%s\n", target_dir);
+            change_success = 1;
+        }
+    }
+    else if (ft_strcmp(args[0], "cd") == 0 && args[1])
+    {
+        if (chdir(args[1]) == -1)
+            cd_error(args[1]);
+        else
+            change_success = 1;
+    }    
+    if (change_success)
+    {
+        char *newpwd = getcwd(NULL, 0);
+        if (newpwd)
+        {
+            env_update(env_list, "OLDPWD", oldpwd);
+            env_update(env_list, "PWD", newpwd);
+            free(newpwd);
+        }
+    }
+    free(oldpwd);
+    free_2d(args);
 }
