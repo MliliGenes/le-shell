@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_validation.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 01:09:31 by le-saad           #+#    #+#             */
-/*   Updated: 2025/04/23 17:10:23 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/24 00:12:49 by le-saad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,12 +97,6 @@ bool	check_m_percent(char *input)
 		i++;
 	}
 	return (false);
-}
-
-void	print_syntax_error(const char *token, const char *reason)
-{
-	printf("\033[1;31m ✗ SYNTAX ERROR\033[0m at '\033[1;33m%s\033[0m' → %s\n",
-		token, reason);
 }
 
 int	validate_tokens(t_token *head)

@@ -1,5 +1,5 @@
 CC = cc
-CFLAGS =  -Wall -Wextra -Werror -g -fsanitize=address
+CFLAGS =   -Wall -Wextra -Werror #-g -fsanitize=address
 LIB = -lreadline
 
 TARGET = le-shell
@@ -12,6 +12,7 @@ INCLUDE_DIR = include
 
 SRC_FILES = main.c \
 	$(LIB_DIR)/string_utils_1.c \
+	$(LIB_DIR)/error_utils.c \
 	$(LIB_DIR)/printing_tools.c \
 	$(TOKENIZER_DIR)/token_classification.c \
 	$(TOKENIZER_DIR)/token_handling.c \

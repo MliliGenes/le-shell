@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 01:16:26 by le-saad           #+#    #+#             */
-/*   Updated: 2025/04/23 12:30:55 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/24 00:20:36 by le-saad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,5 +28,11 @@ int	get_op_precedence(t_ready_token *token)
 
 bool	check_input(char *input)
 {
-	return (check_quotes_balance(input) || check_parenthesis_balance(input));
+	if (check_quotes_balance(input) == 1)
+		return (print_syntax_error("'", UNBALANCED_QUOTES), 1);
+	if (check_quotes_balance(input) == 2)
+		return (print_syntax_error("\"", UNBALANCED_QUOTES), 1);
+	if (check_parenthesis_balance(input) )
+		return (print_syntax_error("()", UNBALANCED_PARENS), 1);
+	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 06:20:05 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/23 17:14:43 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/24 00:19:15 by le-saad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@
 # define INVALID_SEQUENCE "Invalid token sequence"
 # define MISPLACED_PAREN "Misplaced parenthesis"
 # define PIPE_CONNECT "Pipe must connect commands"
+# define UNBALANCED_QUOTES "Unbalanced quotes in command"
+# define UNBALANCED_PARENS "Unbalanced parentheses in command"
 
 typedef struct s_lexer
 {
