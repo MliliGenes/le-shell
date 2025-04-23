@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 23:35:56 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/23 12:43:04 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/23 16:58:27 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ int	main(void)
 		if (parser)
 		{
 			print_ast(parser->holy_tree);
+			print_ready_tokens(parser->postfix_note);
 			free_ast(parser->holy_tree);
 			free_ready_tokens_list(parser->postfix_note);
 			free(parser);
