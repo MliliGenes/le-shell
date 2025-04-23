@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser.c                                           :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 23:35:56 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/23 16:50:02 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/23 20:54:45 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,14 @@ void	print_notation(t_ready_token *head)
 	printf("\n");
 }
 
+// #ifndef TEST
+// # define TEST "(ls -la || hghgdhg) && ls -la | grep hjhjh && (hi && hiii)"
+// // #  define TEST "( ls *.c > \"testing\"'$the'test\"\"\"\"''''''''''''''''
+// 	-e | \"$grep\" \"$txt\" > \"text_files\" ) && ( cat < Makefile-e)
+// 	&& echo \"Text files found\"&& cat text_files.list|| (echo \"$No text files found\" >> error.log
+// 	&& exit 1) | wc -l < input.txt >> results.log"
+// #endif
+
 int	main(void)
 {
 	t_parser	*parser;
@@ -66,7 +74,6 @@ int	main(void)
 		parser = parse_input(input);
 		if (parser)
 		{
-			print_notation(parser->postfix_note);
 			print_ast(parser->holy_tree);
 			free_ast(parser->holy_tree);
 			free_ready_tokens_list(parser->postfix_note);
