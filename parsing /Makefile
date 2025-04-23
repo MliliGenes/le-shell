@@ -2,7 +2,7 @@ CC = cc
 CFLAGS =  -Wall -Wextra -Werror -g -fsanitize=address
 LIB = -lreadline
 
-TARGET = parser
+TARGET = le-shell
 
 LIB_DIR = lib
 TOKENIZER_DIR = tokenizer
@@ -10,7 +10,7 @@ PROCESSING_DIR = processing
 PARSING_DIR = parsing
 INCLUDE_DIR = include
 
-SRC_FILES = parser.c \
+SRC_FILES = main.c \
 	$(LIB_DIR)/string_utils_1.c \
 	$(LIB_DIR)/printing_tools.c \
 	$(TOKENIZER_DIR)/token_classification.c \
@@ -37,7 +37,7 @@ INC_FLAGS = -I$(INCLUDE_DIR)
 all: $(TARGET)
 
 test: all
-	./parser
+	./le-shell
 
 ${TARGET}: ${OBJ_FILES}
 	@$(CC) $(CFLAGS) ${OBJ_FILES} $(LIB) -o ${TARGET} 

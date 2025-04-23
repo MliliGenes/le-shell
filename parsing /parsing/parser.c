@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 01:15:38 by le-saad           #+#    #+#             */
-/*   Updated: 2025/04/23 12:42:47 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/23 16:45:33 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,7 @@ void	shunting_yard(t_parser *parser)
 	while (parser->ops_stack)
 	{
 		current_node = pop_op_stack_note(parser);
-		if (((t_op *)current_node->p_token)->type != OP_PAREN_L)
-			push_to_postfix(&parser->postfix_note, current_node);
+		push_to_postfix(&parser->postfix_note, current_node);
 	}
 }
 
@@ -46,6 +45,18 @@ t_parser	*init_parser(void)
 	return (parser);
 }
 
+static void	index_linked(t_token *token)
+{
+	int	i;
+
+	i = 0;
+	while (token->type != TOKEN_EOF)
+	{
+		token->n_index = i++;
+		token = token->next;
+	}
+}
+
 t_ready_token	*cmd_line_to_ready_tokens(char *cmd_line)
 {
 	t_lexer			*lexer;
@@ -57,6 +68,7 @@ t_ready_token	*cmd_line_to_ready_tokens(char *cmd_line)
 	if (!lexer)
 		return (NULL);
 	create_tokens_list(lexer, &tokens);
+	index_linked(tokens);
 	if (!tokens->value || validate_tokens(tokens))
 		return (free(lexer), free_token_list(tokens), NULL);
 	classify_tokens(tokens);

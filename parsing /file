@@ -1,0 +1,14 @@
+total 280
+drwxr-xr-x  13 sel-mlil  candidates     442 Apr 23 13:50 .
+drwxr-xr-x   7 sel-mlil  candidates     238 Apr 23 13:49 ..
+-rw-r--r--   1 sel-mlil  candidates    1184 Apr 23 12:35 Makefile
+-rw-r--r--   1 sel-mlil  candidates       0 Apr 23 13:50 file
+drwxr-xr-x   6 sel-mlil  candidates     204 Apr 22 09:53 include
+drwxr-xr-x   6 sel-mlil  candidates     204 Apr 23 13:49 lib
+-rwxr-xr-x   1 sel-mlil  candidates  115096 Apr 23 13:49 parser
+-rw-r--r--   1 sel-mlil  candidates    2394 Apr 23 12:43 parser.c
+-rw-r--r--   1 sel-mlil  candidates   12228 Apr 23 13:49 parser.o
+drwxr-xr-x  10 sel-mlil  candidates     340 Apr 23 13:49 parsing
+drwxr-xr-x  14 sel-mlil  candidates     476 Apr 23 13:49 processing
+-rw-r--r--   1 sel-mlil  candidates      58 Apr 22 12:47 test.c
+drwxr-xr-x  14 sel-mlil  candidates     476 Apr 23 13:49 tokenizer

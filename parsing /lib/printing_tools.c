@@ -6,22 +6,12 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 21:57:52 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/23 10:51:18 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/23 14:53:27 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/structs.h"
 #include <string.h>
-
-#define RESET       "\033[0m"
-#define RED         "\033[31m"
-#define GREEN       "\033[32m"
-#define YELLOW      "\033[33m"
-#define BLUE        "\033[34m"
-#define MAGENTA     "\033[35m"
-#define CYAN        "\033[36m"
-#define WHITE       "\033[37m"
-#define BOLDWHITE   "\033[1m\033[37m"
 
 const char *token_color(t_token_type type)
 {

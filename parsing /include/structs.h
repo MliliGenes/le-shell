@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 06:20:05 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/23 10:41:08 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/23 17:14:43 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,24 @@
 
 # include "dependencies.h"
 
-/**
- * struct s_lexer - Lexer state structure
- *
- * @input: Input string being processed
- * @pos: Current position in input string
- */
+# define RESET "\033[0m"
+# define RED "\033[31m"
+# define GREEN "\033[32m"
+# define YELLOW "\033[33m"
+# define BLUE "\033[34m"
+# define MAGENTA "\033[35m"
+# define CYAN "\033[36m"
+# define WHITE "\033[37m"
+# define BOLDWHITE "\033[1m\033[37m"
+
+# define REDIR_NEEDS_TARGET "Redirection needs target file"
+# define CONSECUTIVE_OPS "Consecutive operators not allowed"
+# define CHAINED_REDIRS "Can't chain redirections"
+# define INVALID_AFTER_PAREN "Invalid token after parenthesis"
+# define INVALID_SEQUENCE "Invalid token sequence"
+# define MISPLACED_PAREN "Misplaced parenthesis"
+# define PIPE_CONNECT "Pipe must connect commands"
+
 typedef struct s_lexer
 {
 	char					*input;
@@ -29,21 +41,6 @@ typedef struct s_lexer
 	char					current_char;
 }							t_lexer;
 
-/**
- * enum e_token_type - Types of tokens in lexical analysis
- *
- * @TOKEN_WORD: Regular command word or argument
- * @TOKEN_PIPE: Pipe character '|'
- * @TOKEN_REDIR_IN: Input redirection '<'
- * @TOKEN_REDIR_OUT: Output redirection '>'
- * @TOKEN_APPEND: Append redirection '>>'
- * @TOKEN_HEREDOC: Here document '<<'
- * @TOKEN_AND: Logical AND '&&'
- * @TOKEN_OR: Logical OR '||'
- * @TOKEN_PL: Left parenthesis '('
- * @TOKEN_PR: Right parenthesis ')'
- * @TOKEN_EOF: End of input marker
- */
 typedef enum e_token_type
 {
 	TOKEN_WORD,
@@ -62,13 +59,6 @@ typedef enum e_token_type
 	TOKEN_EOF
 }							t_token_type;
 
-/**
- * struct s_token - Token structure for lexical analysis
- *
- * @value: String value of the token
- * @type: Type of the token from e_token_type
- * @next: Pointer to next token in linked list
- */
 typedef struct s_token
 {
 	char					*value;
@@ -78,14 +68,6 @@ typedef struct s_token
 	struct s_token			*prev;
 }							t_token;
 
-/**
- * enum e_redir_type - Types of redirection operations
- *
- * @REDIR_IN: Input redirection '<'
- * @REDIR_OUT: Output redirection '>'
- * @REDIR_APPEND: Append redirection '>>'
- * @REDIR_HEREDOC: Here document '<<'
- */
 typedef enum e_redir_type
 {
 	REDIR_IN,
@@ -94,13 +76,6 @@ typedef enum e_redir_type
 	REDIR_HEREDOC
 }							t_redir_type;
 
-/**
- * struct s_redir - Redirection operation structure
- *
- * @type: Type of redirection from e_redir_type
- * @file: Target filename or heredoc delimiter
- * @next: Pointer to next redirection in list
- */
 typedef struct s_redir
 {
 	t_redir_type			type;
@@ -108,13 +83,6 @@ typedef struct s_redir
 	struct s_redir			*next;
 }							t_redir;
 
-/**
- * struct s_cmd - Simple command structure
- *
- * @args: Array of command arguments (NULL-terminated)
- * @redirs: List of redirection for this command
- * @next: Pointer to next command in pipeline or list
- */
 typedef struct s_cmd
 {
 	char					**args;
@@ -123,13 +91,6 @@ typedef struct s_cmd
 	t_redir					*redirs;
 }							t_cmd;
 
-/**
- * enum e_op_type - Types of AST node operations
- *
- * @OP_PIPE: Pipe operation '|'
- * @OP_AND: Logical AND '&&'
- * @OP_OR: Logical OR '||'
- */
 typedef enum e_op_type
 {
 	OP_PAREN_L,
@@ -158,13 +119,6 @@ typedef struct s_ready_token
 	struct s_ready_token	*prev;
 }							t_ready_token;
 
-/**
- * struct s_ast - Abstract Syntax Tree node structure
- *
- * @node: node could be cmd or op
- * @left: Left child node (valid for PIPE/AND_OR nodes)
- * @right: Right child node (valid for PIPE/AND_OR nodes)
- */
 typedef struct s_ast
 {
 	t_ready_token			*node;
@@ -180,13 +134,6 @@ typedef struct s_parser
 	t_ast					*holy_tree;
 }							t_parser;
 
-/**
- * struct s_env_var - Environment variable entry
- *
- * @key: Variable name
- * @value: Variable value
- * @next: Pointer to next environment variable
- */
 typedef struct s_env_var
 {
 	char					*key;
@@ -194,15 +141,6 @@ typedef struct s_env_var
 	struct s_env_var		*next;
 }							t_env_var;
 
-/**
- * struct s_shell - Shell global state structure
- *
- * @env: Linked list of environment variables
- * @last_status: Exit status of last executed command
- * @path: Array of paths from PATH environment variable
- * @ast: Abstract Syntax Tree of current input
- * @running: Flag indicating if shell should continue running
- */
 typedef struct s_shell
 {
 	t_env_var				*env;

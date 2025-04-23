@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 01:09:31 by le-saad           #+#    #+#             */
-/*   Updated: 2025/04/23 12:47:08 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/23 17:10:23 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,30 +99,35 @@ bool	check_m_percent(char *input)
 	return (false);
 }
 
+void	print_syntax_error(const char *token, const char *reason)
+{
+	printf("\033[1;31m ✗ SYNTAX ERROR\033[0m at '\033[1;33m%s\033[0m' → %s\n",
+		token, reason);
+}
+
 int	validate_tokens(t_token *head)
 {
 	while (head->type != TOKEN_EOF)
 	{
 		if (is_redir(head->type) && (!head->next
 				|| head->next->type != TOKEN_WORD))
-			return (printf("invalid syntax >%s\n", head->value), 1);
+			return (print_syntax_error(head->value, REDIR_NEEDS_TARGET), 1);
 		if (is_op(head->type) && head->next && is_op(head->next->type))
-			return (printf("invalid syntax >%s\n", head->value), 1);
+			return (print_syntax_error(head->value, CONSECUTIVE_OPS), 1);
 		if (is_redir(head->type) && head->next && is_redir(head->next->type))
-			return (printf("invalid syntax >%s\n", head->value), 1);
+			return (print_syntax_error(head->value, CHAINED_REDIRS), 1);
 		if (head->type == TOKEN_PL && head->next && (is_op(head->next->type)
 				|| head->next->type == TOKEN_PR))
-			return (printf("invalid syntax >%s\n", head->value), 1);
+			return (print_syntax_error(head->value, INVALID_AFTER_PAREN), 1);
 		if (head->type == TOKEN_PR && head->next && !is_op(head->next->type)
-			&& !is_redir(head->next->type) && head->next->type != TOKEN_PR
-			&& head->next->type != TOKEN_EOF)
-			return (printf("invalid syntax >%s\n", head->value), 1);
+			&& head->next->type != TOKEN_PR && head->next->type != TOKEN_EOF)
+			return (print_syntax_error(head->value, INVALID_SEQUENCE), 1);
 		if (head->n_index > 0 && head->type == TOKEN_PL && head->prev
 			&& !is_op(head->prev->type) && head->prev->type != TOKEN_PL)
-			return (printf("invalid syntax >%s\n", head->value), 1);
+			return (print_syntax_error(head->value, MISPLACED_PAREN), 1);
 		if ((head->n_index == 0 && is_op(head->type)) || (is_op(head->type)
 				&& head->next && head->next->type == TOKEN_EOF))
-			return (printf("invalid syntax >%s\n", head->value), 1);
+			return (print_syntax_error(head->value, PIPE_CONNECT), 1);
 		head = head->next;
 	}
 	return (0);

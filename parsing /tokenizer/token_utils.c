@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 01:08:31 by le-saad           #+#    #+#             */
-/*   Updated: 2025/04/22 11:39:46 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/23 15:18:10 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,13 @@
 t_token	*create_token(t_token_type type, char *value)
 {
 	t_token		*token;
-	static int	index;
 
 	token = malloc(sizeof(t_token));
 	if (!token)
 		return (NULL);
 	token->value = value;
 	token->type = type;
-	token->n_index = index++;
+	token->n_index = 0;
 	token->next = NULL;
 	token->prev = NULL;
 	return (token);
