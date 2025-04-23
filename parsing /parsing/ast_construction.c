@@ -6,11 +6,20 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 01:16:18 by le-saad           #+#    #+#             */
-/*   Updated: 2025/04/22 12:38:22 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/23 10:18:07 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/parsing.h"
+
+void free_ast(t_ast *root)
+{
+	if (!root)
+		return;
+	free_ast(root->left);
+	free_ast(root->right);
+	free(root);
+}
 
 t_ast	*ast_recursive(t_ready_token **postfix_tail)
 {

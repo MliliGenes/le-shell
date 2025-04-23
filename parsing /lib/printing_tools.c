@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 21:57:52 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/22 10:20:22 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/23 10:51:18 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,6 +194,7 @@ char *get_op_string(int op_type) {
 void print_ast_node(t_ast *root, const char *prefix, int is_left, int is_last) {
     char next_prefix[1024];
     
+    (void)is_left;
     // Print the current node
     printf("%s", prefix);
     

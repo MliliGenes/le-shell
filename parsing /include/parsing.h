@@ -124,12 +124,12 @@ void							op_to_postfix(t_ready_token *op,
 void							shunting_yard(t_parser *parser);
 
 // MARK: - AST Construction Utility Functions
-
+void							free_ast(t_ast *root);
 t_ast							*post_to_tree(t_ready_token *postfix);
 
 // MARK: - Parser Core Functions
 
 t_parser						*init_parser(void);
-t_ast							*parse_input(t_token *tokens);
+t_parser						*parse_input(char *cmd_line);
 
 #endif

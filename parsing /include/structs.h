@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 06:20:05 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/21 22:38:15 by le-saad          ###   ########.fr       */
+/*   Updated: 2025/04/23 10:41:08 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,13 +158,6 @@ typedef struct s_ready_token
 	struct s_ready_token	*prev;
 }							t_ready_token;
 
-typedef struct s_parser
-{
-	t_ready_token			*infix_note;
-	t_ready_token			*ops_stack;
-	t_ready_token			*postfix_note;
-}							t_parser;
-
 /**
  * struct s_ast - Abstract Syntax Tree node structure
  *
@@ -178,6 +171,14 @@ typedef struct s_ast
 	struct s_ast			*left;
 	struct s_ast			*right;
 }							t_ast;
+
+typedef struct s_parser
+{
+	t_ready_token			*infix_note;
+	t_ready_token			*ops_stack;
+	t_ready_token			*postfix_note;
+	t_ast					*holy_tree;
+}							t_parser;
 
 /**
  * struct s_env_var - Environment variable entry

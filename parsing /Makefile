@@ -1,6 +1,6 @@
 CC = cc
-CFLAGS = #-fsanitize=address -g -Wall -Wextra -Werror 
-LIB = #-lreadline
+CFLAGS =  -Wall -Wextra -Werror -g -fsanitize=address
+LIB = -lreadline
 
 TARGET = parser
 

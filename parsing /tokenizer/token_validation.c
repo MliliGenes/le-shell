@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 01:09:31 by le-saad           #+#    #+#             */
-/*   Updated: 2025/04/22 11:43:37 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/23 12:47:08 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,24 +105,24 @@ int	validate_tokens(t_token *head)
 	{
 		if (is_redir(head->type) && (!head->next
 				|| head->next->type != TOKEN_WORD))
-			return (1);
+			return (printf("invalid syntax >%s\n", head->value), 1);
 		if (is_op(head->type) && head->next && is_op(head->next->type))
-			return (1);
+			return (printf("invalid syntax >%s\n", head->value), 1);
 		if (is_redir(head->type) && head->next && is_redir(head->next->type))
-			return (1);
+			return (printf("invalid syntax >%s\n", head->value), 1);
 		if (head->type == TOKEN_PL && head->next && (is_op(head->next->type)
 				|| head->next->type == TOKEN_PR))
-			return (1);
+			return (printf("invalid syntax >%s\n", head->value), 1);
 		if (head->type == TOKEN_PR && head->next && !is_op(head->next->type)
 			&& !is_redir(head->next->type) && head->next->type != TOKEN_PR
 			&& head->next->type != TOKEN_EOF)
-			return (1);
+			return (printf("invalid syntax >%s\n", head->value), 1);
 		if (head->n_index > 0 && head->type == TOKEN_PL && head->prev
 			&& !is_op(head->prev->type) && head->prev->type != TOKEN_PL)
-			return (1);
+			return (printf("invalid syntax >%s\n", head->value), 1);
 		if ((head->n_index == 0 && is_op(head->type)) || (is_op(head->type)
 				&& head->next && head->next->type == TOKEN_EOF))
-			return (1);
+			return (printf("invalid syntax >%s\n", head->value), 1);
 		head = head->next;
 	}
 	return (0);

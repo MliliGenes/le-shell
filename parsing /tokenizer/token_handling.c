@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 01:09:59 by le-saad           #+#    #+#             */
-/*   Updated: 2025/04/22 12:23:57 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/23 12:28:39 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_token	*handle_word(t_lexer *lexer)
 
 	start = lexer->pos;
 	while (lexer->pos < lexer->len && !is_white_space(lexer->current_char)
-		&& !is_operator(lexer->current_char))
+		&& !is_full_operator(lexer))
 		advance_lexer(lexer);
 	value = ft_strndup(lexer->input + start, lexer->pos - start);
 	if (!value)

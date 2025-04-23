@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 01:15:38 by le-saad           #+#    #+#             */
-/*   Updated: 2025/04/22 12:41:58 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/23 12:42:47 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,42 @@ t_parser	*init_parser(void)
 	parser->infix_note = NULL;
 	parser->postfix_note = NULL;
 	parser->ops_stack = NULL;
+	parser->holy_tree = NULL;
 	return (parser);
 }
 
-// TODO t_ast *parse_input(t_token *tokens) { /* ... */ }
+t_ready_token	*cmd_line_to_ready_tokens(char *cmd_line)
+{
+	t_lexer			*lexer;
+	t_token			*tokens;
+	t_ready_token	*ready_tokens;
+
+	tokens = NULL;
+	lexer = init_lexer(cmd_line);
+	if (!lexer)
+		return (NULL);
+	create_tokens_list(lexer, &tokens);
+	if (!tokens->value || validate_tokens(tokens))
+		return (free(lexer), free_token_list(tokens), NULL);
+	classify_tokens(tokens);
+	ready_tokens = NULL;
+	extract_tokens(tokens, &ready_tokens);
+	free_token_list(tokens);
+	free(lexer);
+	return (ready_tokens);
+}
+
+t_parser	*parse_input(char *cmd_line)
+{
+	t_parser	*parser;
+
+	parser = init_parser();
+	if (!parser)
+		return (NULL);
+	if (!cmd_line || check_input(cmd_line))
+		return (NULL);
+	parser->infix_note = cmd_line_to_ready_tokens(cmd_line);
+	shunting_yard(parser);
+	parser->holy_tree = post_to_tree(parser->postfix_note);
+	return (parser);
+}

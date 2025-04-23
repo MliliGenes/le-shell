@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 01:09:12 by le-saad           #+#    #+#             */
-/*   Updated: 2025/04/22 12:19:26 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/23 11:41:09 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ bool	is_full_operator(t_lexer *lexer)
 	char	next;
 
 	c = lexer->current_char;
+	if (c == '&' && lexer->input[lexer->pos + 1] != '&')
+		return (false);
 	if (c == '(' || c == ')')
 		return (true);
 	if (c == '|' || c == '&' || c == '<' || c == '>')

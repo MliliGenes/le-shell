@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 01:16:26 by le-saad           #+#    #+#             */
-/*   Updated: 2025/04/22 12:37:37 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/23 12:30:55 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,10 @@ int	get_op_precedence(t_ready_token *token)
 	t_op_type	op_type;
 
 	op_type = ((t_op *)token->p_token)->type;
-	if (op_type == OP_AND)
-		return (2);
-	else if (op_type == OP_OR)
+	if (op_type == OP_AND || op_type == OP_OR)
 		return (1);
 	else if (op_type == OP_PIPE)
-		return (3);
+		return (2);
 	else if (op_type == OP_PAREN_L || op_type == OP_PAREN_R)
 		return (0);
 	return (-1);
@@ -30,6 +28,5 @@ int	get_op_precedence(t_ready_token *token)
 
 bool	check_input(char *input)
 {
-	return (check_quotes_balance(input) || check_parenthesis_balance(input)
-		|| check_m_percent(input));
+	return (check_quotes_balance(input) || check_parenthesis_balance(input));
 }
