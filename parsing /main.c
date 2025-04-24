@@ -6,7 +6,7 @@
 /*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 23:35:56 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/24 00:10:53 by le-saad          ###   ########.fr       */
+/*   Updated: 2025/04/24 18:30:12 by le-saad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,15 +69,12 @@ int main(void)
         if (parser && parser->holy_tree)
         {
             print_ast(parser->holy_tree);
-			// print_ready_tokens(parser->postfix_note);
+			print_ready_tokens(parser->postfix_note);
             free_ast(parser->holy_tree);
             free_ready_tokens_list(parser->postfix_note);
             free(parser);
         }
-        free(input);
-		rl_replace_line("", 0);
-        rl_on_new_line();
-        rl_redisplay();      
+        free(input);     
     }
     return (0);
 }

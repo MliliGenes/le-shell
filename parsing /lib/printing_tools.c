@@ -6,7 +6,7 @@
 /*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 21:57:52 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/24 00:05:55 by le-saad          ###   ########.fr       */
+/*   Updated: 2025/04/24 18:11:07 by le-saad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 const char *token_color(t_token_type type)
 {
-    static const char *colors[] = {
+    const char *colors[] = {
         [TOKEN_WORD] = WHITE,
         [TOKEN_COMMAND] = GREEN,
         [TOKEN_ARG] = CYAN,
@@ -36,7 +36,7 @@ const char *token_color(t_token_type type)
 
 const char  *token_type_name(t_token_type type)
 {
-    static const char   *names[] = {[TOKEN_WORD] = "WORD",
+    const char   *names[] = {[TOKEN_WORD] = "WORD",
                                     [TOKEN_COMMAND] = "CMD", [TOKEN_ARG] = "ARG", [TOKEN_FILE] = "FILE",
                                     [TOKEN_REDIR_IN] = "IN", [TOKEN_REDIR_OUT] = "OUT",
                                     [TOKEN_APPEND] = "APPEND", [TOKEN_HEREDOC] = "HEREDOC",

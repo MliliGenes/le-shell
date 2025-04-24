@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_handling.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 01:09:59 by le-saad           #+#    #+#             */
-/*   Updated: 2025/04/23 12:28:39 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/24 18:15:21 by le-saad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ t_token	*handle_quoted(t_lexer *lexer)
 		return (NULL);
 	advance_lexer(lexer);
 	while (lexer->current_char && !is_white_space(lexer->current_char)
-		&& !is_operator(lexer->current_char))
+		&& !is_full_operator(lexer))
 		advance_lexer(lexer);
 	value = ft_strndup(lexer->input + start, lexer->pos - start);
 	if (!value)
