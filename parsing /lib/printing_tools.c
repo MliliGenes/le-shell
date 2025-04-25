@@ -6,7 +6,7 @@
 /*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 21:57:52 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/24 18:11:07 by le-saad          ###   ########.fr       */
+/*   Updated: 2025/04/25 00:27:04 by le-saad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,6 +162,18 @@ void	print_ready_tokens(t_ready_token *head)
 #define COLOR_MAGENTA "\x1B[35m"
 #define COLOR_CYAN    "\x1B[36m"
 #define COLOR_WHITE   "\x1B[37m"
+#define COLOR_ORANGE  "\x1B[38;5;208m"
+
+// Function to convert redirection type to string
+char *get_redir_type_string(int redir_type) {
+    switch (redir_type) {
+        case REDIR_IN:     return "REDIR_IN (<)";
+        case REDIR_OUT:    return "REDIR_OUT (>)";
+        case REDIR_APPEND: return "REDIR_APPEND (>>)";
+        case REDIR_HEREDOC: return "REDIR_HEREDOC (<<)";
+        default:           return "UNKNOWN_REDIR";
+    }
+}
 
 char *get_op_string(int op_type) {
     switch (op_type) {
@@ -171,6 +183,60 @@ char *get_op_string(int op_type) {
         case OP_PAREN_L: return "LEFT_PAREN (()";
         case OP_PAREN_R: return "RIGHT_PAREN ())";
         default:         return "UNKNOWN";
+    }
+}
+
+/**
+ * Prints the redirection linked list
+ * @param redir The redirection linked list
+ * @param prefix The string prefix to use for the current line
+ */
+void print_redirs(t_redir *redir, const char *prefix) {
+    int count = 0;
+    t_redir *current = redir;
+    
+    // Count redirs first
+    while (current) {
+        count++;
+        current = current->next;
+    }
+    
+    if (count == 0) {
+        printf("%s    %sNo redirections%s\n", prefix, COLOR_YELLOW, COLOR_RESET);
+        return;
+    }
+    
+    printf("%s    %sRedirections (%d):%s\n", prefix, COLOR_ORANGE, count, COLOR_RESET);
+    
+    // Reset for printing
+    current = redir;
+    int i = 0;
+    while (current) {
+        i++;
+        printf("%s    %s%s %d/%d:%s ", 
+               prefix, 
+               COLOR_ORANGE, 
+               (i == count) ? "└──" : "├──",
+               i, count, 
+               COLOR_RESET);
+        
+        // Print redirection type
+        printf("%s%s%s → ", 
+               COLOR_BLUE, 
+               get_redir_type_string(current->type), 
+               COLOR_RESET);
+        
+        // Print file or limiter
+        if (current->file_or_limiter) {
+            printf("%s'%s'%s\n", 
+                   COLOR_CYAN, 
+                   current->file_or_limiter, 
+                   COLOR_RESET);
+        } else {
+            printf("%s(null)%s\n", COLOR_RED, COLOR_RESET);
+        }
+        
+        current = current->next;
     }
 }
 
@@ -225,6 +291,11 @@ void print_ast_node(t_ast *root, const char *prefix, int is_left, int is_last) {
                     printf("%s(null)%s", COLOR_RED, COLOR_RESET);
                 }
                 printf("\n");
+                
+                // Print redirections if available
+                if (cmd) {
+                    print_redirs(cmd->redirs, next_prefix);
+                }
                 break;
             }
             case OP: {

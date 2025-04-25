@@ -6,7 +6,7 @@
 /*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 01:11:13 by le-saad           #+#    #+#             */
-/*   Updated: 2025/04/23 22:04:47 by le-saad          ###   ########.fr       */
+/*   Updated: 2025/04/25 00:00:01 by le-saad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ t_cmd	*extract_cmd_data(t_token *start, t_token *end)
 	char	**args;
 	t_redir	*redirs;
 
+	cmd = NULL;
 	args = NULL;
 	redirs = NULL;
 	if (!start || start->type == TOKEN_EOF)

@@ -6,16 +6,11 @@
 /*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 23:35:56 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/24 18:30:12 by le-saad          ###   ########.fr       */
+/*   Updated: 2025/04/25 01:06:52 by le-saad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include/parsing.h"
-
-void    ll(void)
-{
-    system("leaks parser");
-}
 
 void    print_notation(t_ready_token *head)
 {
@@ -55,26 +50,24 @@ int main(void)
     t_parser    *parser;
     char        *input;
 
-    // atexit(ll);
     rl_bind_key('\t', rl_complete);
     while (1)
     {
         input = readline("le-shell> ");
         if (!input)
             break;
-		if (!*input)
-			continue;
-        add_history(input);
+        if (*input)
+            add_history(input);
         parser = parse_input(input);
-        if (parser && parser->holy_tree)
+        if (parser)
         {
             print_ast(parser->holy_tree);
-			print_ready_tokens(parser->postfix_note);
             free_ast(parser->holy_tree);
             free_ready_tokens_list(parser->postfix_note);
             free(parser);
         }
-        free(input);     
+        free(input);
+        input = NULL;
     }
     return (0);
 }

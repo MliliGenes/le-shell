@@ -1,5 +1,5 @@
 CC = cc
-CFLAGS = #-Wall -Wextra -Werror #-g -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -O3 -g -fsanitize=address
 LIB = -lreadline
 
 TARGET = le-shell
@@ -37,7 +37,7 @@ INC_FLAGS = -I$(INCLUDE_DIR)
 
 all: $(TARGET)
 
-test: all
+run: re
 	./le-shell
 
 ${TARGET}: ${OBJ_FILES}
@@ -53,3 +53,5 @@ fclean: clean
 	@rm -f $(TARGET)
 
 re: fclean all
+
+.PHONY: all clean fclean re run
