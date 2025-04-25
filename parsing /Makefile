@@ -2,7 +2,7 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror -O3 -fomit-frame-pointer #-g -fsanitize=address
 LIB = -lreadline
 
-NAME = le-shell
+NAME = minishell
 
 BUILD_DIR = build
 
@@ -38,17 +38,19 @@ OBJ_FILES = $(patsubst %.c, ${BUILD_DIR}/%.o, $(SRC_FILES))
 INC_FLAGS = -I$(INCLUDE_DIR)
 
 all: $(NAME)
+	@clear
 
 run: re
-	make clean
-	./le-shell
+	@clear
+	@make clean
+	@./minishell
 
 ${NAME}: ${OBJ_FILES}
-	@$(CC) $(CFLAGS) ${OBJ_FILES} $(LIB) -o ${NAME} 
+	@$(CC) $(CFLAGS) ${OBJ_FILES} $(LIB) -o ${NAME}
 
 $(BUILD_DIR)/%.o: %.c
 	@mkdir -p $(dir $@)
-	$(CC) $(CFLAGS) $(INC_FLAGS) -c $< -o $@
+	@$(CC) $(CFLAGS) $(INC_FLAGS) -c $< -o $@
 
 clean:
 	@rm -rf $(BUILD_DIR)
