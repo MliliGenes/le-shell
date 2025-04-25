@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 01:11:30 by le-saad           #+#    #+#             */
-/*   Updated: 2025/04/22 12:27:28 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/25 07:11:04 by le-saad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	free_redirs(t_redir *redirs)
 
 bool	has_redirections(t_token *start, t_token *end)
 {
-	while (start && (end == NULL || start <= end))
+	while (start && (end == NULL || start->n_index <= end->n_index))
 	{
 		if (is_redir(start->type))
 			return (true);
@@ -70,7 +70,7 @@ t_redir	*get_redirs(t_token *start, t_token *end)
 	t_redir	*redir_node;
 
 	redirs = NULL;
-	while (start && (end == NULL || start <= end))
+	while (start && (end == NULL || start->n_index <= end->n_index))
 	{
 		if (is_redir(start->type))
 		{

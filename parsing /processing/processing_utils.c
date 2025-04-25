@@ -6,7 +6,7 @@
 /*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 01:12:40 by le-saad           #+#    #+#             */
-/*   Updated: 2025/04/24 21:13:37 by le-saad          ###   ########.fr       */
+/*   Updated: 2025/04/25 07:11:54 by le-saad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	count_args(t_token *start, t_token *end)
 	int	size;
 
 	size = 0;
-	while (start && (end == NULL || start <= end))
+	while (start && (end == NULL || start->n_index <= end->n_index))
 	{
 		if (is_word(start->type))
 			size++;
@@ -62,7 +62,7 @@ char	**get_args(t_token *start, t_token *end)
 	if (!args)
 		return (NULL);
 	i = 0;
-	while (start && (end == NULL || start <= end))
+	while (start && (end == NULL || start->n_index <= end->n_index))
 	{
 		if (is_word(start->type))
 		{
