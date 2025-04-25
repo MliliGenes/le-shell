@@ -5,13 +5,14 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/22 01:09:12 by le-saad           #+#    #+#             */
-/*   Updated: 2025/04/23 11:41:09 by sel-mlil         ###   ########.fr       */
+/*   Created: 2025/04/25 12:38:00 by sel-mlil          #+#    #+#             */
+/*   Updated: 2025/04/25 12:38:03 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/parsing.h"
 
+// rm on mandatory
 bool	is_full_operator(t_lexer *lexer)
 {
 	char	c;

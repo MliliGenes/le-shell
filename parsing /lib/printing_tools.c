@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   printing_tools.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 21:57:52 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/25 00:27:04 by le-saad          ###   ########.fr       */
+/*   Updated: 2025/04/25 12:40:12 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -368,4 +368,37 @@ void print_ast_simple(t_ast *root) {
     // Call tree printing function with no prefix
     printf("Abstract Syntax Tree:\n");
     print_ast_node(root, "", 0, 1);
+}
+
+void	print_notation(t_ready_token *head)
+{
+	t_ready_token	*current;
+	t_cmd			*cmd;
+	t_op			*op;
+
+	current = head;
+	while (current)
+	{
+		if (current->type == CMD)
+		{
+			cmd = (t_cmd *)current->p_token;
+			printf("%s ", cmd->cmd);
+		}
+		else if (current->type == OP)
+		{
+			op = (t_op *)current->p_token;
+			if (op->type == OP_PIPE)
+				printf("| ");
+			else if (op->type == OP_AND)
+				printf("&& ");
+			else if (op->type == OP_OR)
+				printf("|| ");
+			else if (op->type == OP_PAREN_L)
+				printf("( ");
+			else if (op->type == OP_PAREN_R)
+				printf(") ");
+		}
+		current = current->next;
+	}
+	printf("\n");
 }

@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 21:27:08 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/23 12:31:29 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/25 13:51:53 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ t_token	*get_next_token(t_lexer *lexer)
 		return (create_token(TOKEN_EOF, NULL));
 	if (lexer->current_char == '\'' || lexer->current_char == '"')
 		return (handle_quoted(lexer));
-	if (is_operator(lexer->current_char) && is_full_operator(lexer))
+	if (is_full_operator(lexer))
 		return (handle_operator(lexer));
 	return (handle_word(lexer));
 }

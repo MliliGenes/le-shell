@@ -3,7 +3,8 @@
         "parsing.h": "c",
         "stdbool.h": "c",
         "readline.h": "c",
-        "unistd.h": "c"
+        "unistd.h": "c",
+        "history.h": "c"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }

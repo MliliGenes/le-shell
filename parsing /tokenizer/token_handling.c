@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_handling.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/22 01:09:59 by le-saad           #+#    #+#             */
-/*   Updated: 2025/04/24 18:15:21 by le-saad          ###   ########.fr       */
+/*   Created: 2025/04/22 01:09:59 by sel-mlil          #+#    #+#             */
+/*   Updated: 2025/04/25 13:52:23 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ t_token	*handle_quoted(t_lexer *lexer)
 	return (token);
 }
 
+// rm on mandatory
 char	*extract_operator(t_lexer *lexer, int *op_length)
 {
 	char	op[3];

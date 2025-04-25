@@ -3,16 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   dependencies.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 08:49:15 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/24 17:45:52 by le-saad          ###   ########.fr       */
+/*   Updated: 2025/04/25 11:15:07 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef DEPENDENCIES_H
 # define DEPENDENCIES_H
 
+# define PROMPT "\033[1m\033[96mle-shell\033[0m \033[91m$\033[0m "
+
+# include <fcntl.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <stdbool.h>
@@ -21,9 +24,11 @@
 # include <stdlib.h>
 # include <string.h>
 # include <unistd.h>
-# include <fcntl.h>
 
 # define RESET "\033[0m"
+# define BLACK "\033[30m"
+# define BRIGHT_BLACK "\033[90m"
+# define BG_BLACK "\033[40m"
 # define RED "\033[31m"
 # define GREEN "\033[32m"
 # define YELLOW "\033[33m"

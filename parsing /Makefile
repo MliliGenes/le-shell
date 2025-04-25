@@ -1,8 +1,10 @@
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -O3 -fomit-frame-pointer -g -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -O3 -fomit-frame-pointer #-g -fsanitize=address
 LIB = -lreadline
 
-TARGET = le-shell
+NAME = le-shell
+
+BUILD_DIR = build
 
 LIB_DIR = lib
 TOKENIZER_DIR = tokenizer
@@ -31,26 +33,28 @@ SRC_FILES = main.c \
 	$(PARSING_DIR)/parser_utils.c \
 	$(PARSING_DIR)/shunting_yard.c
 
-OBJ_FILES = $(SRC_FILES:.c=.o)
+OBJ_FILES = $(patsubst %.c, ${BUILD_DIR}/%.o, $(SRC_FILES))
 
 INC_FLAGS = -I$(INCLUDE_DIR)
 
-all: $(TARGET)
+all: $(NAME)
 
 run: re
+	make clean
 	./le-shell
 
-${TARGET}: ${OBJ_FILES}
-	@$(CC) $(CFLAGS) ${OBJ_FILES} $(LIB) -o ${TARGET} 
+${NAME}: ${OBJ_FILES}
+	@$(CC) $(CFLAGS) ${OBJ_FILES} $(LIB) -o ${NAME} 
 
-%.o: %.c
-	@$(CC) $(CFLAGS) $(INC_FLAGS) -c $< -o $@
+$(BUILD_DIR)/%.o: %.c
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) $(INC_FLAGS) -c $< -o $@
 
 clean:
-	@rm -f $(OBJ_FILES)
+	@rm -rf $(BUILD_DIR)
 
 fclean: clean
-	@rm -f $(TARGET)
+	@rm -f $(NAME)
 
 re: fclean all
 
