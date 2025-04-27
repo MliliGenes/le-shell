@@ -6,11 +6,31 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 20:02:52 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/04/21 23:49:08 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/04/27 23:45:50 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+static char **split_env_var(char *arg)
+{
+	char **split;
+	int i;
+
+	i = 0;
+	split = malloc(sizeof(char *) * 3);
+	if (!split)
+		return (NULL);
+	while (arg[i] && arg[i] != '=')
+		i++;
+	split[0] = ft_substr(arg, 0, i);
+	if (arg[i] == '=')
+		split[1] = ft_substr(arg, i + 1, ft_strlen(arg));
+	else
+		split[1] = NULL;
+	split[2] = NULL;
+	return (split);
+}
 
 static t_env_var *create_node(char *env_var)
 {
@@ -20,7 +40,7 @@ static t_env_var *create_node(char *env_var)
 	new_node = malloc(sizeof(t_env_var));
 	if (!new_node)
 		return (NULL);
-	split = ft_split(env_var, '=');
+	split = split_env_var(env_var);
 	if (!split)
 	{
 		free(new_node);
