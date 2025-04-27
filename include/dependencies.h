@@ -6,14 +6,14 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 08:49:15 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/25 20:38:25 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/27 09:42:07 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef DEPENDENCIES_H
 # define DEPENDENCIES_H
 
-# define PROMPT "\033[1m╭─\033[32mle-shell\033[0m \033[34m~/sel-mlil/ssbaytri\033[0m \n\033[1m╰─$\033[0m "
+# define PROMPT "\033[1m╭─\033[32mle-shell\033[0m \n\033[1m╰─$\033[0m "
 
 # include <fcntl.h>
 # include <readline/history.h>

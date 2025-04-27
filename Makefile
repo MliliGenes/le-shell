@@ -37,27 +37,42 @@ OBJ_FILES = $(patsubst %.c, ${BUILD_DIR}/%.o, $(SRC_FILES))
 
 INC_FLAGS = -I$(INCLUDE_DIR)
 
+GREEN	= \033[0;32m
+YELLOW	= \033[0;33m
+BLUE	= \033[0;34m
+RED		= \033[0;31m
+RESET	= \033[0m
+
 all: $(NAME)
+	@printf "$(GREEN)✅  Cleaned terminal$(RESET)\n"
 	@clear
 
 run: re
+	@printf "$(GREEN)✅  Cleaned terminal$(RESET)\n"
 	@clear
 	@make clean
+	@printf "$(BLUE)🚀  Running minishell...$(RESET)\n"
 	@./minishell
 
 ${NAME}: ${OBJ_FILES}
+	@printf "$(YELLOW)🔨  Linking objects...$(RESET)\n"
 	@$(CC) $(CFLAGS) ${OBJ_FILES} $(LIB) -o ${NAME}
+	@printf "$(GREEN)✅  Executable $(NAME) created$(RESET)\n"
 
 $(BUILD_DIR)/%.o: %.c
 	@mkdir -p $(dir $@)
+	@printf "$(YELLOW)🔧  Compiling $<...$(RESET)\n"
 	@$(CC) $(CFLAGS) $(INC_FLAGS) -c $< -o $@
 
 clean:
+	@printf "$(RED)🧹  Cleaning object files...$(RESET)\n"
 	@rm -rf $(BUILD_DIR)
 
 fclean: clean
+	@printf "$(RED)🧹  Removing executable $(NAME)...$(RESET)\n"
 	@rm -f $(NAME)
 
 re: fclean all
+	@printf "$(GREEN)♻️  Project rebuilt$(RESET)\n"
 
 .PHONY: all clean fclean re run
