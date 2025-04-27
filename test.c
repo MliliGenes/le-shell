@@ -78,10 +78,14 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 
 void	expand_vars(char *input, var *vars)
 {
-	int	total_len;
-	int	i;
-	int	start;
-    char *key;
+	int		total_len;
+	int		i;
+	int		start;
+	char	*key;
+	char	*value;
+	char	*new_input;
+	int		j;
+	int		k;
 
 	i = 0;
 	total_len = strlen(input);
@@ -89,24 +93,50 @@ void	expand_vars(char *input, var *vars)
 	{
 		if (input[i] == '$' && isalpha(input[i + 1]))
 		{
-            i++;
-            start = i;
-            total_len--;
+			i++;
+			start = i;
+			total_len--;
 			while (input[i] && (isalnum(input[i]) || input[i] == '_'))
 			{
 				total_len--;
 				i++;
 			}
-            key = ft_substr(input, start, i - start);
-            char *value = find_env_var(vars ,key);
-            printf("key: %s\nvalue: %s\n", key, value);
-            if (value)
-                total_len += strlen(value);
+			key = ft_substr(input, start, i - start);
+			value = find_env_var(vars, key);
+			printf("key: %s\nvalue: %s\n", key, value);
+			if (value)
+				total_len += strlen(value);
 			continue ;
 		}
 		i++;
 	}
+	new_input = malloc(total_len);
+	i = 0;
+	j = 0;
+	k = 0;
+	while (input[i])
+	{
+		if (input[i] == '$' && isalpha(input[i + 1]))
+		{
+			k = i + 1;
+			start = k;
+			while (input[k] && (isalnum(input[k]) || input[k] == '_'))
+				i++;
+			key = ft_substr(input, start, k - start);
+			i += strlen(key) + 1;
+			value = find_env_var(vars, key);
+			k = 0;
+			while (value[k])
+				new_input[j++] = value[k++];
+		}
+		else
+		{
+			new_input[j++] = input[i++];
+		}
+		i++;
+	}
 	printf("%s => total lenth of input after expansion :%d", input, total_len);
+	printf("%s", new_input);
 }
 
 int	main(void)
@@ -155,7 +185,7 @@ int	main(void)
 	// printf("5: %s\n", test5);
 
 	// TODO: Call your expand_vars function here and print the results
-    expand_vars(test1, env_vars);
+	expand_vars(test1, env_vars);
 
 	// Clean up
 	free_var_list(env_vars);
