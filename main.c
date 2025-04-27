@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 23:35:56 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/25 13:53:54 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/27 16:32:59 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	ll(void)
 {
-	system("leaks le-shell");
+	system("leaks minishell");
 }
 
 int	main(void)
