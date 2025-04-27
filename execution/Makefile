@@ -8,6 +8,7 @@ M_SRCS = 	main.c \
 			builtins/ft_export.c \
 			builtins/ft_unset.c \
 			builtins/ft_cd.c \
+			wildcards.c \
 
 M_OBJS = $(M_SRCS:.c=.o)
 

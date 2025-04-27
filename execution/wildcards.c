@@ -6,40 +6,32 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 01:35:21 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/04/27 01:52:50 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/04/28 00:31:18 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// function expand_wildcards(args):
-//     for each argument in args:
-//         if '*' is found in the argument:
-//             matches = []  // Initialize an empty list for matches
+void	expand_wildcards(char **arg)
+{
+	(void)arg;
+	DIR			*dir;
+	struct dirent *entry;
 
-//             // Open current directory
-//             dir = opendir(".")
-
-//             if dir is NULL:
-//                 print error("Cannot open current directory")
-//                 return original args
-
-//             // Read directory contents and find matches
-//             for each file in dir:
-//                 if file matches pattern (using wildcard_match function):
-//                     add file to matches list
-
-//             // If matches are found, replace the argument with the matches
-//             if matches are not empty:
-//                 replace the argument with matches list
-//             else:
-//                 leave the argument as is (or handle no matches error)
-
-//             // Close directory after reading
-//             closedir(dir)
-
-//     return updated args
-
+	dir = opendir(".");
+	if (!dir)
+	{
+		perror("opendir");
+		return;
+	}
+	entry = readdir(dir);
+	while (entry)
+	{
+		printf("%s\n", entry->d_name);
+		entry = readdir(dir);
+	}
+	closedir(dir);
+}
 
 void handle_wildcards(char *input)
 {

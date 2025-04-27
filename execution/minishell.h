@@ -6,7 +6,7 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 03:20:58 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/04/22 00:59:42 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/04/28 00:23:28 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <signal.h>
+#include <dirent.h>
 #include "include/libft.h"
 #include "include/readline.h"
 #include "include/history.h"
@@ -58,3 +59,5 @@ void free_env_list(t_env_var *head);
 t_env_var	*create_env_var(char *key, char *value);
 void add_env_back(t_env_var **head, t_env_var *new);
 void	env_update(t_env_var *env_list, char *key, char *value);
+
+void handle_wildcards(char *input);
