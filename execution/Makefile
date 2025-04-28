@@ -34,6 +34,9 @@ $(NAME): $(M_OBJS)
 clean:
 	rm -rf $(M_OBJS)
 
+james: all clean
+	@echo "Build complete"
+
 fclean: clean
 	rm -rf $(NAME)
 
