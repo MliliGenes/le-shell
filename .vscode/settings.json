@@ -7,7 +7,8 @@
         "history.h": "c",
         "dependencies.h": "c",
         "cctype": "c",
-        "stdio.h": "c"
+        "stdio.h": "c",
+        "lib.h": "c"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }
