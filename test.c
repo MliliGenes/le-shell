@@ -8,13 +8,13 @@ typedef struct var
 	char		*key;
 	char		*value;
 	struct var	*next;
-}				var;
+}				t_env_var;
 
-var	*create_var(const char *key, const char *value)
+t_env_var	*create_var(const char *key, const char *value)
 {
-	var	*new_var;
+	t_env_var	*new_var;
 
-	new_var = (var *)malloc(sizeof(var));
+	new_var = malloc(sizeof(t_env_var));
 	if (!new_var)
 		return (NULL);
 	new_var->key = strdup(key);
@@ -23,10 +23,10 @@ var	*create_var(const char *key, const char *value)
 	return (new_var);
 }
 
-void	free_var_list(var *head)
+void	free_var_list(t_env_var *head)
 {
-	var	*current;
-	var	*next;
+	t_env_var	*current;
+	t_env_var	*next;
 
 	current = head;
 	while (current)
@@ -39,7 +39,7 @@ void	free_var_list(var *head)
 	}
 }
 
-char	*find_env_var(var *env_vars, const char *key)
+char	*find_env_var(t_env_var *env_vars, const char *key)
 {
 	while (env_vars != NULL)
 	{
@@ -83,10 +83,10 @@ typedef struct s_expansion
 	int			i_index;
 	int			o_index;
 	int			len;
-	var			*vars;
+	t_env_var	*vars;
 }				t_expansion;
 
-void	init_expansion(t_expansion *exp, char *input, var *vars)
+void	init_expansion(t_expansion *exp, char *input, t_env_var *vars)
 {
 	exp->input = input;
 	exp->len = strlen(input);
@@ -105,42 +105,41 @@ void	update_quote_state(t_expansion *exp, char current_char)
 		exp->d_quote = !exp->d_quote;
 }
 
-void    process_variable_length(t_expansion *exp)
+void	process_variable_length(t_expansion *exp)
 {
-    int     start;
-    char    *key;
-    char    *value;
-    
-    exp->i_index++;
-    start = exp->i_index;
-    exp->len--;
-    while (exp->input[exp->i_index] && 
-           (isalnum(exp->input[exp->i_index]) || exp->input[exp->i_index] == '_'))
-    {
-        exp->len--;
-        exp->i_index++;
-    }
-    key = ft_substr(exp->input, start, exp->i_index - start);
-    value = find_env_var(exp->vars, key);
-    if (value)
-        exp->len += strlen(value);
-    free(key);
+	int		start;
+	char	*key;
+	char	*value;
+
+	exp->i_index++;
+	start = exp->i_index;
+	exp->len--;
+	while (exp->input[exp->i_index] && (isalnum(exp->input[exp->i_index])
+			|| exp->input[exp->i_index] == '_'))
+	{
+		exp->len--;
+		exp->i_index++;
+	}
+	key = ft_substr(exp->input, start, exp->i_index - start);
+	value = find_env_var(exp->vars, key);
+	if (value)
+		exp->len += strlen(value);
+	free(key);
 }
 
 void	calculate_expanded_length(t_expansion *exp)
 {
-    while (exp->input[exp->i_index])
-    {
-        update_quote_state(exp, exp->input[exp->i_index]);
-        
-        if (!exp->s_quote && exp->input[exp->i_index] == '$' && 
-            (isalpha(exp->input[exp->i_index + 1]) || exp->input[exp->i_index + 1] == '_'))
-            process_variable_length(exp);
-        else
-            exp->i_index++;
-    }
-    
-    exp->i_index = 0;
+	while (exp->input[exp->i_index])
+	{
+		update_quote_state(exp, exp->input[exp->i_index]);
+		if (!exp->s_quote && exp->input[exp->i_index] == '$'
+			&& (isalpha(exp->input[exp->i_index + 1]) || exp->input[exp->i_index
+				+ 1] == '_'))
+			process_variable_length(exp);
+		else
+			exp->i_index++;
+	}
+	exp->i_index = 0;
 }
 
 char	*extract_var_name(t_expansion *exp)
@@ -150,8 +149,7 @@ char	*extract_var_name(t_expansion *exp)
 
 	start = exp->i_index;
 	length = 0;
-	while (exp->input[exp->i_index]
-		&& (isalnum(exp->input[exp->i_index])
+	while (exp->input[exp->i_index] && (isalnum(exp->input[exp->i_index])
 			|| exp->input[exp->i_index] == '_'))
 	{
 		exp->i_index++;
@@ -178,22 +176,21 @@ void	expand_variable(t_expansion *exp)
 	free(key);
 }
 
-void	expand_vars(char *input, var *vars)
+void	expand_vars(char *input, t_env_var *vars)
 {
 	t_expansion	exp;
 
 	init_expansion(&exp, input, vars);
 	calculate_expanded_length(&exp);
-	
 	exp.output = (char *)malloc(exp.len + 1);
 	if (!exp.output)
-		return;
+		return ;
 	while (input[exp.i_index])
 	{
 		update_quote_state(&exp, input[exp.i_index]);
-		
 		if (!exp.s_quote && input[exp.i_index] == '$'
-			&& (isalpha(input[exp.i_index + 1]) || input[exp.i_index + 1] == '_'))
+			&& (isalpha(input[exp.i_index + 1]) || input[exp.i_index
+				+ 1] == '_'))
 			expand_variable(&exp);
 		else
 			exp.output[exp.o_index++] = input[exp.i_index++];
@@ -206,13 +203,13 @@ void	expand_vars(char *input, var *vars)
 
 int	main(void)
 {
-	var		*env_vars;
-	var		*current;
-	char	*test1;
-	char	*test2;
-	char	*test3;
-	char	*test4;
-	char	*test5;
+	t_env_var *env_vars;
+	t_env_var *current;
+	char *test1;
+	char *test2;
+	char *test3;
+	char *test4;
+	char *test5;
 
 	env_vars = create_var("HOME", "/home/user");
 	current = env_vars;
