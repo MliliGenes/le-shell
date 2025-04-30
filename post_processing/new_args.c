@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 09:47:52 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/30 14:33:57 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/30 14:52:22 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -275,3 +275,95 @@ char	**holy_split(char *joint)
 
 // 	return (0);
 // }
+
+void	update_quote_status(char c, bool *in_single, bool *in_double)
+{
+	if (c == '\'' && !(*in_double))
+		*in_single = !(*in_single);
+	else if (c == '"' && !(*in_single))
+		*in_double = !(*in_double);
+}
+
+bool	is_in_quote(bool in_single, bool in_double)
+{
+	return (in_single || in_double);
+}
+
+int	holy_count_words(char *str)
+{
+	bool	in_single_quote;
+	bool	in_double_quote;
+	bool	in_word;
+	int		counter;
+	int		index;
+
+	counter = 0;
+	index = 0;
+	in_single_quote = false;
+	in_double_quote = false;
+	in_word = false;
+	while (str && str[index])
+	{
+		update_quote_status(str[index], &in_single_quote, &in_double_quote);
+		if (!is_white_space(str[index]) && !in_word)
+		{
+			in_word = true;
+			counter++;
+		}
+		else if (!is_in_quote(in_single_quote, in_double_quote) && 
+				in_word && is_white_space(str[index]))
+			in_word = false;
+		index++;
+	}
+	return (counter);
+}
+
+int	find_word_start(char *joint, int end, bool *in_single, bool *in_double)
+{
+	while (joint[end] && is_white_space(joint[end]) && 
+		!is_in_quote(*in_single, *in_double))
+		end++;
+	return (end);
+}
+
+int	find_word_end(char *joint, int end, bool *in_single, bool *in_double)
+{
+	while (joint[end] && (!is_white_space(joint[end]) || 
+		is_in_quote(*in_single, *in_double)))
+	{
+		update_quote_status(joint[end], in_single, in_double);
+		end++;
+	}
+	return (end);
+}
+
+char	**holy_split(char *joint)
+{
+	char	**new_args;
+	int		index, start, end;
+	bool	in_single_quote, in_double_quote;
+
+	start = 0;
+	end = 0;
+	index = 0;
+	in_single_quote = false;
+	in_double_quote = false;
+	new_args = malloc(sizeof(char *) * (holy_count_words(joint) + 1));
+	if (!new_args)
+		return (NULL);
+	while (index < holy_count_words(joint))
+	{
+		end = find_word_start(joint, end, &in_single_quote, &in_double_quote);
+		start = end;
+		end = find_word_end(joint, end, &in_single_quote, &in_double_quote);
+		new_args[index] = ft_substr(joint, start, end - start);
+		if (!new_args[index])
+		{
+			free_args(new_args);
+			return (NULL);
+		}
+		index++;
+	}
+	new_args[index] = NULL;
+	return (new_args);
+}
