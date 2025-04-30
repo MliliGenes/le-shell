@@ -6,12 +6,12 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/04/29 12:35:04 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/29 12:47:28 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
-#include "../include/dependencies.h"
+#include "../include/lib.h"
 
 size_t	ft_strlen(const char *s)
 {

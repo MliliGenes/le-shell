@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:51:57 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/23 14:52:46 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/29 15:18:45 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,5 +117,12 @@ t_ast							*post_to_tree(t_ready_token *postfix);
 // MARK: - Parser Core Functions
 t_parser						*init_parser(void);
 t_parser						*parse_input(char *cmd_line);
+
+char							*find_env_var(t_env_var *env_vars,
+									const char *key);
+void							init_expansion(t_expansion *exp, char *input,
+									t_env_var *vars);
+void							update_quote_state(t_expansion *exp,
+									char current_char);
 
 #endif

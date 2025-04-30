@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 13:51:54 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/25 13:52:05 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/29 13:00:05 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	check_parenthesis_balance(const char *input)
 			{
 				data[2]--;
 				if (data[2] < 0)
-					return (1);
+					return (2);
 			}
 		}
 		i++;

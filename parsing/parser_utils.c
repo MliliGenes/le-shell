@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 12:37:30 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/25 12:37:32 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/04/29 13:00:48 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,9 @@ bool	check_input(char *input)
 		return (print_syntax_error("'", UNBALANCED_QUOTES), 1);
 	if (check_quotes_balance(input) == 2)
 		return (print_syntax_error("\"", UNBALANCED_QUOTES), 1);
-	if (check_parenthesis_balance(input))
-		return (print_syntax_error("()", UNBALANCED_PARENS), 1);
+	if (check_parenthesis_balance(input) == 1)
+		return (print_syntax_error("(", UNBALANCED_PARENS), 1);
+	if (check_parenthesis_balance(input) == 2)
+		return (print_syntax_error(")", UNBALANCED_PARENS), 1);
 	return (0);
 }
