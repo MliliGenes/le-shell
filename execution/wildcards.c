@@ -6,11 +6,28 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 01:42:39 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/05/01 05:09:54 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/01 06:38:17 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void	*ft_realloc(void *ptr, size_t oldsize, size_t newsize)
+{
+	char	*newptr;
+
+	if (ptr == NULL)
+		return (malloc(newsize));
+	if (newsize <= oldsize)
+		return (ptr);
+	newptr = malloc(newsize);
+	if (!newptr)
+		return (NULL);
+	ft_memcpy(newptr, ptr, oldsize);
+	free(ptr);
+	return (newptr);
+}
+
 
 int ft_counter(char *str, char c)
 {
@@ -89,31 +106,79 @@ static int match(char *filename, char *pattern)
 	return (0);
 }
 
-void	expand_full(char **arg)
+char **get_matched(char *pattern)
 {
-	(void)arg;
 	DIR *dir;
 	struct dirent *entry;
-	
+	char **matches;
+	int count;
+
+	matches = NULL;
+	count = 0;
 	dir = opendir(".");
 	if (!dir)
 	{
 		perror("opendir");
-		return;
+		return NULL;
 	}
 	entry = readdir(dir);
 	while (entry)
 	{
-		if (entry->d_name[0] == '.' && (*arg)[0] != '.')
+		if (entry->d_name[0] == '.' && pattern[0] != '.')
 		{
 			entry = readdir(dir);
 			continue;
 		}
-		if (match(entry->d_name, *arg))
-			printf("%s\n", entry->d_name);
+		if (match(entry->d_name, pattern))
+		{
+			matches = ft_realloc(matches, sizeof(char *) * count, sizeof(char *) * (count + 2));
+			if (!matches)
+				return (NULL);
+			matches[count] = ft_strdup(entry->d_name);
+			count++;
+		}
 		entry = readdir(dir);
 	}
+	if (matches)
+		matches[count] = NULL;
 	closedir(dir);
+	return (matches);
+}
+
+void	expand_arg(char **arg)
+{
+	char **matches;
+	char *joined;
+	int i;
+	char *tmp;
+	char *tmp2;
+
+	matches = get_matched(*arg);
+	if (!matches || !matches[0])
+	{
+		free_2d(matches);
+		return;
+	}
+	joined = NULL;
+	i = 0;
+	while (matches[i])
+	{
+		tmp = joined;
+		if (!joined)
+			joined = ft_strdup(matches[i]);
+		else
+		{
+			joined = ft_strjoin(joined, " ");
+			tmp2 = joined;
+			joined = ft_strjoin(joined, matches[i]);
+			free(tmp2);
+			free(tmp);
+		}
+		i++;
+	}
+	free_2d(matches);
+	free(*arg);
+	*arg = joined;
 }
 
 void handle_wildcards(char *input)
@@ -128,8 +193,11 @@ void handle_wildcards(char *input)
 	while (args[i])
 	{
 		if (ft_strchr(args[i], '*') != NULL)
-			expand_full(&args[i]);
-		i++;			
+		{
+			expand_arg(&args[i]);
+			printf("%s\n", args[i]);
+		}
+		i++;
 	}
 	free_2d(args);
 }
