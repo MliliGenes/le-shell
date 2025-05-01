@@ -6,7 +6,7 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 01:42:39 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/05/01 06:38:17 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/01 06:46:03 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,6 +145,26 @@ char **get_matched(char *pattern)
 	return (matches);
 }
 
+void	sort_matches(char **matches)
+{
+	int		i, j;
+	char	*tmp;
+
+	if (!matches)
+		return;
+	for (i = 1; matches[i]; i++)
+	{
+		j = i;
+		while (j > 0 && ft_strcmp(matches[j - 1], matches[j]) > 0)
+		{
+			tmp = matches[j];
+			matches[j] = matches[j - 1];
+			matches[j - 1] = tmp;
+			j--;
+		}
+	}
+}
+
 void	expand_arg(char **arg)
 {
 	char **matches;
@@ -159,6 +179,7 @@ void	expand_arg(char **arg)
 		free_2d(matches);
 		return;
 	}
+	sort_matches(matches);
 	joined = NULL;
 	i = 0;
 	while (matches[i])
