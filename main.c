@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 23:35:56 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/30 08:54:22 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/01 16:47:28 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,7 +207,7 @@ int	main(int ac, char **av, char **envp)
 	t_parser	*parser;
 	char		*input;
 
-	atexit(ll);
+	// atexit(ll); 
 	(void)ac;
 	(void)av;
 	(void)envp;
@@ -218,17 +218,19 @@ int	main(int ac, char **av, char **envp)
 		if (!input)
 		{
 			free(input);
-			 ;
+			break;
 		}
-		if (*input)
+		if (input && *input)
 			add_history(input);
 		parser = parse_input(input);
 		if (parser && parser->holy_tree)
-		{	print_ast_simple(parser->holy_tree);
-		free_ast(parser->holy_tree);
-		free_ready_tokens_list(parser->postfix_note);
-		free(parser);}
-		free(input);
+		{
+			print_ast_simple(parser->holy_tree);
+			free_ast(parser->holy_tree);
+			free_ready_tokens_list(parser->postfix_note);
+			free(parser);
+			free(input);
+		}
 		input = NULL;
 	}
 	return (0);

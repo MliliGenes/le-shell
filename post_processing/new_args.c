@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 09:47:52 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/01 09:34:30 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/01 16:38:09 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	update_quote_status(char c, bool *in_single, bool *in_double)
 		*in_single = !(*in_single);
 	else if (c == '"' && !(*in_single))
 		*in_double = !(*in_double);
-}
+}	
 
 bool	is_in_quote(bool in_single, bool in_double)
 {
