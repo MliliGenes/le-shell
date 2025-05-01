@@ -6,16 +6,16 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 18:34:31 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/04/21 22:33:02 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/02 00:12:18 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void handle_pwd(char *input)
+void	handle_pwd(char *input)
 {
-	char *pwd;
-	
+	char	*pwd;
+
 	if ((ft_strcmp(input, "pwd") == 0))
 	{
 		pwd = getcwd(NULL, 0);
