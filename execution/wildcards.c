@@ -6,7 +6,7 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 01:42:39 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/04/29 18:15:45 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/01 05:09:54 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ int match_split(char *filename, char **pieces)
 
 static int match(char *filename, char *pattern)
 {
-	(void)filename;
 	if (ft_strcmp(pattern, "*") == 0)
 		return (1);
 	if (pattern[0] == '*' && pattern[ft_strlen(pattern) - 1] != '*' && ft_counter(pattern, '*') == 1)
@@ -105,8 +104,12 @@ void	expand_full(char **arg)
 	entry = readdir(dir);
 	while (entry)
 	{
-		if (ft_strcmp(entry->d_name, ".") != 0 && ft_strcmp(entry->d_name, "..") != 0 
-			&& match(entry->d_name, *arg))
+		if (entry->d_name[0] == '.' && (*arg)[0] != '.')
+		{
+			entry = readdir(dir);
+			continue;
+		}
+		if (match(entry->d_name, *arg))
 			printf("%s\n", entry->d_name);
 		entry = readdir(dir);
 	}
