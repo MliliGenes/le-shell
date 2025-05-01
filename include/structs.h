@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 06:20:05 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/29 12:33:30 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/01 11:50:36 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ typedef struct s_redir
 {
 	t_redir_type			type;
 	char					*file_or_limiter;
+	int 					fd;
 	struct s_redir			*next;
 }							t_redir;
 
@@ -125,15 +126,15 @@ typedef struct s_env_var
 
 typedef struct s_expansion
 {
-	char		*input;
-	char		*output;
-	int			s_quote;
-	int			d_quote;
-	int			i_index;
-	int			o_index;
-	int			len;
-	t_env_var	*vars;
-}				t_expansion;
+	char					*input;
+	char					*output;
+	int						s_quote;
+	int						d_quote;
+	int						i_index;
+	int						o_index;
+	int						len;
+	t_env_var				*vars;
+}							t_expansion;
 
 typedef struct s_shell
 {
