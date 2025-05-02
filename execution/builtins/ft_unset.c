@@ -6,33 +6,38 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 22:52:54 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/04/17 22:48:31 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/02 23:07:51 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-
-void env_remove(t_env_var **env_list, char *key)
+static void	free_env_node(t_env_var *node)
 {
-	t_env_var *curr = *env_list;
-	t_env_var *prev = NULL;
-	t_env_var *tmp;
+	if (!node)
+		return ;
+	free(node->key);
+	free(node->value);
+	free(node);
+}
 
+static void	env_remove(t_env_var **env_list, char *key)
+{
+	t_env_var	*curr;
+	t_env_var	*prev;
+
+	curr = *env_list;
+	prev = NULL;
 	while (curr)
 	{
 		if (ft_strcmp(curr->key, key) == 0)
 		{
-			tmp = curr->next;
 			if (prev)
-				prev->next = tmp;
+				prev->next = curr->next;
 			else
-				*env_list = tmp;
-			free(curr->key);
-			free(curr->value);
-			free(curr);
-			curr = tmp;
-			continue;
+				*env_list = curr->next;
+			free_env_node(curr);
+			return ;
 		}
 		prev = curr;
 		curr = curr->next;
@@ -41,8 +46,8 @@ void env_remove(t_env_var **env_list, char *key)
 
 void	handle_unset(char *input, t_env_var **env_list)
 {
-	char **args;
-	int i;
+	char	**args;
+	int		i;
 
 	i = 1;
 	args = ft_split(input, ' ');
