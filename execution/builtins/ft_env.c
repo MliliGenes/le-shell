@@ -6,16 +6,16 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 20:02:52 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/04/27 23:45:50 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/02 20:20:20 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static char **split_env_var(char *arg)
+static char	**split_env_var(char *arg)
 {
-	char **split;
-	int i;
+	char	**split;
+	int		i;
 
 	i = 0;
 	split = malloc(sizeof(char *) * 3);
@@ -32,10 +32,10 @@ static char **split_env_var(char *arg)
 	return (split);
 }
 
-static t_env_var *create_node(char *env_var)
+static t_env_var	*create_node(char *env_var)
 {
-	t_env_var *new_node;
-	char **split;
+	t_env_var	*new_node;
+	char		**split;
 
 	new_node = malloc(sizeof(t_env_var));
 	if (!new_node)
@@ -56,42 +56,6 @@ static t_env_var *create_node(char *env_var)
 	return (new_node);
 }
 
-t_env_var	*handle_empty_env()
-{
-	t_env_var *head;
-	char *cwd;
-
-	head = NULL;
-	cwd = getcwd(NULL, 0);
-	if (cwd)
-		add_env_back(&head, create_env_var("PWD", cwd));
-	add_env_back(&head, create_env_var("OLDPWD", NULL));
-	add_env_back(&head, create_env_var("PATH", "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"));
-	free(cwd);
-	return (head);
-}
-
-t_env_var	*init_env(char *envp[])
-{
-	t_env_var *head;
-	t_env_var *current;
-	int i;
-
-	if (!envp || !envp[0])
-		return handle_empty_env();
-	head = NULL;
-	i = 0;
-	head = create_node(envp[i++]);
-	current = head;
-	while (envp[i])
-	{
-		current->next = create_node(envp[i]);
-		current = current->next;
-		i++;
-	}
-	return head;
-}
-
 static void	print_env(t_env_var *env)
 {
 	while (env)
@@ -102,22 +66,25 @@ static void	print_env(t_env_var *env)
 	}
 }
 
-void free_env_list(t_env_var *head)
+t_env_var	*init_env(char *envp[])
 {
-    t_env_var *current;
-    t_env_var *next;
-    
-    current = head;
-    while (current)
-    {
-        next = current->next;
-        if (current->key)
-            free(current->key);
-        if (current->value)
-            free(current->value);
-        free(current);
-        current = next;
-    }
+	t_env_var	*head;
+	t_env_var	*current;
+	int			i;
+
+	if (!envp || !envp[0])
+		return (handle_empty_env());
+	head = NULL;
+	i = 0;
+	head = create_node(envp[i++]);
+	current = head;
+	while (envp[i])
+	{
+		current->next = create_node(envp[i]);
+		current = current->next;
+		i++;
+	}
+	return (head);
 }
 
 void	handle_env(char *input, t_env_var *env)
