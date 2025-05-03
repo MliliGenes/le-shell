@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 16:36:33 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/29 15:19:15 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/02 10:11:11 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,14 +34,14 @@ void	process_variable_length(t_expansion *exp)
 	free(key);
 }
 
-void	calculate_expanded_length(t_expansion *exp)
+void	calc_exp_len(t_expansion *exp)
 {
 	while (exp->input[exp->i_index])
 	{
 		update_quote_state(exp, exp->input[exp->i_index]);
 		if (!exp->s_quote && exp->input[exp->i_index] == '$'
-			&& (ft_isalnum(exp->input[exp->i_index + 1]) || exp->input[exp->i_index
-				+ 1] == '_'))
+			&& (ft_isalnum(exp->input[exp->i_index + 1])
+				|| exp->input[exp->i_index + 1] == '_'))
 			process_variable_length(exp);
 		else
 			exp->i_index++;
@@ -75,11 +75,8 @@ void	expand_variable(t_expansion *exp)
 	exp->i_index++;
 	key = extract_var_name(exp);
 	value = find_env_var(exp->vars, key);
-	if (value)
-	{
-		while (value[value_index])
-			exp->output[exp->o_index++] = value[value_index++];
-	}
+	while (value && value[value_index])
+		exp->output[exp->o_index++] = value[value_index++];
 	free(key);
 }
 
@@ -88,10 +85,10 @@ char	*expand_vars(char *input, t_env_var *vars)
 	t_expansion	exp;
 
 	init_expansion(&exp, input, vars);
-	calculate_expanded_length(&exp);
+	calc_exp_len(&exp);
 	exp.output = (char *)malloc(exp.len + 1);
 	if (!exp.output)
-		return NULL;
+		return (NULL);
 	while (input[exp.i_index])
 	{
 		update_quote_state(&exp, input[exp.i_index]);
@@ -103,5 +100,5 @@ char	*expand_vars(char *input, t_env_var *vars)
 			exp.output[exp.o_index++] = input[exp.i_index++];
 	}
 	exp.output[exp.o_index] = 0;
-	return exp.output;
+	return (exp.output);
 }
