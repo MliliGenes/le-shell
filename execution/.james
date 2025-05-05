@@ -1,0 +1,10 @@
+Makefile
+builtins
+builtins.c
+include
+lib
+main.c
+minishell.h
+test
+utils.c
+wildcards.c
