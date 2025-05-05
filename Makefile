@@ -11,6 +11,7 @@ TOKENIZER_DIR = tokenizer
 PROCESSING_DIR = processing
 PARSING_DIR = parsing
 INCLUDE_DIR = include
+BUILLTINS_DIR = builtins
 
 SRC_FILES = main.c \
 	$(LIB_DIR)/string_utils_1.c \

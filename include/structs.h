@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 06:20:05 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/01 11:50:36 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/05 23:00:21 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,13 @@ typedef struct s_env_var
 	char					*value;
 	struct s_env_var		*next;
 }							t_env_var;
+
+typedef struct s_env_kv
+{
+	char				*key;
+	char				*value;
+	int					has_value;
+}						t_env_kv;
 
 typedef struct s_expansion
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 23:35:56 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/03 11:31:55 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/05 23:31:45 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,116 +121,89 @@ char	**ft_split(char const *s, char c)
 	return (filling_arr(c, s, splitted, words));
 }
 
-static t_env_var	*create_node(char *env_var)
+int is_builtin(char *cmd)
 {
-	t_env_var	*new_node;
-	char		**split;
+	return (
+		ft_strcmp(cmd, "cd") == 0 ||
+		ft_strcmp(cmd, "unset") == 0 ||
+		ft_strcmp(cmd, "export") == 0 ||
+		ft_strcmp(cmd, "env") == 0 ||
+		ft_strcmp(cmd, "echo") == 0 ||
+		ft_strcmp(cmd, "pwd") == 0 ||
+		ft_strcmp(cmd, "exit") == 0
+	);
+}
 
-	new_node = malloc(sizeof(t_env_var));
-	if (!new_node)
-		return (NULL);
-	split = ft_split(env_var, '=');
-	if (!split)
-	{
-		free(new_node);
-		return (NULL);
-	}
-	new_node->key = ft_strdup(split[0]);
-	if (split[1])
-		new_node->value = ft_strdup(split[1]);
+int excute_builtin(t_cmd *cmd, t_env_var **env)
+{
+	if (!cmd || !cmd->cmd)
+		return (1);
+	if (ft_strcmp(cmd->cmd, "cd") == 0)
+		handle_cd(cmd->args, env);
+	else if (ft_strcmp(cmd->cmd, "unset") == 0)
+		handle_unset(cmd->args, env);
+	else if (ft_strcmp(cmd->cmd, "export") == 0)
+		handle_export(cmd->args, env);
+	else if (ft_strcmp(cmd->cmd, "env") == 0)
+		handle_env(*env);
+	else if (ft_strcmp(cmd->cmd, "echo") == 0)
+		handle_echo(cmd->args);
+	else if (ft_strcmp(cmd->cmd, "pwd") == 0)
+		handle_pwd();
+	else if (ft_strcmp(cmd->cmd, "exit") == 0)
+		handle_exit(cmd->args, env);
 	else
-		new_node->value = ft_strdup("");
-	new_node->next = NULL;
-	return (new_node);
+		return (1);
+	return (0);
 }
 
-t_env_var	*init_env(char *envp[])
+int excute_ast(t_ast *root, t_shell *shell)
 {
-	t_env_var	*head;
-	t_env_var	*current;
-	int			i;
-
-	if (!envp || !envp[0])
-		return (NULL);
-	head = NULL;
-	i = 0;
-	head = create_node(envp[i++]);
-	current = head;
-	while (envp[i])
+	if (!root || !root->node)
+		return (1);
+	if (root->node->type == CMD)
 	{
-		current->next = create_node(envp[i]);
-		current = current->next;
-		i++;
-	}
-	return (head);
-}
-
-static void	print_env(t_env_var *env)
-{
-	while (env)
-	{
-		if (env->key && env->value)
-			printf("%s=%s\n", env->key, env->value);
-		env = env->next;
-	}
-}
-
-void	free_env_list(t_env_var *head)
-{
-	t_env_var	*current;
-	t_env_var	*next;
-
-	current = head;
-	while (current)
-	{
-		next = current->next;
-		if (current->key)
-			free(current->key);
-		if (current->value)
-			free(current->value);
-		free(current);
-		current = next;
-	}
-}
-
-void	handle_env(char *input, t_env_var *env)
-{
-	if (ft_strcmp(input, "env") == 0)
-	{
-		if (env)
-			print_env(env);
+		t_cmd *cmd = (t_cmd *)root->node->p_token;
+		if (is_builtin(cmd->cmd))
+			return (excute_builtin(cmd, shell->env));
 	}
 }
 
 int	main(int ac, char **av, char **envp)
 {
+	t_shell		shell;
 	t_parser	*parser;
 	char		*input;
 
-	atexit(ll); 
 	(void)ac;
 	(void)av;
-	(void)envp;
+	atexit(ll); 
 	rl_bind_key('\t', rl_complete);
-	while (1)
+
+	shell.env = init_env_list(envp);
+	shell.last_status = 0;
+	shell.path = NULL;
+	shell.ast = NULL;
+	shell.running = 1;
+
+	while (shell.running)
 	{
 		input = readline(PROMPT);
 		if (!input)
-		{
-			free(input);
 			break;
-		}
-		if (input && *input)
+		if (*input)
 			add_history(input);
 		parser = parse_input(input);
 		if (parser && parser->holy_tree)
 		{
-			print_ast_simple(parser->holy_tree);
+			shell.ast = parser->holy_tree;
+			execute_ast(shell.ast, &shell);
 			free_ast(parser->holy_tree);
 			free_ready_tokens_list(parser->postfix_note);
 			free(parser);
-			free(input);
 		}
+		free(input);
 	}
-	return (0);
+	return (shell.last_status);
 }
+

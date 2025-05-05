@@ -8,7 +8,8 @@
         "dependencies.h": "c",
         "cctype": "c",
         "stdio.h": "c",
-        "lib.h": "c"
+        "lib.h": "c",
+        "builtins.h": "c"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }
