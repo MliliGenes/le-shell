@@ -21,7 +21,7 @@ bool	extract_tokens(t_token *tokens, t_ready_token **head)
 		return (false);
 	cmd_start = tokens;
 	current = tokens;
-	while (current->type != TOKEN_EOF)
+	while (current && current->type != TOKEN_EOF)
 	{
 		if (is_op(current->type) || current->type == TOKEN_PL
 			|| current->type == TOKEN_PR)

@@ -101,7 +101,7 @@ bool	check_m_percent(char *input)
 
 int	validate_tokens(t_token *head)
 {
-	while (head->type != TOKEN_EOF)
+	while (head && head->type != TOKEN_EOF)
 	{
 		if (is_redir(head->type) && (!head->next
 				|| head->next->type != TOKEN_WORD))

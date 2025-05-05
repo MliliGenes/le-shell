@@ -63,7 +63,7 @@ void	classify_tokens(t_token *head)
 	bool	is_cmd_found;
 
 	is_cmd_found = false;
-	while (head->type != TOKEN_EOF)
+	while (head && head->type != TOKEN_EOF)
 	{
 		if (head->type == TOKEN_WORD && head->prev
 			&& is_redir(head->prev->type))

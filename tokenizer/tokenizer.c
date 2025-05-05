@@ -60,7 +60,7 @@ void	create_tokens_list(t_lexer *lexer, t_token **head)
 	while (true)
 	{
 		token = get_next_token(lexer);
-		if (token->type == TOKEN_EOF)
+		if (token && token->type == TOKEN_EOF)
 		{
 			add_back_token(head, token);
 			break ;

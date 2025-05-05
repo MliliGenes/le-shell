@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 23:35:56 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/01 20:46:53 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/03 11:31:55 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,7 +207,7 @@ int	main(int ac, char **av, char **envp)
 	t_parser	*parser;
 	char		*input;
 
-	// atexit(ll); 
+	atexit(ll); 
 	(void)ac;
 	(void)av;
 	(void)envp;

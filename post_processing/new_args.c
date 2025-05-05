@@ -18,7 +18,7 @@ void	update_quote_status(char c, bool *in_single, bool *in_double)
 		*in_single = !(*in_single);
 	else if (c == '"' && !(*in_single))
 		*in_double = !(*in_double);
-}	
+}
 
 bool	is_in_quote(bool in_single, bool in_double)
 {

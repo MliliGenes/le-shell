@@ -17,11 +17,23 @@ t_token	*handle_word(t_lexer *lexer)
 	t_token	*token;
 	char	*value;
 	int		start;
+	int		in_single_quote;
+	int		in_double_quote;
 
 	start = lexer->pos;
-	while (lexer->pos < lexer->len && !is_white_space(lexer->current_char)
-		&& !is_full_operator(lexer))
+	in_single_quote = 0;
+	in_double_quote = 0;
+	while (lexer->pos < lexer->len)
+	{
+		if (lexer->current_char == '\'' && !in_double_quote)
+			in_single_quote = !in_single_quote;
+		else if (lexer->current_char == '"' && !in_single_quote)
+			in_double_quote = !in_double_quote;
+		if (!in_single_quote && !in_double_quote
+			&& (is_white_space(lexer->current_char) || is_full_operator(lexer)))
+			break ;
 		advance_lexer(lexer);
+	}
 	value = ft_strndup(lexer->input + start, lexer->pos - start);
 	if (!value)
 		return (NULL);
