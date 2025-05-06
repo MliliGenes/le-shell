@@ -6,7 +6,7 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 12:37:49 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/06 17:14:12 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/06 18:14:58 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ t_parser	*init_parser(void)
 static void	index_linked(t_token *token)
 {
 	int	i;
-
+	
 	i = 0;
 	while (token && token->type != TOKEN_EOF)
 	{
