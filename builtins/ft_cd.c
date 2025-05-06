@@ -6,7 +6,7 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 23:08:21 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/05/05 23:13:59 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/06 15:02:33 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,63 +32,47 @@ static void cd_error(char *path)
 	ft_putstr_fd(": No such file or directory\n", 2);
 }
 
-void handle_cd(char *input, t_env_var *env_list)
+void    handle_cd(char **args, t_env_var *env)
 {
-    char **args;
-    char *oldpwd;
-    char *target_dir = NULL;
-    int change_success = 0;
-    
-    args = ft_split(input, ' ');
-    if (!args)
-        return;
-    oldpwd = getcwd(NULL, 0);
-    if (!oldpwd)
+    char *old_pwd = getcwd(NULL, 0);
+    int change_access = 0;
+
+    if (!args[1] || ft_strcmp(args[1], "~") == 0)
     {
-        ft_putstr_fd("cd: error getting current directory\n", 2);
-        free_2d(args);
-        return;
-    }    
-    if (ft_strcmp(args[0], "cd") == 0 && (!args[1] || ft_strcmp(args[1], "~") == 0))
-    {
-        target_dir = get_env_value(env_list, "HOME");
-        if (!target_dir)
+        char *home = get_env_value(env, "HOME");
+        if (!home)
             ft_putstr_fd("cd: HOME not set\n", 2);
-        else if (chdir(target_dir) == -1)
-            ft_putstr_fd("cd: cannot access HOME directory\n", 2);
-        else
-            change_success = 1;
+        else if (chdir(home) == -1)
+			ft_putstr_fd("cd: cannot access HOME directory\n", 2);
+		else
+			change_success = 1;
     }
-    else if (ft_strcmp(args[0], "cd") == 0 && ft_strcmp(args[1], "-") == 0)
+    else if (ft_strcmp(args[1], "-") == 0)
     {
-        target_dir = get_env_value(env_list, "OLDPWD");
-        if (!target_dir)
+        char *old = get_env_value(env, "OLDPWD");
+        if (!old)
             ft_putstr_fd("cd: OLDPWD not set\n", 2);
-        else if (chdir(target_dir) == -1)
-            ft_putstr_fd("cd: cannot access OLDPWD directory\n", 2);
+        else if (chdir(old) == -1)
+			ft_putstr_fd("cd: cannot access OLDPWD directory\n", 2);
         else
         {
-            printf("%s\n", target_dir);
+            printf("%s\n", old);
             change_success = 1;
         }
     }
-    else if (ft_strcmp(args[0], "cd") == 0 && args[1])
+    else if (chdir(args[1]) == -1)
+        cd_error(args[1]);
+    else
+        change_access = 1;
+    if (change_access)
     {
-        if (chdir(args[1]) == -1)
-            cd_error(args[1]);
-        else
-            change_success = 1;
-    }    
-    if (change_success)
-    {
-        char *newpwd = getcwd(NULL, 0);
-        if (newpwd)
+        char *new_pwd = get_cwd(NULL, 0);
+        if (new_pwd)
         {
-            env_update(env_list, "OLDPWD", oldpwd);
-            env_update(env_list, "PWD", newpwd);
-            free(newpwd);
+            env_update(env, "OLDPWD", old_pwd);
+            env_update(env, "PWD", new_pwd);
+            free(new_pwd);
         }
     }
-    free(oldpwd);
-    free_2d(args);
+    free(old_pwd);
 }

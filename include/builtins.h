@@ -6,7 +6,7 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 23:09:18 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/05/05 23:51:21 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/06 15:50:41 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,17 @@
 #include "structs.h"
 #include "lib.h"
 
-void					handle_pwd(void);
-void					handle_echo(char *input);
-void					handle_exit(char **args, t_shell *shell);
-void					handle_env(t_env_var *env);
-void					handle_export(char *input, t_env_var **env_list);
-void					handle_unset(char *input, t_env_var **env_list);
-void					handle_cd(char *input, t_env_var *env_list);
+int						is_valid_key(char *str);
+int						key_exist(t_env_var *env_list, char *key);
+void					free_2d(char **arr);
+
+void	handle_pwd(void);
+void	handle_echo(char **args);
+void	handle_exit(char **args, t_shell *shell);
+void	handle_env(t_env_var *env);
+void	handle_export(char **args, t_env_var **env_list);
+void	handle_unset(char **args, t_env_var **env_list);
+void    handle_cd(char **args, t_env_var *env);
 
 // env
 t_env_var				*init_env(char *envp[]);

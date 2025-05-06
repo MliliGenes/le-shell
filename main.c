@@ -6,7 +6,7 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 23:35:56 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/05 23:31:45 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/06 15:52:30 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,24 +134,25 @@ int is_builtin(char *cmd)
 	);
 }
 
-int excute_builtin(t_cmd *cmd, t_env_var **env)
+int execute_builtin(t_cmd *cmd, t_shell *shell)
 {
 	if (!cmd || !cmd->cmd)
 		return (1);
+
 	if (ft_strcmp(cmd->cmd, "cd") == 0)
-		handle_cd(cmd->args, env);
+		handle_cd(cmd->args, shell->env);
 	else if (ft_strcmp(cmd->cmd, "unset") == 0)
-		handle_unset(cmd->args, env);
+		handle_unset(cmd->args, shell->env);
 	else if (ft_strcmp(cmd->cmd, "export") == 0)
-		handle_export(cmd->args, env);
+		handle_export(cmd->args, shell->env);
 	else if (ft_strcmp(cmd->cmd, "env") == 0)
-		handle_env(*env);
+		handle_env(*shell->env);
 	else if (ft_strcmp(cmd->cmd, "echo") == 0)
 		handle_echo(cmd->args);
 	else if (ft_strcmp(cmd->cmd, "pwd") == 0)
 		handle_pwd();
 	else if (ft_strcmp(cmd->cmd, "exit") == 0)
-		handle_exit(cmd->args, env);
+		handle_exit(cmd->args, shell);
 	else
 		return (1);
 	return (0);

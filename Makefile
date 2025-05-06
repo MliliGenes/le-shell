@@ -33,6 +33,14 @@ SRC_FILES = main.c \
 	$(PARSING_DIR)/parser.c \
 	$(PARSING_DIR)/parser_utils.c \
 	$(PARSING_DIR)/shunting_yard.c
+	$(BUILLTINS_DIR)/ft_cd.c \
+	$(BUILLTINS_DIR)/ft_echo.c \
+	$(BUILLTINS_DIR)/ft_env.c \
+	$(BUILLTINS_DIR)/ft_exit.c \
+	$(BUILLTINS_DIR)/ft_export.c \
+	$(BUILLTINS_DIR)/ft_pwd.c \
+	$(BUILLTINS_DIR)/ft_unset.c \
+	$(BUILLTINS_DIR)/env_utils.c \
 
 OBJ_FILES = $(patsubst %.c, ${BUILD_DIR}/%.o, $(SRC_FILES))
 

@@ -6,7 +6,7 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 21:42:50 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/05/05 23:14:45 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/06 15:36:09 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,33 +189,28 @@ void	process_export_arg(char *arg, t_env_var **env_list)
 	free(kv.value);
 }
 
-void	handle_export(char *input, t_env_var **env_list)
+void	handle_export(char **args, t_env_var **env_list)
 {
 	int i;
 
-	i = 1;
-	char **args = ft_split(input, ' ');
-	if (!args)
+	if (!args || !args[0])
 		return ;
-	if (ft_strcmp(args[0], "export") == 0)
+	i = 1;
+	if (!args[i])
 	{
-		if (!args[i])
-			print_export(*env_list);
-		else
-		{
-			while (args[i])
-			{
-				if (!is_valid_key(args[i]))
-				{
-					ft_putstr_fd("export: `", 2);
-					ft_putstr_fd(args[i], 2);
-					ft_putstr_fd("': not a valid identifier\n", 2);
-				}
-				else
-					process_export_arg(args[i], env_list);
-				i++;
-			}
-		}
+		print_export(*env_list);
+		return ;
 	}
-	free_2d(args);
+	while (args[i])
+	{
+		if (!is_valid_key(args[i]))
+		{
+			ft_putstr_fd("export: `", 2);
+			ft_putstr_fd(args[i], 2);
+			ft_putstr_fd("': not a valid identifier\n", 2);
+		}
+		else
+			process_export_arg(args[i], env_list);
+		i++;
+	}
 }

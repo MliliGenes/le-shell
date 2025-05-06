@@ -6,7 +6,7 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 18:34:11 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/05/05 23:14:23 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/06 15:10:00 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,14 +61,11 @@ void	ft_echo(char **args)
 		write(STDOUT_FILENO, "\n", 1);
 }
 
-void	handle_echo(char *input)
+void	handle_echo(char **args)
 {
 	char	**args;
 
-	args = ft_split(input, ' ');
 	if (!args)
 		return ;
-	if (ft_strcmp(args[0], "echo") == 0)
-		ft_echo(args);
-	free_2d(args);
+	ft_echo(args);
 }
