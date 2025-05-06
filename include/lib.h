@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lib.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 08:48:06 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/29 12:45:10 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/06 16:39:35 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,9 @@ char		*ft_strndup(const char *s, size_t n);
 int			ft_isalnum(int c);
 int			ft_isalpha(char c);
 char		*ft_substr(char const *s, unsigned int start, size_t len);
+void		ft_putstr_fd(char *s, int fd);
+int			ft_isdigit(int c);
+int			ft_atoi(const char *str);
 
 void		print_syntax_error(const char *token, const char *reason);
 

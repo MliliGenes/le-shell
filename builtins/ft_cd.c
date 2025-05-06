@@ -6,11 +6,11 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 23:08:21 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/05/06 15:02:33 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/06 16:36:58 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "include/builtins.h"
+#include "../include/builtins.h"
 
 char *get_env_value(t_env_var *env_list, char *key)
 {
@@ -35,7 +35,7 @@ static void cd_error(char *path)
 void    handle_cd(char **args, t_env_var *env)
 {
     char *old_pwd = getcwd(NULL, 0);
-    int change_access = 0;
+    int change_success = 0;
 
     if (!args[1] || ft_strcmp(args[1], "~") == 0)
     {
@@ -63,10 +63,10 @@ void    handle_cd(char **args, t_env_var *env)
     else if (chdir(args[1]) == -1)
         cd_error(args[1]);
     else
-        change_access = 1;
-    if (change_access)
+        change_success = 1;
+    if (change_success)
     {
-        char *new_pwd = get_cwd(NULL, 0);
+        char *new_pwd = getcwd(NULL, 0);
         if (new_pwd)
         {
             env_update(env, "OLDPWD", old_pwd);

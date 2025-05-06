@@ -6,11 +6,11 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 22:52:54 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/05/06 15:37:54 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/06 16:25:49 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "include/builtins.h"
+#include "../include/builtins.h"
 
 static void	free_env_node(t_env_var *node)
 {

@@ -6,11 +6,11 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 18:34:11 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/05/06 15:10:00 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/06 16:37:42 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "include/builtins.h"
+#include "../include/builtins.h"
 
 static void	print_echo_args(char **args, int i)
 {
@@ -63,8 +63,6 @@ void	ft_echo(char **args)
 
 void	handle_echo(char **args)
 {
-	char	**args;
-
 	if (!args)
 		return ;
 	ft_echo(args);

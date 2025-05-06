@@ -6,11 +6,11 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 21:42:50 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/05/06 15:36:09 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/06 16:25:37 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "include/builtins.h"
+#include "../include/builtins.h"
 
 t_env_var **create_env_ptr_arr(t_env_var *env)
 {

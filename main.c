@@ -6,39 +6,16 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 23:35:56 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/06 15:52:30 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/06 16:45:36 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include/parsing.h"
+#include "include/builtins.h"
 
 void	ll(void)
 {
 	system("leaks minishell");
-}
-
-char	*ft_substr(char const *s, unsigned int start, size_t len)
-{
-	size_t	i;
-	size_t	s_len;
-	char	*ptr;
-
-	s_len = ft_strlen(s);
-	if (start > s_len)
-		return (ft_strdup(""));
-	if (len > s_len - start)
-		len = s_len - start;
-	ptr = (char *)malloc(len + 1);
-	if (!ptr)
-		return (NULL);
-	i = 0;
-	while (s[start + i] && i < len)
-	{
-		ptr[i] = s[start + i];
-		i++;
-	}
-	ptr[i] = '\0';
-	return (ptr);
 }
 
 static int	word_count(char *s, char sep)
@@ -181,6 +158,7 @@ int	main(int ac, char **av, char **envp)
 	atexit(ll); 
 	rl_bind_key('\t', rl_complete);
 
+	(void)envp;
 	shell.env = init_env_list(envp);
 	shell.last_status = 0;
 	shell.path = NULL;
@@ -197,7 +175,7 @@ int	main(int ac, char **av, char **envp)
 		parser = parse_input(input);
 		if (parser && parser->holy_tree)
 		{
-			shell.ast = parser->holy_tree;
+			// shell.ast = parser->holy_tree;
 			execute_ast(shell.ast, &shell);
 			free_ast(parser->holy_tree);
 			free_ready_tokens_list(parser->postfix_note);
