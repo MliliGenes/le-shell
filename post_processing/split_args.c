@@ -1,28 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   new_args.c                                         :+:      :+:    :+:   */
+/*   split_args.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/30 09:47:52 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/01 16:38:09 by sel-mlil         ###   ########.fr       */
+/*   Created: 2025/05/06 17:11:29 by sel-mlil          #+#    #+#             */
+/*   Updated: 2025/05/06 17:11:30 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/parsing.h"
 
-void	update_quote_status(char c, bool *in_single, bool *in_double)
+int	find_word_start(char *joint, int end, bool *in_single, bool *in_double)
 {
-	if (c == '\'' && !(*in_double))
-		*in_single = !(*in_single);
-	else if (c == '"' && !(*in_single))
-		*in_double = !(*in_double);
+	while (joint[end] && is_white_space(joint[end]) && !is_in_quote(*in_single,
+			*in_double))
+		end++;
+	return (end);
 }
 
-bool	is_in_quote(bool in_single, bool in_double)
+int	find_word_end(char *joint, int end, bool *in_single, bool *in_double)
 {
-	return (in_single || in_double);
+	while (joint[end] && (!is_white_space(joint[end]) || is_in_quote(*in_single,
+				*in_double)))
+	{
+		update_quote_status(joint[end], in_single, in_double);
+		end++;
+	}
+	return (end);
 }
 
 int	holy_count_words(char *str)
@@ -54,67 +60,6 @@ int	holy_count_words(char *str)
 	return (counter);
 }
 
-int	args_total_len(char **args)
-{
-	int	index;
-	int	total;
-
-	index = 0;
-	total = 0;
-	while (args && args[index])
-	{
-		total += ft_strlen(args[index]);
-		index++;
-	}
-	return (total);
-}
-
-char	*holy_joint(char **args)
-{
-	char	*str;
-	int		i[3];
-	int		spaces;
-	int		chars;
-
-	spaces = count_args_in_cmd(args) - 1;
-	chars = args_total_len(args);
-	str = malloc(chars + spaces + 1);
-	if (!str)
-		return (NULL);
-	i[2] = 0;
-	i[0] = 0;
-	while (args && args[i[0]])
-	{
-		i[1] = 0;
-		while (args[i[0]][i[1]])
-			str[i[2]++] = args[i[0]][i[1]++];
-		if (i[0] < spaces)
-			str[i[2]++] = ' ';
-		i[0]++;
-	}
-	str[i[2]++] = 0;
-	return (str);
-}
-
-int	find_word_start(char *joint, int end, bool *in_single, bool *in_double)
-{
-	while (joint[end] && is_white_space(joint[end]) && !is_in_quote(*in_single,
-			*in_double))
-		end++;
-	return (end);
-}
-
-int	find_word_end(char *joint, int end, bool *in_single, bool *in_double)
-{
-	while (joint[end] && (!is_white_space(joint[end]) || is_in_quote(*in_single,
-				*in_double)))
-	{
-		update_quote_status(joint[end], in_single, in_double);
-		end++;
-	}
-	return (end);
-}
-
 static void	*check(char **new_args, int i)
 {
 	if (!new_args[i])
@@ -124,8 +69,8 @@ static void	*check(char **new_args, int i)
 			free(new_args[i]);
 		}
 		free(new_args);
-		return (NULL);
 	}
+	return (NULL);
 }
 
 char	**holy_split(char *joint)
