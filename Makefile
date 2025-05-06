@@ -37,6 +37,7 @@ SRC_FILES = main.c \
 	$(PARSING_DIR)/shunting_yard.c \
 	$(BUILLTINS_DIR)/env_utils.c \
 	$(BUILLTINS_DIR)/ft_cd.c \
+	$(BUILLTINS_DIR)/cd_utils.c \
 	$(BUILLTINS_DIR)/ft_echo.c \
 	$(BUILLTINS_DIR)/ft_env.c \
 	$(BUILLTINS_DIR)/ft_exit.c \

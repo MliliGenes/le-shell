@@ -6,7 +6,7 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 23:09:18 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/05/06 18:15:29 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/06 23:46:08 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,3 +33,7 @@ t_env_var	*handle_empty_env(void);
 t_env_var	*create_env_var(char *key, char *value);
 void		add_env_back(t_env_var **head, t_env_var *new);
 void		env_update(t_env_var *env_list, char *key, char *value);
+
+void		print_cd_error(char *prefix, char *path, char *message);
+int			update_pwd(t_env_var *env, char *old_pwd);
+char		*get_env_value(t_env_var *env_list, char *key);
