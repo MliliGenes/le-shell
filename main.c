@@ -6,7 +6,7 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 23:35:56 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/06 16:45:36 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/06 17:10:39 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 void	ll(void)
 {
-	system("leaks minishell");
+	system("leaks -q minishell");
 }
 
 static int	word_count(char *s, char sep)
@@ -111,7 +111,7 @@ int is_builtin(char *cmd)
 	);
 }
 
-int execute_builtin(t_cmd *cmd, t_shell *shell)
+int execute_builtins(t_cmd *cmd, t_shell *shell)
 {
 	if (!cmd || !cmd->cmd)
 		return (1);
@@ -119,11 +119,11 @@ int execute_builtin(t_cmd *cmd, t_shell *shell)
 	if (ft_strcmp(cmd->cmd, "cd") == 0)
 		handle_cd(cmd->args, shell->env);
 	else if (ft_strcmp(cmd->cmd, "unset") == 0)
-		handle_unset(cmd->args, shell->env);
+		handle_unset(cmd->args, &shell->env);
 	else if (ft_strcmp(cmd->cmd, "export") == 0)
-		handle_export(cmd->args, shell->env);
+		handle_export(cmd->args, &shell->env);
 	else if (ft_strcmp(cmd->cmd, "env") == 0)
-		handle_env(*shell->env);
+		handle_env(shell->env);
 	else if (ft_strcmp(cmd->cmd, "echo") == 0)
 		handle_echo(cmd->args);
 	else if (ft_strcmp(cmd->cmd, "pwd") == 0)
@@ -135,7 +135,7 @@ int execute_builtin(t_cmd *cmd, t_shell *shell)
 	return (0);
 }
 
-int excute_ast(t_ast *root, t_shell *shell)
+int execute_ast(t_ast *root, t_shell *shell)
 {
 	if (!root || !root->node)
 		return (1);
@@ -143,8 +143,9 @@ int excute_ast(t_ast *root, t_shell *shell)
 	{
 		t_cmd *cmd = (t_cmd *)root->node->p_token;
 		if (is_builtin(cmd->cmd))
-			return (excute_builtin(cmd, shell->env));
+			return (execute_builtins(cmd, shell));
 	}
+	return (0);
 }
 
 int	main(int ac, char **av, char **envp)
@@ -158,8 +159,7 @@ int	main(int ac, char **av, char **envp)
 	atexit(ll); 
 	rl_bind_key('\t', rl_complete);
 
-	(void)envp;
-	shell.env = init_env_list(envp);
+	shell.env = init_env(envp);
 	shell.last_status = 0;
 	shell.path = NULL;
 	shell.ast = NULL;
@@ -175,7 +175,7 @@ int	main(int ac, char **av, char **envp)
 		parser = parse_input(input);
 		if (parser && parser->holy_tree)
 		{
-			// shell.ast = parser->holy_tree;
+			shell.ast = parser->holy_tree;
 			execute_ast(shell.ast, &shell);
 			free_ast(parser->holy_tree);
 			free_ready_tokens_list(parser->postfix_note);

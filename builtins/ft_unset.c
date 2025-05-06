@@ -6,7 +6,7 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 22:52:54 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/05/06 16:25:49 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/06 17:06:24 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	handle_unset(char **args, t_env_var **env_list)
 
 	if (!args || !args[0])
 		return ;
-	int i = 1;
+	i = 1;
 	while (args[i])
 	{
 		if (!is_valid_key(args[i]))
@@ -61,6 +61,6 @@ void	handle_unset(char **args, t_env_var **env_list)
 		}
 		else if (key_exist(*env_list, args[i]))
 			env_remove(env_list, args[i]);
-		i++
+		i++;
 	}
 }
