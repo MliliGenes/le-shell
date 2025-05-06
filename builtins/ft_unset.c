@@ -6,7 +6,7 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 22:52:54 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/05/06 17:06:24 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/06 18:22:43 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static void	env_remove(t_env_var **env_list, char *key)
 
 void	handle_unset(char **args, t_env_var **env_list)
 {
-	int i;
+	int	i;
 
 	if (!args || !args[0])
 		return ;

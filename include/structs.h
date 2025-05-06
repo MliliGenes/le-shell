@@ -6,7 +6,7 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 06:20:05 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/05 23:00:21 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/06 18:20:06 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ typedef struct s_redir
 {
 	t_redir_type			type;
 	char					*file_or_limiter;
-	int 					fd;
+	int						fd;
 	struct s_redir			*next;
 }							t_redir;
 
