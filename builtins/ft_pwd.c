@@ -6,11 +6,11 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 18:34:31 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/05/05 23:20:04 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/06 16:25:43 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "include/builtins.h"
+#include "../include/builtins.h"
 
 void	handle_pwd(void)
 {

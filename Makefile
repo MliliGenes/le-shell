@@ -15,6 +15,8 @@ BUILLTINS_DIR = builtins
 
 SRC_FILES = main.c \
 	$(LIB_DIR)/string_utils_1.c \
+	$(LIB_DIR)/string_utils_2.c \
+	$(LIB_DIR)/string_utils_3.c \
 	$(LIB_DIR)/error_utils.c \
 	$(LIB_DIR)/printing_tools.c \
 	$(TOKENIZER_DIR)/token_classification.c \
@@ -32,7 +34,19 @@ SRC_FILES = main.c \
 	$(PARSING_DIR)/ast_construction.c \
 	$(PARSING_DIR)/parser.c \
 	$(PARSING_DIR)/parser_utils.c \
-	$(PARSING_DIR)/shunting_yard.c
+	$(PARSING_DIR)/shunting_yard.c \
+	$(BUILLTINS_DIR)/env_utils.c \
+	$(BUILLTINS_DIR)/ft_cd.c \
+	$(BUILLTINS_DIR)/cd_utils.c \
+	$(BUILLTINS_DIR)/ft_echo.c \
+	$(BUILLTINS_DIR)/ft_env.c \
+	$(BUILLTINS_DIR)/ft_exit.c \
+	$(BUILLTINS_DIR)/ft_export.c \
+	$(BUILLTINS_DIR)/export_utils.c \
+	$(BUILLTINS_DIR)/export_env.c \
+	$(BUILLTINS_DIR)/ft_pwd.c \
+	$(BUILLTINS_DIR)/ft_unset.c \
+
 
 OBJ_FILES = $(patsubst %.c, ${BUILD_DIR}/%.o, $(SRC_FILES))
 

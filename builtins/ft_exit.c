@@ -6,11 +6,11 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 18:34:28 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/05/05 23:33:32 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/06 18:23:57 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "include/builtins.h"
+#include "../include/builtins.h"
 
 static int	is_numeric(char *str)
 {
@@ -50,7 +50,7 @@ static int	calculate_exit_status(char *arg)
 
 void	handle_exit(char **args, t_shell *shell)
 {
-	int status;
+	int	status;
 
 	ft_putstr_fd("exit\n", STDOUT_FILENO);
 	if (!args[1])
@@ -64,7 +64,7 @@ void	handle_exit(char **args, t_shell *shell)
 	{
 		print_exit_error(NULL, "too many arguments\n");
 		shell->last_status = 1;
-		return;
+		return ;
 	}
 	status = calculate_exit_status(args[1]);
 	shell->last_status = status;

@@ -6,11 +6,11 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 20:16:18 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/05/05 23:13:30 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/06 16:24:20 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "include/builtins.h"
+#include "../include/builtins.h"
 
 t_env_var	*handle_empty_env(void)
 {
@@ -44,4 +44,17 @@ void	free_env_list(t_env_var *head)
 		free(current);
 		current = next;
 	}
+}
+
+void	free_2d(char **arr)
+{
+	int	i;
+
+	i = 0;
+	while (arr[i])
+	{
+		free(arr[i]);
+		i++;
+	}
+	free(arr);
 }

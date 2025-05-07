@@ -6,39 +6,16 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 23:35:56 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/05 23:31:45 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/06 18:18:39 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include/parsing.h"
+#include "include/builtins.h"
 
 void	ll(void)
 {
-	system("leaks minishell");
-}
-
-char	*ft_substr(char const *s, unsigned int start, size_t len)
-{
-	size_t	i;
-	size_t	s_len;
-	char	*ptr;
-
-	s_len = ft_strlen(s);
-	if (start > s_len)
-		return (ft_strdup(""));
-	if (len > s_len - start)
-		len = s_len - start;
-	ptr = (char *)malloc(len + 1);
-	if (!ptr)
-		return (NULL);
-	i = 0;
-	while (s[start + i] && i < len)
-	{
-		ptr[i] = s[start + i];
-		i++;
-	}
-	ptr[i] = '\0';
-	return (ptr);
+	system("leaks -q minishell");
 }
 
 static int	word_count(char *s, char sep)
@@ -134,30 +111,31 @@ int is_builtin(char *cmd)
 	);
 }
 
-int excute_builtin(t_cmd *cmd, t_env_var **env)
+int execute_builtins(t_cmd *cmd, t_shell *shell)
 {
 	if (!cmd || !cmd->cmd)
 		return (1);
+
 	if (ft_strcmp(cmd->cmd, "cd") == 0)
-		handle_cd(cmd->args, env);
+		handle_cd(cmd->args, shell->env);
 	else if (ft_strcmp(cmd->cmd, "unset") == 0)
-		handle_unset(cmd->args, env);
+		handle_unset(cmd->args, &shell->env);
 	else if (ft_strcmp(cmd->cmd, "export") == 0)
-		handle_export(cmd->args, env);
+		handle_export(cmd->args, &shell->env);
 	else if (ft_strcmp(cmd->cmd, "env") == 0)
-		handle_env(*env);
+		handle_env(shell->env);
 	else if (ft_strcmp(cmd->cmd, "echo") == 0)
 		handle_echo(cmd->args);
 	else if (ft_strcmp(cmd->cmd, "pwd") == 0)
 		handle_pwd();
 	else if (ft_strcmp(cmd->cmd, "exit") == 0)
-		handle_exit(cmd->args, env);
+		handle_exit(cmd->args, shell);
 	else
 		return (1);
 	return (0);
 }
 
-int excute_ast(t_ast *root, t_shell *shell)
+int execute_ast(t_ast *root, t_shell *shell)
 {
 	if (!root || !root->node)
 		return (1);
@@ -165,8 +143,9 @@ int excute_ast(t_ast *root, t_shell *shell)
 	{
 		t_cmd *cmd = (t_cmd *)root->node->p_token;
 		if (is_builtin(cmd->cmd))
-			return (excute_builtin(cmd, shell->env));
+			return (execute_builtins(cmd, shell));
 	}
+	return (0);
 }
 
 int	main(int ac, char **av, char **envp)
@@ -180,7 +159,7 @@ int	main(int ac, char **av, char **envp)
 	atexit(ll); 
 	rl_bind_key('\t', rl_complete);
 
-	shell.env = init_env_list(envp);
+	shell.env = init_env(envp);
 	shell.last_status = 0;
 	shell.path = NULL;
 	shell.ast = NULL;
