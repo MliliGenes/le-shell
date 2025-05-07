@@ -12,6 +12,7 @@ PROCESSING_DIR = processing
 PARSING_DIR = parsing
 INCLUDE_DIR = include
 BUILLTINS_DIR = builtins
+EXECUTION_DIR = execution
 
 SRC_FILES = main.c \
 	$(LIB_DIR)/string_utils_1.c \
@@ -48,7 +49,7 @@ SRC_FILES = main.c \
 	$(BUILLTINS_DIR)/ft_pwd.c \
 	$(BUILLTINS_DIR)/ft_unset.c \
 	$(BUILLTINS_DIR)/builtins_utils.c \
-
+	$(EXECUTION_DIR)/exec_utils.c \
 
 OBJ_FILES = $(patsubst %.c, ${BUILD_DIR}/%.o, $(SRC_FILES))
 

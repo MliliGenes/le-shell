@@ -6,73 +6,17 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 23:35:56 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/07 21:28:34 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/07 21:48:10 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include/parsing.h"
 #include "include/builtins.h"
+#include "include/execution.h"
 
 void	ll(void)
 {
 	system("leaks -q minishell");
-}
-
-char	*get_cmd_path(t_cmd *cmd, char **paths)
-{
-	char	*tmp;
-	char	*full_path;
-
-	if (access(cmd->cmd, F_OK) == 0 && access(cmd->cmd, X_OK) == 0)
-		return (ft_strdup(cmd->cmd));
-	while (*paths)
-	{
-		tmp = ft_strjoin(*paths, "/");
-		full_path = ft_strjoin(tmp, cmd->cmd);
-		free(tmp);
-		if (access(full_path, F_OK) == 0 && access(full_path, X_OK) == 0)
-			return (full_path);
-		free(full_path);
-		paths++;
-	}
-	return (NULL);
-}
-
-char **env_to_array(t_env_var *env)
-{
-	int count;
-	t_env_var *tmp;
-	char **arr;
-	
-	count = 0;
-	tmp = env;
-	while (tmp)
-	{
-		count++;
-		tmp = tmp->next;
-	}
-	arr = malloc(sizeof(char *) * (count + 1));
-	if (!arr)
-		return (NULL);
-	tmp = env;
-	count = 0;
-	while (tmp)
-	{
-		char *joined;
-		
-		if (tmp->value)
-		{
-			joined = ft_strjoin(tmp->key, "=");
-			arr[count] = ft_strjoin(joined, tmp->value);
-			free(joined);
-		}
-		else
-			arr[count] = ft_strdup(tmp->key);
-		count++;
-		tmp = tmp->next;
-	}
-	arr[count] = NULL;
-	return (arr);
 }
 
 int execute_ast(t_ast *root, t_shell *shell)
