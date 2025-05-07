@@ -6,7 +6,7 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 23:09:18 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/05/06 23:46:08 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/07 16:59:04 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 
 int			is_valid_key(char *str);
 int			key_exist(t_env_var *env_list, char *key);
+t_env_kv	split_key_value(char *arg);
 void		free_2d(char **arr);
 
 void		handle_pwd(void);
