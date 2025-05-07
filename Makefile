@@ -42,6 +42,8 @@ SRC_FILES = main.c \
 	$(BUILLTINS_DIR)/ft_env.c \
 	$(BUILLTINS_DIR)/ft_exit.c \
 	$(BUILLTINS_DIR)/ft_export.c \
+	$(BUILLTINS_DIR)/export_utils.c \
+	$(BUILLTINS_DIR)/export_env.c \
 	$(BUILLTINS_DIR)/ft_pwd.c \
 	$(BUILLTINS_DIR)/ft_unset.c \
 
