@@ -17,6 +17,7 @@ SRC_FILES = main.c \
 	$(LIB_DIR)/string_utils_1.c \
 	$(LIB_DIR)/string_utils_2.c \
 	$(LIB_DIR)/string_utils_3.c \
+	$(LIB_DIR)/string_utils_4.c \
 	$(LIB_DIR)/error_utils.c \
 	$(LIB_DIR)/printing_tools.c \
 	$(TOKENIZER_DIR)/token_classification.c \

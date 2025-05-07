@@ -6,7 +6,7 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 08:48:06 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/07 20:44:04 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/07 21:29:14 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ int			ft_isdigit(int c);
 int			ft_atoi(const char *str);
 void		ft_putendl_fd(char *s, int fd);
 char		*ft_strjoin(char const *s1, char const *s2);
+char		**ft_split(char const *s, char c);
 
 void		print_syntax_error(const char *token, const char *reason);
 
