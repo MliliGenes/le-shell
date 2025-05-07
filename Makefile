@@ -46,6 +46,7 @@ SRC_FILES = main.c \
 	$(BUILLTINS_DIR)/export_env.c \
 	$(BUILLTINS_DIR)/ft_pwd.c \
 	$(BUILLTINS_DIR)/ft_unset.c \
+	$(BUILLTINS_DIR)/builtins_utils.c \
 
 
 OBJ_FILES = $(patsubst %.c, ${BUILD_DIR}/%.o, $(SRC_FILES))

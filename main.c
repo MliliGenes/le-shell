@@ -6,7 +6,7 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 23:35:56 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/07 20:51:09 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/07 21:24:41 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,43 +98,6 @@ char	**ft_split(char const *s, char c)
 	return (filling_arr(c, s, splitted, words));
 }
 
-int is_builtin(char *cmd)
-{
-	return (
-		ft_strcmp(cmd, "cd") == 0 ||
-		ft_strcmp(cmd, "unset") == 0 ||
-		ft_strcmp(cmd, "export") == 0 ||
-		ft_strcmp(cmd, "env") == 0 ||
-		ft_strcmp(cmd, "echo") == 0 ||
-		ft_strcmp(cmd, "pwd") == 0 ||
-		ft_strcmp(cmd, "exit") == 0
-	);
-}
-
-int execute_builtins(t_cmd *cmd, t_shell *shell)
-{
-	if (!cmd || !cmd->cmd)
-		return (1);
-
-	if (ft_strcmp(cmd->cmd, "cd") == 0)
-		handle_cd(cmd->args, shell->env);
-	else if (ft_strcmp(cmd->cmd, "unset") == 0)
-		handle_unset(cmd->args, &shell->env);
-	else if (ft_strcmp(cmd->cmd, "export") == 0)
-		handle_export(cmd->args, &shell->env);
-	else if (ft_strcmp(cmd->cmd, "env") == 0)
-		handle_env(shell->env);
-	else if (ft_strcmp(cmd->cmd, "echo") == 0)
-		handle_echo(cmd->args);
-	else if (ft_strcmp(cmd->cmd, "pwd") == 0)
-		handle_pwd();
-	else if (ft_strcmp(cmd->cmd, "exit") == 0)
-		handle_exit(cmd->args, shell);
-	else
-		return (1);
-	return (0);
-}
-
 char	*get_cmd_path(t_cmd *cmd, char **paths)
 {
 	char	*tmp;
@@ -205,7 +168,7 @@ int execute_ast(t_ast *root, t_shell *shell)
 	{
 		t_cmd *cmd = (t_cmd *)root->node->p_token;
 		if (is_builtin(cmd->cmd))
-			return (execute_builtins(cmd, shell));
+			return (execute_builtin(cmd, shell));
 		cmd_path = get_cmd_path(cmd, shell->path);
 		if (!cmd_path)
 		{
