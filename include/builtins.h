@@ -6,7 +6,7 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 23:09:18 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/05/08 19:28:18 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/09 00:40:26 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,5 +43,6 @@ char		*get_env_value(t_env_var *env_list, char *key);
 
 int			is_builtin(char *cmd);
 int			execute_builtin(t_cmd *cmd, t_shell *shell);
+int			execute_builtins_with_redir(t_cmd *cmd, t_shell *shell);
 
 #endif

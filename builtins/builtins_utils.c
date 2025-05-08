@@ -1,16 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtins_utilc.c                                   :+:      :+:    :+:   */
+/*   builtins_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 21:19:45 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/05/07 21:23:55 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/09 00:40:30 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/builtins.h"
+#include "../include/execution.h"
 
 int	is_builtin(char *cmd)
 {
@@ -41,4 +42,31 @@ int	execute_builtin(t_cmd *cmd, t_shell *shell)
 	else
 		return (1);
 	return (0);
+}
+
+int execute_builtins_with_redir(t_cmd *cmd, t_shell *shell)
+{
+	int saved_stdin;
+	int saved_stdout;
+	int result;
+
+	saved_stdin = dup(STDIN_FILENO);
+	saved_stdout = dup(STDOUT_FILENO);
+	if (cmd->redirs)
+	{
+		if (apply_redirections(cmd) != 0)
+		{
+			dup2(saved_stdin, STDIN_FILENO);
+			dup2(saved_stdout, STDOUT_FILENO);
+			close(saved_stdin);
+			close(saved_stdout);
+			return (1);
+		}
+	}
+	result = execute_builtin(cmd, shell);
+	dup2(saved_stdin, STDIN_FILENO);
+	dup2(saved_stdout, STDOUT_FILENO);
+	close(saved_stdin);
+	close(saved_stdout);
+	return (result);
 }

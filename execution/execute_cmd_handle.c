@@ -6,7 +6,7 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 15:54:34 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/08 21:36:15 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/09 00:40:38 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,35 @@ char	*get_cmd_path(t_cmd *cmd, char **paths)
 	return (NULL);
 }
 
+int apply_redirections(t_cmd *cmd)
+{
+	t_redir *redir;
+	int fd;
+
+	redir = cmd->redirs;
+	while (redir)
+	{
+		if (redir->type == REDIR_IN)
+		{
+			fd = open(redir->file_or_limiter, O_RDONLY);
+			if (fd < 0)
+				return (perror(redir->file_or_limiter), 1);
+			dup2(fd, STDIN_FILENO);
+			close(fd);
+		}
+		else if (redir->type == REDIR_OUT)
+		{
+			fd = open(redir->file_or_limiter, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+			if (fd < 0)
+				return (perror(redir->file_or_limiter), 1);
+			dup2(fd, STDOUT_FILENO);
+			close(fd);
+		}
+		redir = redir->next;
+	}
+	return (0);
+}
+
 int	execute_command(t_cmd *cmd, t_shell *shell)
 {
 	pid_t	pid;
@@ -40,13 +69,11 @@ int	execute_command(t_cmd *cmd, t_shell *shell)
 	char	*cmd_path;
 	char	**tmp_env;
 
-	// if (cmd->redirs)
-	// 	if (apply_redirections(cmd) != 0)
-	// 		return (1);
+
 	if (!cmd->cmd || !cmd->cmd[0])
 		return (0);
 	if (is_builtin(cmd->cmd))
-		return (execute_builtin(cmd, shell));
+		return (execute_builtins_with_redir(cmd, shell));
 	cmd_path = get_cmd_path(cmd, shell->path);
 	if (!cmd_path)
 	{
@@ -64,6 +91,9 @@ int	execute_command(t_cmd *cmd, t_shell *shell)
 	tmp_env = env_to_array(shell->env);
 	if (pid == 0)
 	{
+		if (cmd->redirs)
+			if (apply_redirections(cmd) != 0)
+				exit(1);
 		execve(cmd_path, cmd->args, tmp_env);
 		perror("execve");
 		exit(127);
