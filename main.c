@@ -3,13 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 23:35:56 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/06 18:18:39 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/08 11:06:36 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "include/lib.h"
 #include "include/parsing.h"
 #include "include/builtins.h"
 
@@ -176,6 +177,7 @@ int	main(int ac, char **av, char **envp)
 		if (parser && parser->holy_tree)
 		{
 			shell.ast = parser->holy_tree;
+			print_ast_simple(shell.ast);
 			execute_ast(shell.ast, &shell);
 			free_ast(parser->holy_tree);
 			free_ready_tokens_list(parser->postfix_note);
