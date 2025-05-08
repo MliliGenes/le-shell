@@ -6,7 +6,7 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 15:54:34 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/09 00:40:38 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/09 00:46:26 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,14 @@ int apply_redirections(t_cmd *cmd)
 		else if (redir->type == REDIR_OUT)
 		{
 			fd = open(redir->file_or_limiter, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+			if (fd < 0)
+				return (perror(redir->file_or_limiter), 1);
+			dup2(fd, STDOUT_FILENO);
+			close(fd);
+		}
+		else if (redir->type == REDIR_APPEND)
+		{
+			fd = open(redir->file_or_limiter, O_WRONLY | O_CREAT | O_APPEND, 0644);
 			if (fd < 0)
 				return (perror(redir->file_or_limiter), 1);
 			dup2(fd, STDOUT_FILENO);
