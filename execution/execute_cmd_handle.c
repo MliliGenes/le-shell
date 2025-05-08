@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 15:54:34 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/08 17:20:12 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/08 19:07:00 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,13 @@ int	execute_builtin(t_cmd *cmd, t_shell *shell)
 // TODO get_cmd_path(char *cmd)
 // TODO apply_redirs(t_cmd *cmd)
 
+void apply_redirections(t_cmd *cmd)
+{
+	int *fds;
+
+	fds = cmd->fds;
+}
+
 int	execute_command(t_cmd *cmd, t_shell *shell)
 {
 	pid_t	pid;
@@ -54,7 +61,7 @@ int	execute_command(t_cmd *cmd, t_shell *shell)
 	char	**tmp_env;
 
 	// if (cmd->redirs)
-	// 	if (apply_redirections(cmd->redirs) != 0)
+	// 	if (apply_redirections(cmd) != 0)
 	// 		return (1);
 	if (!cmd->cmd || !cmd->cmd[0])
 		return (0);

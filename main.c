@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 23:35:56 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/08 17:18:41 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/08 18:54:31 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ int execute_ast(t_ast *root, t_shell *shell)
 int	main(int ac, char **av, char **envp)
 {
 	t_shell		shell;
-	t_parser	*parser;
 	char		*input;
 
 	(void)ac;
@@ -58,18 +57,19 @@ int	main(int ac, char **av, char **envp)
 			break;
 		if (*input)
 			add_history(input);
-		parser = parse_input(input);
-		if (parser && parser->holy_tree)
+		shell.parser = parse_input(input);
+		if (shell.parser && shell.parser->holy_tree)
 		{
-			shell.ast = parser->holy_tree;
-			// print_ast_simple(shell.ast);
+			print_ast_simple(shell.ast);
+			// TODO: open_here_docs
 			execute_ast(shell.ast, &shell);
-			free_ast(parser->holy_tree);
-			free_ready_tokens_list(parser->postfix_note);
-			free(parser);
+			free_ast(shell.parser->holy_tree);
+			free_ready_tokens_list(shell.parser->postfix_note);
+			free(shell.parser);
 		}
 		free(input);
 	}
+	free_env_list(shell.env);
 	return (shell.last_status);
 }
 
