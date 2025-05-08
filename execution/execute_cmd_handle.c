@@ -6,7 +6,7 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 15:54:34 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/08 20:00:15 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/08 21:36:15 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,12 +49,23 @@ int	execute_command(t_cmd *cmd, t_shell *shell)
 		return (execute_builtin(cmd, shell));
 	cmd_path = get_cmd_path(cmd, shell->path);
 	if (!cmd_path)
+	{
+		ft_putstr_fd(cmd->cmd, STDERR_FILENO);
+		ft_putstr_fd(": command not found\n", STDERR_FILENO);
 		return (127);
-	tmp_env = env_to_array((t_env_var *)shell->env);
+	}
 	pid = fork();
+	if (pid < 0)
+	{
+		perror("fork");
+		free(cmd_path);
+		return (1);
+	}
+	tmp_env = env_to_array(shell->env);
 	if (pid == 0)
 	{
 		execve(cmd_path, cmd->args, tmp_env);
+		perror("execve");
 		exit(127);
 	}
 	waitpid(pid, &status, 0);
