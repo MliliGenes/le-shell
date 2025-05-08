@@ -6,13 +6,16 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 23:09:18 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/05/07 20:38:29 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/08 16:00:09 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "dependencies.h"
-#include "lib.h"
-#include "structs.h"
+#ifndef BUILTINS_H
+# define BUILTINS_H
+
+# include "dependencies.h"
+# include "lib.h"
+# include "structs.h"
 
 int			is_valid_key(char *str);
 int			key_exist(t_env_var *env_list, char *key);
@@ -27,7 +30,6 @@ void		handle_export(char **args, t_env_var **env_list);
 void		handle_unset(char **args, t_env_var **env_list);
 void		handle_cd(char **args, t_env_var *env);
 
-// env
 t_env_var	*init_env(char *envp[]);
 void		free_env_list(t_env_var *head);
 t_env_var	*handle_empty_env(void);
@@ -38,3 +40,5 @@ void		env_update(t_env_var *env_list, char *key, char *value);
 void		print_cd_error(char *prefix, char *path, char *message);
 int			update_pwd(t_env_var *env, char *old_pwd);
 char		*get_env_value(t_env_var *env_list, char *key);
+
+#endif
