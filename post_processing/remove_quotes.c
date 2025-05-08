@@ -1,22 +1,13 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execution.h                                        :+:      :+:    :+:   */
+/*   remove_quotes.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/07 21:35:10 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/05/08 19:58:59 by ssbaytri         ###   ########.fr       */
+/*   Created: 2025/05/08 17:28:50 by sel-mlil          #+#    #+#             */
+/*   Updated: 2025/05/08 17:29:02 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef EXECUTION_H
-# define EXECUTION_H
-
-# include "builtins.h"
-
-char	*get_cmd_path(t_cmd *cmd, char **paths);
-char	**env_to_array(t_env_var *env);
-int		execute_command(t_cmd *cmd, t_shell *shell);
-
-#endif
+// TODO : RM THE FUCKING QUOTES

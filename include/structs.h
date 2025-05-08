@@ -6,7 +6,7 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 06:20:05 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/07 20:04:11 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/08 19:53:02 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,10 +62,12 @@ typedef struct s_redir
 {
 	t_redir_type			type;
 	char					*file_or_limiter;
-	int						fd;
+	int						here_doc_read;
 	struct s_redir			*next;
 }							t_redir;
 
+// fds[0] cmd input
+// fds[1] cmd output
 typedef struct s_cmd
 {
 	char					**args;
@@ -148,7 +150,7 @@ typedef struct s_shell
 	t_env_var				*env;
 	int						last_status;
 	char					**path;
-	t_ast					*ast;
+	t_parser				*parser;
 	int						running;
 }							t_shell;
 

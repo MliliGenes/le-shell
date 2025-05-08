@@ -6,31 +6,11 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 21:34:57 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/05/07 21:51:58 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/08 19:37:58 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/execution.h"
-
-char	*get_cmd_path(t_cmd *cmd, char **paths)
-{
-	char	*tmp;
-	char	*full_path;
-
-	if (access(cmd->cmd, F_OK) == 0 && access(cmd->cmd, X_OK) == 0)
-		return (ft_strdup(cmd->cmd));
-	while (*paths)
-	{
-		tmp = ft_strjoin(*paths, "/");
-		full_path = ft_strjoin(tmp, cmd->cmd);
-		free(tmp);
-		if (access(full_path, F_OK) == 0 && access(full_path, X_OK) == 0)
-			return (full_path);
-		free(full_path);
-		paths++;
-	}
-	return (NULL);
-}
 
 static int	count_nodes(t_env_var *env)
 {

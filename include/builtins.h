@@ -6,7 +6,7 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 23:09:18 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/05/07 21:23:50 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/08 19:28:18 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,11 @@ void		handle_export(char **args, t_env_var **env_list);
 void		handle_unset(char **args, t_env_var **env_list);
 void		handle_cd(char **args, t_env_var *env);
 
-// env
 t_env_var	*init_env(char *envp[]);
 void		free_env_list(t_env_var *head);
 t_env_var	*handle_empty_env(void);
 t_env_var	*create_env_var(char *key, char *value);
-void		add_env_back(t_env_var **head, t_env_var *new);
+void		add_env_back(t_env_var **head, t_env_var *node);
 void		env_update(t_env_var *env_list, char *key, char *value);
 
 void		print_cd_error(char *prefix, char *path, char *message);

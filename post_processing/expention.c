@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 16:36:33 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/02 10:11:11 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/07 20:39:02 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ char	*expand_vars(char *input, t_env_var *vars)
 		update_quote_state(&exp, input[exp.i_index]);
 		if (!exp.s_quote && input[exp.i_index] == '$'
 			&& (ft_isalpha(input[exp.i_index + 1]) || input[exp.i_index
-				+ 1] == '_'))
+					+ 1] == '_'))
 			expand_variable(&exp);
 		else
 			exp.output[exp.o_index++] = input[exp.i_index++];

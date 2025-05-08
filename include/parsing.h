@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:51:57 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/29 15:18:45 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/08 16:00:44 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define PARSING_H
 
 # include "dependencies.h"
+# include "builtins.h"
 # include "lib.h"
 # include "structs.h"
 
