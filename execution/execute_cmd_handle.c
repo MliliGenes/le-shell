@@ -6,7 +6,7 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 15:54:34 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/09 22:23:06 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/09 23:31:11 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,46 +33,59 @@ char	*get_cmd_path(t_cmd *cmd, char **paths)
 	return (NULL);
 }
 
-int	apply_redirections(t_cmd *cmd, t_shell *shell)
+int apply_redirections(t_cmd *cmd, t_shell *shell)
 {
-	t_redir	*redir;
-	char 	*tmp;
-	char 	*tmp2;
-	int		fd;
+	t_redir *redir;
+	char *tmp;
+	char *tmp2;
+	int fd;
 
 	redir = cmd->redirs;
 	while (redir)
 	{
 		tmp = expand_vars(redir->file_or_limiter, shell);
 		tmp2 = remove_quotes(tmp);
-		if (ft_strcmp(tmp, tmp2) != 0)
-			printf("has quotes\n");
+		free(tmp);
+
+		// Ambiguous redirection check can go here if needed
+
 		if (redir->type == REDIR_IN)
 		{
-			fd = open(tmp, O_RDONLY);
+			fd = open(tmp2, O_RDONLY);
 			if (fd < 0)
-				return (perror(tmp), 1);
+			{
+				perror(tmp2);
+				free(tmp2);
+				return (1);
+			}
 			dup2(fd, STDIN_FILENO);
 			close(fd);
 		}
 		else if (redir->type == REDIR_OUT)
 		{
-			fd = open(tmp, O_WRONLY | O_CREAT | O_TRUNC,
-					0644);
+			fd = open(tmp2, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 			if (fd < 0)
-				return (perror(tmp), 1);
+			{
+				perror(tmp2);
+				free(tmp2);
+				return (1);
+			}
 			dup2(fd, STDOUT_FILENO);
 			close(fd);
 		}
 		else if (redir->type == REDIR_APPEND)
 		{
-			fd = open(tmp, O_WRONLY | O_CREAT | O_APPEND,
-					0644);
+			fd = open(tmp2, O_WRONLY | O_CREAT | O_APPEND, 0644);
 			if (fd < 0)
-				return (perror(tmp), 1);
+			{
+				perror(tmp2);
+				free(tmp2);
+				return (1);
+			}
 			dup2(fd, STDOUT_FILENO);
 			close(fd);
 		}
+		free(tmp2);
 		redir = redir->next;
 	}
 	return (0);
