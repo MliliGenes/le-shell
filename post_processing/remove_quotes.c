@@ -6,7 +6,7 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 17:28:50 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/09 17:48:30 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/09 18:38:03 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ char	*remove_quotes(char *str)
 	
 	i = 0;
 	j = 0;
+	quote_type = 0;
 	res = malloc(ft_strlen(str) + 1);
 	if (!res)
 		return (NULL);
