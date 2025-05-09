@@ -6,7 +6,7 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 15:54:34 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/09 23:31:11 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/10 00:11:31 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,20 @@ int apply_redirections(t_cmd *cmd, t_shell *shell)
 	{
 		tmp = expand_vars(redir->file_or_limiter, shell);
 		tmp2 = remove_quotes(tmp);
+		if (ft_strcmp(tmp2, tmp) == 0)
+		{
+			if (!tmp2 || !tmp2[0] || ft_strchr(tmp2, ' ') || 
+				ft_strchr(tmp2, '\t') || ft_strchr(tmp2, '\n'))
+			{
+				ft_putstr_fd("minishell: ", STDERR_FILENO);
+				ft_putstr_fd(redir->file_or_limiter, STDERR_FILENO);
+				ft_putstr_fd(": ambiguous redirect\n", STDERR_FILENO);
+				free(tmp);
+				free(tmp2);
+				return (1);
+			}
+		}
 		free(tmp);
-
-		// Ambiguous redirection check can go here if needed
-
 		if (redir->type == REDIR_IN)
 		{
 			fd = open(tmp2, O_RDONLY);

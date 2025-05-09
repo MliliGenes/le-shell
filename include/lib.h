@@ -6,7 +6,7 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 08:48:06 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/09 18:11:25 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/10 00:08:05 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ void		ft_putendl_fd(char *s, int fd);
 char		*ft_strjoin(char const *s1, char const *s2);
 char		**ft_split(char const *s, char c);
 char		*ft_itoa(int n);
+char		*ft_strchr(const char *s, int c);
 
 void		print_syntax_error(const char *token, const char *reason);
 
