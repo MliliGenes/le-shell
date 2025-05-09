@@ -6,7 +6,7 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 21:19:45 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/05/09 00:40:30 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/09 20:29:48 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int execute_builtins_with_redir(t_cmd *cmd, t_shell *shell)
 	saved_stdout = dup(STDOUT_FILENO);
 	if (cmd->redirs)
 	{
-		if (apply_redirections(cmd) != 0)
+		if (apply_redirections(cmd, shell) != 0)
 		{
 			dup2(saved_stdin, STDIN_FILENO);
 			dup2(saved_stdout, STDOUT_FILENO);

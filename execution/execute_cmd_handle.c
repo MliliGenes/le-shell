@@ -6,7 +6,7 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 15:54:34 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/09 18:28:08 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/09 22:23:06 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,37 +33,43 @@ char	*get_cmd_path(t_cmd *cmd, char **paths)
 	return (NULL);
 }
 
-int	apply_redirections(t_cmd *cmd)
+int	apply_redirections(t_cmd *cmd, t_shell *shell)
 {
 	t_redir	*redir;
+	char 	*tmp;
+	char 	*tmp2;
 	int		fd;
 
 	redir = cmd->redirs;
 	while (redir)
 	{
+		tmp = expand_vars(redir->file_or_limiter, shell);
+		tmp2 = remove_quotes(tmp);
+		if (ft_strcmp(tmp, tmp2) != 0)
+			printf("has quotes\n");
 		if (redir->type == REDIR_IN)
 		{
-			fd = open(redir->file_or_limiter, O_RDONLY);
+			fd = open(tmp, O_RDONLY);
 			if (fd < 0)
-				return (perror(redir->file_or_limiter), 1);
+				return (perror(tmp), 1);
 			dup2(fd, STDIN_FILENO);
 			close(fd);
 		}
 		else if (redir->type == REDIR_OUT)
 		{
-			fd = open(redir->file_or_limiter, O_WRONLY | O_CREAT | O_TRUNC,
+			fd = open(tmp, O_WRONLY | O_CREAT | O_TRUNC,
 					0644);
 			if (fd < 0)
-				return (perror(redir->file_or_limiter), 1);
+				return (perror(tmp), 1);
 			dup2(fd, STDOUT_FILENO);
 			close(fd);
 		}
 		else if (redir->type == REDIR_APPEND)
 		{
-			fd = open(redir->file_or_limiter, O_WRONLY | O_CREAT | O_APPEND,
+			fd = open(tmp, O_WRONLY | O_CREAT | O_APPEND,
 					0644);
 			if (fd < 0)
-				return (perror(redir->file_or_limiter), 1);
+				return (perror(tmp), 1);
 			dup2(fd, STDOUT_FILENO);
 			close(fd);
 		}
@@ -72,36 +78,52 @@ int	apply_redirections(t_cmd *cmd)
 	return (0);
 }
 
-void	update_args(char ***args)
+void	update_args(char **args)
 {
 	int	i;
-	char **tmp;
-
-	tmp = *args;
+	char *tmp;
+	
 	i = 0;
-	while (tmp[i])
+	while (args && args[i])
 	{
-		tmp[i] = remove_quotes(tmp[i]);
+		tmp = remove_quotes(args[i]);
+		free(args[i]);
+		args[i] = tmp;
 		i++;
 	}
+}
+
+int	reset_cmd(t_cmd *cmd, t_shell *shell)
+{
+	char	*joint_cmd;
+	char	*expanded_args;
+
+	joint_cmd = holy_joint(cmd->args);
+	if (!joint_cmd)
+		return (1);
+	expanded_args = expand_vars(joint_cmd, shell);
+	if (!expanded_args)
+		return (free(expanded_args), 1);
+	cmd->args = holy_split(expanded_args);
+	free(expanded_args);
+	if (!cmd->args)
+		return (1);
+	cmd->cmd = cmd->args[0];
+	update_args(cmd->args);
+	return (0);
 }
 
 int	execute_command(t_cmd *cmd, t_shell *shell)
 {
 	pid_t	pid;
 	int		status;
-	char	*joint_cmd;
-	char	**new_args;	
 	char	*cmd_path;
 	char	**tmp_env;
 
 	if (!cmd->cmd || !cmd->cmd[0])
 		return (0);
-	joint_cmd = holy_joint(cmd->args);
-	joint_cmd = expand_vars(joint_cmd, shell);
-	new_args = holy_split(joint_cmd);
-	update_args(&new_args);
-	cmd->args = new_args;
+	if(reset_cmd(cmd, shell))
+		return (1);
 	if (cmd->args)
 		cmd->cmd = cmd->args[0];
 	if (is_builtin(cmd->cmd))
@@ -124,7 +146,7 @@ int	execute_command(t_cmd *cmd, t_shell *shell)
 	if (pid == 0)
 	{
 		if (cmd->redirs)
-			if (apply_redirections(cmd) != 0)
+			if (apply_redirections(cmd, shell) != 0)
 				exit(1);
 		execve(cmd_path, cmd->args, tmp_env);
 		perror("execve");
@@ -132,6 +154,6 @@ int	execute_command(t_cmd *cmd, t_shell *shell)
 	}
 	waitpid(pid, &status, 0);
 	free(cmd_path);
-	free(tmp_env);
+	free_2d(tmp_env);
 	return (WEXITSTATUS(status));
 }

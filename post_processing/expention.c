@@ -6,7 +6,7 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 16:36:33 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/09 16:56:38 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/09 22:29:53 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ void	process_variable_length(t_expansion *exp)
 	if (value)
 		exp->len += strlen(value);
 	free(key);
+	free(value);
 }
 
 void	calc_exp_len(t_expansion *exp)
