@@ -6,7 +6,7 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 06:20:05 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/08 21:58:48 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/09 16:52:00 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,15 @@ typedef struct s_env_kv
 	int					has_value;
 }						t_env_kv;
 
+typedef struct s_shell
+{
+	t_env_var				*env;
+	int						last_status;
+	char					**path;
+	t_parser				*parser;
+	int						running;
+}							t_shell;
+
 typedef struct s_expansion
 {
 	char					*input;
@@ -142,16 +151,7 @@ typedef struct s_expansion
 	int						i_index;
 	int						o_index;
 	int						len;
-	t_env_var				*vars;
+	t_shell					*shell;
 }							t_expansion;
-
-typedef struct s_shell
-{
-	t_env_var				*env;
-	int						last_status;
-	char					**path;
-	t_parser				*parser;
-	int						running;
-}							t_shell;
 
 #endif

@@ -3,27 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   expention_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 16:36:33 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/29 15:57:49 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/09 18:07:56 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/parsing.h"
 
-char	*find_env_var(t_env_var *env_vars, const char *key)
+char	*find_env_var(t_shell *shell, const char *key)
 {
-	while (env_vars != NULL)
+	t_env_var	*env_vars;
+
+	env_vars = shell->env;
+	if (ft_strcmp("?", key) == 0)
+		return (ft_itoa(shell->last_status));
+	while (key && env_vars != NULL)
 	{
 		if (ft_strcmp(env_vars->key, key) == 0)
-			return (env_vars->value);
+			return (ft_strdup(env_vars->value));
 		env_vars = env_vars->next;
 	}
 	return (NULL);
 }
 
-void	init_expansion(t_expansion *exp, char *input, t_env_var *vars)
+void	init_expansion(t_expansion *exp, char *input, t_shell *shell)
 {
 	exp->input = input;
 	exp->len = ft_strlen(input);
@@ -31,7 +36,7 @@ void	init_expansion(t_expansion *exp, char *input, t_env_var *vars)
 	exp->d_quote = 0;
 	exp->i_index = 0;
 	exp->o_index = 0;
-	exp->vars = vars;
+	exp->shell = shell;
 }
 
 void	update_quote_state(t_expansion *exp, char current_char)

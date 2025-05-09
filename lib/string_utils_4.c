@@ -6,7 +6,7 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 21:28:15 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/05/07 21:28:57 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/09 16:57:56 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,4 +90,10 @@ char	**ft_split(char const *s, char c)
 	if (!splitted)
 		return (NULL);
 	return (filling_arr(c, s, splitted, words));
+}
+
+void	ft_putendl_fd(char *s, int fd)
+{
+	ft_putstr_fd(s, fd);
+	write(fd, "\n", 1);
 }

@@ -1,5 +1,5 @@
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -O3 -fomit-frame-pointer -g -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -O3 -g -fsanitize=address
 LIB = -lreadline
 
 NAME = minishell
@@ -13,6 +13,7 @@ PARSING_DIR = parsing
 INCLUDE_DIR = include
 BUILLTINS_DIR = builtins
 EXECUTION_DIR = execution
+EXEC_PROC_DIR = post_processing
 
 SRC_FILES = main.c \
 	$(LIB_DIR)/string_utils_1.c \
@@ -50,7 +51,13 @@ SRC_FILES = main.c \
 	$(BUILLTINS_DIR)/ft_unset.c \
 	$(BUILLTINS_DIR)/builtins_utils.c \
 	$(EXECUTION_DIR)/exec_utils.c \
-	$(EXECUTION_DIR)/execute_cmd_handle.c
+	$(EXECUTION_DIR)/execute_cmd_handle.c \
+	$(EXEC_PROC_DIR)/args_utils.c \
+	$(EXEC_PROC_DIR)/expention_utils.c \
+	$(EXEC_PROC_DIR)/expention.c \
+	$(EXEC_PROC_DIR)/join_args.c \
+	$(EXEC_PROC_DIR)/split_args.c \
+	$(EXEC_PROC_DIR)/remove_quotes.c \
 
 
 OBJ_FILES = $(patsubst %.c, ${BUILD_DIR}/%.o, $(SRC_FILES))

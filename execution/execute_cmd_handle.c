@@ -6,12 +6,12 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 15:54:34 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/09 00:46:26 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/09 18:28:08 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/parsing.h"
 #include "../include/execution.h"
+#include "../include/parsing.h"
 
 char	*get_cmd_path(t_cmd *cmd, char **paths)
 {
@@ -19,7 +19,7 @@ char	*get_cmd_path(t_cmd *cmd, char **paths)
 	char	*full_path;
 
 	if (access(cmd->cmd, F_OK) == 0 && access(cmd->cmd, X_OK) == 0)
-		return (ft_strdup(cmd->cmd));
+		return (ft_strdup(cmd->cmd));	
 	while (*paths)
 	{
 		tmp = ft_strjoin(*paths, "/");
@@ -33,10 +33,10 @@ char	*get_cmd_path(t_cmd *cmd, char **paths)
 	return (NULL);
 }
 
-int apply_redirections(t_cmd *cmd)
+int	apply_redirections(t_cmd *cmd)
 {
-	t_redir *redir;
-	int fd;
+	t_redir	*redir;
+	int		fd;
 
 	redir = cmd->redirs;
 	while (redir)
@@ -51,7 +51,8 @@ int apply_redirections(t_cmd *cmd)
 		}
 		else if (redir->type == REDIR_OUT)
 		{
-			fd = open(redir->file_or_limiter, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+			fd = open(redir->file_or_limiter, O_WRONLY | O_CREAT | O_TRUNC,
+					0644);
 			if (fd < 0)
 				return (perror(redir->file_or_limiter), 1);
 			dup2(fd, STDOUT_FILENO);
@@ -59,7 +60,8 @@ int apply_redirections(t_cmd *cmd)
 		}
 		else if (redir->type == REDIR_APPEND)
 		{
-			fd = open(redir->file_or_limiter, O_WRONLY | O_CREAT | O_APPEND, 0644);
+			fd = open(redir->file_or_limiter, O_WRONLY | O_CREAT | O_APPEND,
+					0644);
 			if (fd < 0)
 				return (perror(redir->file_or_limiter), 1);
 			dup2(fd, STDOUT_FILENO);
@@ -70,16 +72,38 @@ int apply_redirections(t_cmd *cmd)
 	return (0);
 }
 
+void	update_args(char ***args)
+{
+	int	i;
+	char **tmp;
+
+	tmp = *args;
+	i = 0;
+	while (tmp[i])
+	{
+		tmp[i] = remove_quotes(tmp[i]);
+		i++;
+	}
+}
+
 int	execute_command(t_cmd *cmd, t_shell *shell)
 {
 	pid_t	pid;
 	int		status;
+	char	*joint_cmd;
+	char	**new_args;	
 	char	*cmd_path;
 	char	**tmp_env;
 
-
 	if (!cmd->cmd || !cmd->cmd[0])
 		return (0);
+	joint_cmd = holy_joint(cmd->args);
+	joint_cmd = expand_vars(joint_cmd, shell);
+	new_args = holy_split(joint_cmd);
+	update_args(&new_args);
+	cmd->args = new_args;
+	if (cmd->args)
+		cmd->cmd = cmd->args[0];
 	if (is_builtin(cmd->cmd))
 		return (execute_builtins_with_redir(cmd, shell));
 	cmd_path = get_cmd_path(cmd, shell->path);
