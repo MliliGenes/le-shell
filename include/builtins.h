@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 23:09:18 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/05/08 16:00:09 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/09 00:40:26 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,5 +40,9 @@ void		env_update(t_env_var *env_list, char *key, char *value);
 void		print_cd_error(char *prefix, char *path, char *message);
 int			update_pwd(t_env_var *env, char *old_pwd);
 char		*get_env_value(t_env_var *env_list, char *key);
+
+int			is_builtin(char *cmd);
+int			execute_builtin(t_cmd *cmd, t_shell *shell);
+int			execute_builtins_with_redir(t_cmd *cmd, t_shell *shell);
 
 #endif

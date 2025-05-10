@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:51:57 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/08 16:00:44 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/09 17:29:54 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSING_H
 # define PARSING_H
 
-# include "dependencies.h"
 # include "builtins.h"
+# include "dependencies.h"
 # include "lib.h"
 # include "structs.h"
 
@@ -119,11 +119,17 @@ t_ast							*post_to_tree(t_ready_token *postfix);
 t_parser						*init_parser(void);
 t_parser						*parse_input(char *cmd_line);
 
-char							*find_env_var(t_env_var *env_vars,
-									const char *key);
+char							*find_env_var(t_shell *shell, const char *key);
 void							init_expansion(t_expansion *exp, char *input,
-									t_env_var *vars);
+									t_shell *shell);
 void							update_quote_state(t_expansion *exp,
 									char current_char);
+char							*holy_joint(char **args);
+char							**holy_split(char *joint);
+char							*expand_vars(char *input, t_shell *shell);
+void							update_quote_status(char c, bool *in_single,
+									bool *in_double);
+bool							is_in_quote(bool in_single, bool in_double);
+char							*remove_quotes(char *str);
 
 #endif
