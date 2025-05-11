@@ -1,5 +1,5 @@
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -O3 -g -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -O3 #-g -fsanitize=address
 LIB = -lreadline
 
 NAME = minishell
@@ -59,6 +59,7 @@ SRC_FILES = main.c \
 	$(EXEC_PROC_DIR)/join_args.c \
 	$(EXEC_PROC_DIR)/split_args.c \
 	$(EXEC_PROC_DIR)/remove_quotes.c \
+	$(EXEC_PROC_DIR)/update_cmd_node.c \
 
 
 OBJ_FILES = $(patsubst %.c, ${BUILD_DIR}/%.o, $(SRC_FILES))

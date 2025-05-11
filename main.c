@@ -46,7 +46,7 @@ int	main(int ac, char **av, char **envp)
 
 	(void)ac;
 	(void)av;
-	// atexit(ll);
+	atexit(ll);
 	rl_bind_key('\t', rl_complete);
 	shell.env = init_env(envp);
 	shell.last_status = 0;
@@ -63,8 +63,6 @@ int	main(int ac, char **av, char **envp)
 		shell.parser = parse_input(input);
 		if (shell.parser && shell.parser->holy_tree)
 		{
-			// TODO: open_here_docs
-			// print_ast(shell.parser->holy_tree);
 			execute_ast(&shell);
 			free_ast(shell.parser->holy_tree);
 			free_ready_tokens_list(shell.parser->postfix_note);

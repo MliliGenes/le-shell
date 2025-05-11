@@ -6,7 +6,7 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 15:54:34 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/11 22:32:03 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/11 23:49:28 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,20 @@ char	*get_cmd_path(t_cmd *cmd, char **paths)
 		paths++;
 	}
 	return (NULL);
+} 
+
+static int empty(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str && str[i])
+	{
+		if (!is_white_space(str[i]))
+			return (0);
+		i++;
+	}
+	return (1);
 }
 
 int	apply_redirections(t_cmd *cmd, t_shell *shell)
@@ -47,7 +61,7 @@ int	apply_redirections(t_cmd *cmd, t_shell *shell)
 		dequoted = remove_quotes(expended);
 		if (ft_strcmp(expended, dequoted) == 0)
 		{
-			if (!dequoted || !dequoted[0] || holy_count_words(dequoted) > 1)
+			if (!dequoted || !dequoted[0] || holy_count_words(dequoted) > 1 || empty(dequoted))
 			{
 				ft_putstr_fd("minishell: ", STDERR_FILENO);
 				ft_putstr_fd(redir->file_or_limiter, STDERR_FILENO);
@@ -152,7 +166,8 @@ int	execute_command(t_cmd *cmd, t_shell *shell)
 
 	if (!cmd->cmd || !cmd->cmd[0])
 		return (0);
-	update_args(cmd, shell);
+	// update_args(cmd, shell);
+	update_cmd_node(cmd, shell);
 	if (is_builtin(cmd->cmd))
 		return (execute_builtins_with_redir(cmd, shell));
 	cmd_path = get_cmd_path(cmd, shell->path);

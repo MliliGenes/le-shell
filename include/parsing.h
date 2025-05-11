@@ -6,7 +6,7 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:51:57 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/11 21:49:01 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/11 23:33:56 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,5 +132,6 @@ void							update_quote_status(char c, bool *in_single,
 									bool *in_double);
 bool							is_in_quote(bool in_single, bool in_double);
 char							*remove_quotes(char *str);
+void							update_cmd_node(t_cmd *cmd, t_shell *shell);
 
 #endif
