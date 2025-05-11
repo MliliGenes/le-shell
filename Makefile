@@ -53,6 +53,7 @@ SRC_FILES = main.c \
 	$(BUILLTINS_DIR)/builtins_utils.c \
 	$(EXECUTION_DIR)/exec_utils.c \
 	$(EXECUTION_DIR)/execute_cmd_handle.c \
+	$(EXECUTION_DIR)/redirections.c \
 	$(EXEC_PROC_DIR)/args_utils.c \
 	$(EXEC_PROC_DIR)/expention_utils.c \
 	$(EXEC_PROC_DIR)/expention.c \

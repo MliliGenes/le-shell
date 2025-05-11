@@ -6,7 +6,7 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 15:54:34 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/11 23:49:28 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/12 00:54:31 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,20 +33,6 @@ char	*get_cmd_path(t_cmd *cmd, char **paths)
 	return (NULL);
 } 
 
-static int empty(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str && str[i])
-	{
-		if (!is_white_space(str[i]))
-			return (0);
-		i++;
-	}
-	return (1);
-}
-
 int	apply_redirections(t_cmd *cmd, t_shell *shell)
 {
 	t_redir	*redir;
@@ -59,54 +45,19 @@ int	apply_redirections(t_cmd *cmd, t_shell *shell)
 	{
 		expended = expand_vars(redir->file_or_limiter, shell);
 		dequoted = remove_quotes(expended);
-		if (ft_strcmp(expended, dequoted) == 0)
+		if (handle_ambiguous(expended, dequoted, redir->file_or_limiter))
 		{
-			if (!dequoted || !dequoted[0] || holy_count_words(dequoted) > 1 || empty(dequoted))
-			{
-				ft_putstr_fd("minishell: ", STDERR_FILENO);
-				ft_putstr_fd(redir->file_or_limiter, STDERR_FILENO);
-				ft_putstr_fd(": ambiguous redirect\n", STDERR_FILENO);
-				free(expended);
-				free(dequoted);
-				return (1);
-			}
+			free(expended);
+			free(dequoted);
+			return (1);
 		}
+		free(expended);
 		if (redir->type == REDIR_IN)
-		{
-			fd = open(dequoted, O_RDONLY);
-			if (fd < 0)
-			{
-				perror(dequoted);
-				free(dequoted);
-				return (1);
-			}
-			dup2(fd, STDIN_FILENO);
-			close(fd);
-		}
+			fd = handle_redir_in(dequoted, cmd);
 		else if (redir->type == REDIR_OUT)
-		{
-			fd = open(dequoted, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-			if (fd < 0)
-			{
-				perror(dequoted);
-				free(dequoted);
-				return (1);
-			}
-			dup2(fd, STDOUT_FILENO);
-			close(fd);
-		}
+			fd = handle_redir_out(dequoted, cmd);
 		else if (redir->type == REDIR_APPEND)
-		{
-			fd = open(dequoted, O_WRONLY | O_CREAT | O_APPEND, 0644);
-			if (fd < 0)
-			{
-				perror(dequoted);
-				free(dequoted);
-				return (1);
-			}
-			dup2(fd, STDOUT_FILENO);
-			close(fd);
-		}
+			fd = handle_redir_append(dequoted, cmd);
 		redir = redir->next;
 	}
 	return (0);
