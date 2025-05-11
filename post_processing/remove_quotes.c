@@ -6,7 +6,7 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 17:28:50 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/11 20:07:04 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/11 22:32:24 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ char	*remove_quotes(char *str)
 	char	*res;
 	int		i;
 	int		j;
-	int		k;
 	bool	s_quote;
 	bool	d_quote;
 
@@ -34,14 +33,8 @@ char	*remove_quotes(char *str)
 		update_quote_status(str[i], &s_quote, &d_quote);
 		if ((str[i] == '\'' && !d_quote) || (str[i] == '"' && !s_quote))
 		{
-			k = i;
-			while (str[k] && str[k] != str[i])
-				k++;
-			if (str[k] == str[i])
-			{
-				i++;
-				continue ;
-			}
+			i++;
+			continue ;
 		}
 		res[j++] = str[i++];
 	}

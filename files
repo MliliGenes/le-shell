@@ -1,0 +1,17 @@
+Makefile
+README.md
+build
+builtins
+execution
+file
+files
+include
+lib
+main.c
+minishell
+parsing
+post_processing
+processing
+saad
+tokenizer
+validator.js

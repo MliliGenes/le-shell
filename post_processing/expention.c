@@ -6,7 +6,7 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 16:36:33 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/09 22:29:53 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/11 21:39:04 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,5 @@ char	*expand_vars(char *input, t_shell *shell)
 			exp.output[exp.o_index++] = input[exp.i_index++];
 	}
 	exp.output[exp.o_index] = 0;
-	free(input);
 	return (exp.output);
 }

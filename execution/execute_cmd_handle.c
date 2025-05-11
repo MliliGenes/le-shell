@@ -6,7 +6,7 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 15:54:34 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/11 20:10:40 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/11 22:32:03 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,36 +36,34 @@ char	*get_cmd_path(t_cmd *cmd, char **paths)
 int	apply_redirections(t_cmd *cmd, t_shell *shell)
 {
 	t_redir	*redir;
-	char	*tmp;
-	char	*tmp2;
+	char	*expended;
+	char	*dequoted;
 	int		fd;
 
 	redir = cmd->redirs;
 	while (redir)
 	{
-		tmp = expand_vars(redir->file_or_limiter, shell);
-		tmp2 = remove_quotes(tmp);
-		if (ft_strcmp(tmp2, tmp) == 0)
+		expended = expand_vars(redir->file_or_limiter, shell);
+		dequoted = remove_quotes(expended);
+		if (ft_strcmp(expended, dequoted) == 0)
 		{
-			if (!tmp2 || !tmp2[0] || ft_strchr(tmp2, ' ') || ft_strchr(tmp2,
-					'\t') || ft_strchr(tmp2, '\n'))
+			if (!dequoted || !dequoted[0] || holy_count_words(dequoted) > 1)
 			{
 				ft_putstr_fd("minishell: ", STDERR_FILENO);
 				ft_putstr_fd(redir->file_or_limiter, STDERR_FILENO);
 				ft_putstr_fd(": ambiguous redirect\n", STDERR_FILENO);
-				free(tmp);
-				free(tmp2);
+				free(expended);
+				free(dequoted);
 				return (1);
 			}
 		}
-		free(tmp);
 		if (redir->type == REDIR_IN)
 		{
-			fd = open(tmp2, O_RDONLY);
+			fd = open(dequoted, O_RDONLY);
 			if (fd < 0)
 			{
-				perror(tmp2);
-				free(tmp2);
+				perror(dequoted);
+				free(dequoted);
 				return (1);
 			}
 			dup2(fd, STDIN_FILENO);
@@ -73,11 +71,11 @@ int	apply_redirections(t_cmd *cmd, t_shell *shell)
 		}
 		else if (redir->type == REDIR_OUT)
 		{
-			fd = open(tmp2, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+			fd = open(dequoted, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 			if (fd < 0)
 			{
-				perror(tmp2);
-				free(tmp2);
+				perror(dequoted);
+				free(dequoted);
 				return (1);
 			}
 			dup2(fd, STDOUT_FILENO);
@@ -85,69 +83,64 @@ int	apply_redirections(t_cmd *cmd, t_shell *shell)
 		}
 		else if (redir->type == REDIR_APPEND)
 		{
-			fd = open(tmp2, O_WRONLY | O_CREAT | O_APPEND, 0644);
+			fd = open(dequoted, O_WRONLY | O_CREAT | O_APPEND, 0644);
 			if (fd < 0)
 			{
-				perror(tmp2);
-				free(tmp2);
+				perror(dequoted);
+				free(dequoted);
 				return (1);
 			}
 			dup2(fd, STDOUT_FILENO);
 			close(fd);
 		}
-		free(tmp2);
 		redir = redir->next;
 	}
 	return (0);
 }
 
-void	print_args(char **args)
+bool	has_quotes(char *str)
 {
 	int	i;
 
-	printf("Updating args...\n");
 	i = 0;
-	while (args && args[i])
+	while (str && str[i])
 	{
-		printf("%s\n", args[i]);
+		if (str[i] == '\'' || str[i] == '\"')
+			return (true);
 		i++;
 	}
-	printf("Updated args\n");
+	return (false);
 }
 
-void	update_args(char **args)
+void	update_args(t_cmd *cmd, t_shell *shell)
 {
 	int		i;
 	char	*tmp;
+	char	*new_arg;
+	int		j;
 
 	i = 0;
-	while (args && args[i])
+	j = 0;
+	while (cmd->args && cmd->args[i])
 	{
-		tmp = remove_quotes(args[i]);
-		free(args[i]);
-		args[i] = tmp;
+		new_arg = expand_vars(cmd->args[i], shell);
+		if (has_quotes(cmd->args[i]))
+		{
+			tmp = new_arg;
+			new_arg = remove_quotes(tmp);
+			free(tmp);
+		}
+		if (!has_quotes(cmd->args[i]) && !*new_arg)
+		{
+			free(cmd->args[i]);
+			i++;
+			continue ;
+		}
+		cmd->args[j++] = new_arg;
 		i++;
 	}
-}
-
-int	reset_cmd(t_cmd *cmd, t_shell *shell)
-{
-	char	*joint_cmd;
-	char	*expanded_args;
-
-	joint_cmd = holy_joint(cmd->args);
-	if (!joint_cmd)
-		return (1);
-	expanded_args = expand_vars(joint_cmd, shell);
-	if (!expanded_args)
-		return (free(expanded_args), 1);
-	cmd->args = holy_split(expanded_args);
-	free(expanded_args);
-	if (!cmd->args)
-		return (1);
-	update_args(cmd->args);
+		cmd->args[j] = NULL;
 	cmd->cmd = cmd->args[0];
-	return (0);
 }
 
 int	execute_command(t_cmd *cmd, t_shell *shell)
@@ -159,8 +152,7 @@ int	execute_command(t_cmd *cmd, t_shell *shell)
 
 	if (!cmd->cmd || !cmd->cmd[0])
 		return (0);
-	if (reset_cmd(cmd, shell))
-		return (1);
+	update_args(cmd, shell);
 	if (is_builtin(cmd->cmd))
 		return (execute_builtins_with_redir(cmd, shell));
 	cmd_path = get_cmd_path(cmd, shell->path);
