@@ -46,7 +46,7 @@ int	main(int ac, char **av, char **envp)
 
 	(void)ac;
 	(void)av;
-	atexit(ll);
+	// atexit(ll);
 	rl_bind_key('\t', rl_complete);
 	shell.env = init_env(envp);
 	shell.last_status = 0;
