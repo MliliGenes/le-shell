@@ -6,7 +6,7 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 16:49:28 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/05/09 18:18:02 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/11 18:06:21 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,7 @@ char	get_quotes_edges(char *str)
 t_env_var	*create_env_var(char *key, char *value)
 {
 	t_env_var	*new_node;
-	char		quote_type;
 
-	quote_type = 0;
 	new_node = malloc(sizeof(t_env_var));
 	if (!new_node)
 		return (NULL);

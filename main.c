@@ -13,7 +13,7 @@
 #include "include/execution.h"
 #include "include/parsing.h"
 
-void	ll(void)
+void ll()
 {
 	system("leaks -q minishell");
 }
