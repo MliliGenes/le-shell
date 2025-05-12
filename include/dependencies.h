@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dependencies.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 08:49:15 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/12 19:09:26 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/12 20:14:28 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 # include <limits.h>
 #include <signal.h>
 
-volatile sig_atomic_t g_signal_received = 0;
+// volatile sig_atomic_t g_signal_received = 0;
 
 # define PROMPT "\033[1m╭─\033[32mle-shell\033[0m \n\033[1m╰─$\033[0m "
 

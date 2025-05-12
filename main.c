@@ -85,9 +85,7 @@ int	shell_loop(t_shell *shell)
 			add_history(input);
 			shell->parser = parse_input(input);
 			if (shell->parser && shell->parser->holy_tree)
-			{
 				execute_ast(shell);
-			}
 		}
 		cleanup_iteration(shell, input);
 	}
@@ -110,7 +108,6 @@ int	main(int ac, char **av, char **envp)
 
 	(void)ac;
 	(void)av;
-	
 	if (init_shell(&shell, envp) != 0)
 		return (1);
 	status = shell_loop(&shell);
