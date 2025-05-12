@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expention_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 16:36:33 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/09 18:07:56 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/12 04:01:35 by le-saad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ void	init_expansion(t_expansion *exp, char *input, t_shell *shell)
 
 void	update_quote_state(t_expansion *exp, char current_char)
 {
-	if (current_char == '\'' && !exp->d_quote)
+	if (current_char == 1 && !exp->d_quote)
 		exp->s_quote = !exp->s_quote;
-	if (current_char == '\"' && !exp->s_quote)
+	if (current_char == 2 && !exp->s_quote)
 		exp->d_quote = !exp->d_quote;
 }

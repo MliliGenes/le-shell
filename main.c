@@ -13,10 +13,10 @@
 #include "include/execution.h"
 #include "include/parsing.h"
 
-void ll()
-{
-	system("leaks -q minishell");
-}
+// void ll()
+// {
+// 	system("leaks -q minishell");
+// }
 
 int	execute_ast(t_shell *shell)
 {

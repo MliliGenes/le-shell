@@ -1,5 +1,5 @@
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -O3 #-g -fsanitize=address
+CFLAGS = -g -fsanitize=address #-Wall -Wextra -Werror -O3 #
 LIB = -lreadline
 
 NAME = minishell

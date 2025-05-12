@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   update_cmd_node.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 23:08:16 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/11 23:46:00 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/12 04:09:45 by le-saad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ static int	args_count(char **args)
 		i++;
 	return (i);
 }
-
 
 static int empty(char *str)
 {
@@ -68,13 +67,12 @@ void	update_cmd_node(t_cmd *cmd, t_shell *shell)
 	while (cmd->args && cmd->args[index_old])
 	{
 		quoted = has_quotes(cmd->args[index_new]);
-		expended_arg = expand_vars(cmd->args[index_old], shell);
 		if (quoted)
-		{
-			tmp = expended_arg;
-			expended_arg = remove_quotes(expended_arg);
-			free(tmp);
-		}
+			cmd->args[index_old] = mark_quotes(cmd->args[index_old]);
+		expended_arg = expand_vars(cmd->args[index_old], shell);
+		tmp = expended_arg;
+		expended_arg = remove_quotes(expended_arg);
+		free(tmp);
 		if (!quoted && (!*expended_arg || empty(expended_arg)))
 		{
 			free(expended_arg);
