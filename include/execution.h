@@ -6,7 +6,7 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 21:35:10 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/05/12 00:54:11 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/12 19:56:38 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,5 +23,7 @@ int		handle_ambiguous(char *expanded, char *dequoted, char *raw);
 int		handle_redir_in(const char *filename);
 int		handle_redir_out(const char *filename);
 int		handle_redir_append(const char *filename);
+
+int		handle_pipe(root, shell);
 
 #endif

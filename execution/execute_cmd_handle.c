@@ -6,7 +6,7 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 15:54:34 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/12 00:54:31 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/12 20:06:33 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,8 +150,9 @@ int	execute_command(t_cmd *cmd, t_shell *shell)
 		perror("execve");
 		exit(127);
 	}
-	waitpid(pid, &status, 0);
+	if (waitpid(pid, &status, 0) > 0);
+		status = WEXITSTATUS(status);
 	free(cmd_path);
 	free_2d(tmp_env);
-	return (WEXITSTATUS(status));
+	return (status);
 }
