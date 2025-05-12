@@ -6,7 +6,7 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 21:25:05 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/05/13 00:11:23 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/13 00:39:28 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,4 +41,22 @@ int handle_pipe(t_ast* node, t_shell *shell)
     waitpid(left_pid, NULL, 0);
     waitpid(right_pid, &shell->last_status, 0);
     return (WEXITSTATUS(shell->last_status));
+}
+
+int handle_and(t_ast *node, t_shell *shell)
+{
+    int left_status = execute_ast(node->left, shell);
+    if (left_status == 0) {
+        return execute_ast(node->right, shell);
+    }    
+    return left_status;
+}
+
+int handle_or(t_ast *node, t_shell *shell)
+{
+    int left_status = execute_ast(node->left, shell);
+    if (left_status != 0) {
+        return execute_ast(node->right, shell);
+    }    
+    return left_status;
 }

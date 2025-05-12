@@ -6,7 +6,7 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 15:54:34 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/12 23:44:26 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/13 00:23:36 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,5 +103,6 @@ int	execute_command(t_cmd *cmd, t_shell *shell)
 	waitpid(pid, &status, 0);
 	free(cmd_path);
 	free_2d(tmp_env);
+	printf("status: %d\n", WEXITSTATUS(status));
 	return (WEXITSTATUS(status));
 }

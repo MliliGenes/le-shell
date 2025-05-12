@@ -6,7 +6,7 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 21:35:10 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/05/12 22:57:19 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/13 00:15:20 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ int		handle_redir_out(const char *filename);
 int		handle_redir_append(const char *filename);
 int		handle_pipe(t_ast* node, t_shell *shell);
 int		execute_ast(t_ast* root, t_shell *shell);
+int		handle_and(t_ast *node, t_shell *shell);
+int		handle_or(t_ast *node, t_shell *shell);
 
 char	*find_env_var(t_shell *shell, const char *key);
 void	init_expansion(t_expansion *exp, char *input, t_shell *shell);
