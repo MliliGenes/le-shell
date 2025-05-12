@@ -24,8 +24,8 @@ int	execute_ast(t_shell *shell)
 		execute_command(root->node->p_token, shell);
 	else if (root->node->type == OP)
 	{
-		if (((t_op *)root->node->p_token)->type == OP_PIPE)
-			return (handle_pipe(root, shell));
+		// if (((t_op *)root->node->p_token)->type == OP_PIPE)
+		// 	return (handle_pipe(root, shell));
 	// 	if (((t_op *)root->node->p_token)->type == OP_AND)
 	// 		return (handle_and());
 	// 	if (((t_op *)root->node->p_token)->type == OP_OR)
@@ -86,6 +86,8 @@ int	shell_loop(t_shell *shell)
 			shell->parser = parse_input(input);
 			if (shell->parser && shell->parser->holy_tree)
 				execute_ast(shell);
+			else
+				shell->last_status = 258;
 		}
 		cleanup_iteration(shell, input);
 	}
