@@ -3,38 +3,39 @@
 /*                                                        :::      ::::::::   */
 /*   remove_quotes.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 17:28:50 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/12 16:01:26 by le-saad          ###   ########.fr       */
+/*   Updated: 2025/05/12 19:07:56 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/parsing.h"
+#include "../include/execution.h"
 
-// TODO : RM THE FUCKING QUOTES
+char	*mark_quotes(char *str)
+{
+	bool	s_quote;
+	bool	d_quote;
+	int		i;
 
-char *mark_quotes(char *str) {
-	bool s_quote;
-	bool d_quote;
-	
-    if (!str)
-        return NULL;
-    s_quote = false;
-    d_quote = false;
-    int i = 0;
-    while (str[i]) {
-        update_quote_status(str[i], &s_quote, &d_quote);
-        if ((str[i] == '\'' && !d_quote) || (str[i] == '"' && !s_quote))
+	if (!str)
+		return (NULL);
+	s_quote = false;
+	d_quote = false;
+	i = 0;
+	while (str[i])
+	{
+		update_quote_status(str[i], &s_quote, &d_quote);
+		if ((str[i] == '\'' && !d_quote) || (str[i] == '"' && !s_quote))
 		{
-            if (str[i] == '\'')
+			if (str[i] == '\'')
 				str[i] = 1;
 			else
 				str[i] = 2;
-        }
-        i++;
-    }
-    return str;
+		}
+		i++;
+	}
+	return (str);
 }
 
 char	*remove_quotes(char *str)

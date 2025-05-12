@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:51:57 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/12 03:53:08 by le-saad          ###   ########.fr       */
+/*   Updated: 2025/05/12 19:05:56 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,21 +118,5 @@ t_ast							*post_to_tree(t_ready_token *postfix);
 // MARK: - Parser Core Functions
 t_parser						*init_parser(void);
 t_parser						*parse_input(char *cmd_line);
-
-char							*find_env_var(t_shell *shell, const char *key);
-void							init_expansion(t_expansion *exp, char *input,
-									t_shell *shell);
-void							update_quote_state(t_expansion *exp,
-									char current_char);
-char							*holy_joint(char **args);
-int								holy_count_words(char *str);
-char							**holy_split(char *joint);
-char							*expand_vars(char *input, t_shell *shell);
-void							update_quote_status(char c, bool *in_single,
-									bool *in_double);
-bool							is_in_quote(bool in_single, bool in_double);
-char							*remove_quotes(char *str);
-char	*mark_quotes(char *str);
-void							update_cmd_node(t_cmd *cmd, t_shell *shell);
 
 #endif

@@ -13,8 +13,6 @@
 #include "include/execution.h"
 #include "include/parsing.h"
 
-volatile sig_atomic_t g_signal_received = 0;
-
 int	execute_ast(t_shell *shell)
 {
 	t_ast	*root;

@@ -3,17 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   dependencies.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 08:49:15 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/12 04:35:43 by le-saad          ###   ########.fr       */
+/*   Updated: 2025/05/12 19:09:26 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef DEPENDENCIES_H
 # define DEPENDENCIES_H
-
-# define PROMPT "\033[1m╭─\033[32mle-shell\033[0m \n\033[1m╰─$\033[0m "
 
 # include <fcntl.h>
 # include <readline/history.h>
@@ -26,6 +24,10 @@
 # include <unistd.h>
 # include <limits.h>
 #include <signal.h>
+
+volatile sig_atomic_t g_signal_received = 0;
+
+# define PROMPT "\033[1m╭─\033[32mle-shell\033[0m \n\033[1m╰─$\033[0m "
 
 # define RESET "\033[0m"
 # define BLACK "\033[30m"

@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   expention.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 16:36:33 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/11 21:39:04 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/12 19:08:08 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/parsing.h"
+#include "../include/execution.h"
 
 void	process_variable_length(t_expansion *exp)
 {
@@ -22,7 +22,8 @@ void	process_variable_length(t_expansion *exp)
 	start = exp->i_index;
 	exp->len--;
 	while (exp->input[exp->i_index] && (ft_isalnum(exp->input[exp->i_index])
-			|| exp->input[exp->i_index] == '_' || exp->input[exp->i_index] == '?'))
+			|| exp->input[exp->i_index] == '_'
+			|| exp->input[exp->i_index] == '?'))
 	{
 		exp->len--;
 		exp->i_index++;
@@ -42,7 +43,8 @@ void	calc_exp_len(t_expansion *exp)
 		update_quote_state(exp, exp->input[exp->i_index]);
 		if (!exp->s_quote && exp->input[exp->i_index] == '$'
 			&& (ft_isalnum(exp->input[exp->i_index + 1])
-				|| exp->input[exp->i_index + 1] == '_' || exp->input[exp->i_index + 1] == '?'))
+				|| exp->input[exp->i_index + 1] == '_'
+				|| exp->input[exp->i_index + 1] == '?'))
 			process_variable_length(exp);
 		else
 			exp->i_index++;
@@ -58,7 +60,8 @@ char	*extract_var_name(t_expansion *exp)
 	start = exp->i_index;
 	length = 0;
 	while (exp->input[exp->i_index] && (ft_isalnum(exp->input[exp->i_index])
-			|| exp->input[exp->i_index] == '_' || exp->input[exp->i_index] == '?'))
+			|| exp->input[exp->i_index] == '_'
+			|| exp->input[exp->i_index] == '?'))
 	{
 		exp->i_index++;
 		length++;
@@ -78,7 +81,7 @@ void	expand_variable(t_expansion *exp)
 	value = find_env_var(exp->shell, key);
 	while (value && value[value_index])
 		exp->output[exp->o_index++] = value[value_index++];
-	free(value);	
+	free(value);
 	free(key);
 }
 

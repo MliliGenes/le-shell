@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 21:35:10 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/05/12 00:54:11 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/12 19:06:11 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,5 +23,18 @@ int		handle_ambiguous(char *expanded, char *dequoted, char *raw);
 int		handle_redir_in(const char *filename, t_cmd *cmd);
 int		handle_redir_out(const char *filename, t_cmd *cmd);
 int		handle_redir_append(const char *filename, t_cmd *cmd);
+char	*find_env_var(t_shell *shell, const char *key);
+void	init_expansion(t_expansion *exp, char *input, t_shell *shell);
+void	update_quote_state(t_expansion *exp, char current_char);
+char	*holy_joint(char **args);
+int		holy_count_words(char *str);
+char	**holy_split(char *joint);
+char	*expand_vars(char *input, t_shell *shell);
+void	update_quote_status(char c, bool *in_single, bool *in_double);
+void	update_quote_status_new(char c, bool *in_single, bool *in_double);
+bool	is_in_quote(bool in_single, bool in_double);
+char	*remove_quotes(char *str);
+char	*mark_quotes(char *str);
+void	update_cmd_node(t_cmd *cmd, t_shell *shell);
 
 #endif

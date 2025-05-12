@@ -3,13 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   update_cmd_node.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 23:08:16 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/12 04:09:45 by le-saad          ###   ########.fr       */
+/*   Updated: 2025/05/12 19:08:12 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../include/execution.h"
 #include "../include/parsing.h"
 
 static bool	has_quotes(char *str)
@@ -36,7 +37,7 @@ static int	args_count(char **args)
 	return (i);
 }
 
-static int empty(char *str)
+static int	empty(char *str)
 {
 	int	i;
 
@@ -55,36 +56,21 @@ void	update_cmd_node(t_cmd *cmd, t_shell *shell)
 	char	**new_args;
 	char	*expended_arg;
 	char	*tmp;
+	char	*join_arg;
 	int		index_old;
-	bool	quoted;
-	int		index_new;
 
+	join_arg = holy_joint(cmd->args);
+	if (has_quotes(join_arg))
+		join_arg = mark_quotes(join_arg);
+	expended_arg = expand_vars(join_arg, shell);
+	free(join_arg);
+	new_args = holy_split(expended_arg);
 	index_old = 0;
-	index_new = 0;
-	new_args = malloc(sizeof(char *) * (args_count(cmd->args) + 1));
-	if (!new_args)
-		return ;
-	while (cmd->args && cmd->args[index_old])
+	while (new_args[index_old])
 	{
-		quoted = has_quotes(cmd->args[index_new]);
-		if (quoted)
-			cmd->args[index_old] = mark_quotes(cmd->args[index_old]);
-		expended_arg = expand_vars(cmd->args[index_old], shell);
-		tmp = expended_arg;
-		expended_arg = remove_quotes(expended_arg);
-		free(tmp);
-		if (!quoted && (!*expended_arg || empty(expended_arg)))
-		{
-			free(expended_arg);
-			index_old++;
-			continue ;
-		}
-		new_args[index_new] = expended_arg;
-		index_new++;
+		new_args[index_old] = remove_quotes(new_args[index_old]);
 		index_old++;
 	}
-	new_args[index_new] = NULL;
-	free_2d(cmd->args);
 	cmd->args = new_args;
 	cmd->cmd = cmd->args[0];
 }

@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   expention_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 16:36:33 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/12 04:01:35 by le-saad          ###   ########.fr       */
+/*   Updated: 2025/05/12 19:07:10 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/parsing.h"
+#include "../include/execution.h"
 
 char	*find_env_var(t_shell *shell, const char *key)
 {

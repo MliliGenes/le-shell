@@ -3,13 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   split_args.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 17:11:29 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/11 20:45:23 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/12 19:07:40 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../include/execution.h"
 #include "../include/parsing.h"
 
 int	find_word_start(char *joint, int end, bool *in_single, bool *in_double)
@@ -25,7 +26,7 @@ int	find_word_end(char *joint, int end, bool *in_single, bool *in_double)
 	while (joint[end] && (!is_white_space(joint[end]) || is_in_quote(*in_single,
 				*in_double)))
 	{
-		update_quote_status(joint[end], in_single, in_double);
+		update_quote_status_new(joint[end], in_single, in_double);
 		end++;
 	}
 	return (end);
@@ -46,7 +47,7 @@ int	holy_count_words(char *str)
 	in_word = false;
 	while (str && str[index])
 	{
-		update_quote_status(str[index], &in_s_q, &in_d_q);
+		update_quote_status_new(str[index], &in_s_q, &in_d_q);
 		if (!is_white_space(str[index]) && !in_word)
 		{
 			in_word = true;
