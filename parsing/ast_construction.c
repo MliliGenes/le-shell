@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_construction.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 15:52:53 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/08 18:43:18 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/12 23:43:45 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@ t_ast	*ast_recursive(t_ready_token **postfix_tail)
 	wrapper->left = NULL;
 	if (current->type == OP)
 	{
-		wrapper->left = ast_recursive(postfix_tail);
 		wrapper->right = ast_recursive(postfix_tail);
+		wrapper->left = ast_recursive(postfix_tail);
 	}
 	return (wrapper);
 }

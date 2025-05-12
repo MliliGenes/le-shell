@@ -6,7 +6,7 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 08:48:06 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/10 00:08:05 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/12 21:54:55 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ char		**ft_split(char const *s, char c);
 char		*ft_itoa(int n);
 char		*ft_strchr(const char *s, int c);
 
-void		print_syntax_error(const char *token, const char *reason);
+void		print_syntax_error(char *token, char *reason);
 
 const char	*token_type_name(t_token_type type);
 void		print_tokens(t_token *head);

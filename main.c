@@ -13,19 +13,16 @@
 #include "include/execution.h"
 #include "include/parsing.h"
 
-int	execute_ast(t_shell *shell)
+int	execute_ast(t_ast *root, t_shell *shell)
 {
-	t_ast	*root;
-
-	root = shell->parser->holy_tree;
 	if (!root)
 		return (1);
 	if (root->node->type == CMD)
 		execute_command(root->node->p_token, shell);
 	else if (root->node->type == OP)
 	{
-		// if (((t_op *)root->node->p_token)->type == OP_PIPE)
-		// 	return (handle_pipe(root, shell));
+		if (((t_op *)root->node->p_token)->type == OP_PIPE)
+			return (handle_pipe(root, shell));
 	// 	if (((t_op *)root->node->p_token)->type == OP_AND)
 	// 		return (handle_and());
 	// 	if (((t_op *)root->node->p_token)->type == OP_OR)
@@ -85,7 +82,7 @@ int	shell_loop(t_shell *shell)
 			add_history(input);
 			shell->parser = parse_input(input);
 			if (shell->parser && shell->parser->holy_tree)
-				execute_ast(shell);
+				execute_ast(shell->parser->holy_tree, shell);
 			else
 				shell->last_status = 258;
 		}

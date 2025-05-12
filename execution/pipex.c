@@ -1,0 +1,44 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipex.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/12 21:25:05 by ssbaytri          #+#    #+#             */
+/*   Updated: 2025/05/13 00:11:23 by ssbaytri         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../include/execution.h"
+
+int handle_pipe(t_ast* node, t_shell *shell)
+{
+    int pipefd[2];
+    pid_t left_pid, right_pid;
+
+    if (pipe(pipefd) == -1)
+        return (perror("pipe"), 1);
+    left_pid = fork();
+    if (left_pid == 0)
+    {
+        dup2(pipefd[1], STDOUT_FILENO);
+        close(pipefd[0]);
+        close(pipefd[1]);
+        exit(execute_ast(node->left, shell));
+    }
+    
+    right_pid = fork();
+    if (right_pid == 0)
+    {
+        dup2(pipefd[0], STDIN_FILENO);
+        close(pipefd[0]);
+        close(pipefd[1]);
+        exit(execute_ast(node->right, shell));
+    }    
+    close(pipefd[0]);
+    close(pipefd[1]);
+    waitpid(left_pid, NULL, 0);
+    waitpid(right_pid, &shell->last_status, 0);
+    return (WEXITSTATUS(shell->last_status));
+}

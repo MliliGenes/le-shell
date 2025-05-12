@@ -6,7 +6,7 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 15:54:34 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/12 20:22:55 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/12 23:44:26 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,12 @@ int	apply_redirections(t_cmd *cmd, t_shell *shell)
 	t_redir	*redir;
 	char	*expended;
 	char	*dequoted;
-	int		fd;
+	int		res;
 
 	redir = cmd->redirs;
 	while (redir)
 	{
+		res = 0;
 		expended = expand_vars(redir->file_or_limiter, shell);
 		dequoted = remove_quotes(expended);
 		if (handle_ambiguous(expended, dequoted, redir->file_or_limiter))
@@ -53,11 +54,13 @@ int	apply_redirections(t_cmd *cmd, t_shell *shell)
 		}
 		free(expended);
 		if (redir->type == REDIR_IN)
-			fd = handle_redir_in(dequoted);
+			res = handle_redir_in(dequoted);
 		else if (redir->type == REDIR_OUT)
-			fd = handle_redir_out(dequoted);
+			res = handle_redir_out(dequoted);
 		else if (redir->type == REDIR_APPEND)
-			fd = handle_redir_append(dequoted);
+			res = handle_redir_append(dequoted);
+		if (res != 0)
+			return (free(dequoted), 1);
 		redir = redir->next;
 	}
 	return (0);
@@ -69,9 +72,7 @@ int	execute_command(t_cmd *cmd, t_shell *shell)
 	int		status;
 	char	*cmd_path;
 	char	**tmp_env;
-
-	if (!cmd->cmd || !cmd->cmd[0])
-		return (0);
+	
 	update_cmd_node(cmd, shell);
 	if (is_builtin(cmd->cmd))
 		return (execute_builtins_with_redir(cmd, shell));
