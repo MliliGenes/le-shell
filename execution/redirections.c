@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 00:05:57 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/05/12 00:53:47 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/12 14:23:12 by le-saad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int handle_redir_in(const char *filename, t_cmd *cmd)
 	if (fd < 0)
 		return (perror(filename), 1);
 	if (cmd->fds[0] != STDIN_FILENO)
-		close(cmd->fds[0]);
+		close(cmd->fds[0]);	
 	cmd->fds[0] = fd;
 	return (0);
 }

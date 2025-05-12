@@ -6,7 +6,7 @@
 /*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 17:28:50 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/12 04:24:47 by le-saad          ###   ########.fr       */
+/*   Updated: 2025/05/12 16:01:26 by le-saad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ char *mark_quotes(char *str) {
     int i = 0;
     while (str[i]) {
         update_quote_status(str[i], &s_quote, &d_quote);
-
         if ((str[i] == '\'' && !d_quote) || (str[i] == '"' && !s_quote))
 		{
             if (str[i] == '\'')

@@ -114,10 +114,7 @@ int	main(int ac, char **av, char **envp)
 	(void)av;
 	
 	if (init_shell(&shell, envp) != 0)
-	{
-		fprintf(stderr, "Failed to initialize shell\n");
 		return (1);
-	}
 	status = shell_loop(&shell);
 	cleanup_shell(&shell);
 	return (status);
