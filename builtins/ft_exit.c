@@ -6,11 +6,19 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 18:34:28 by ssbaytri          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2025/05/06 18:23:57 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/builtins.h"
+=======
+/*   Updated: 2025/05/02 21:40:24 by ssbaytri         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../minishell.h"
+>>>>>>> 592d8acb6f76f104019ec385ef186264a06f64cc
 
 static int	is_numeric(char *str)
 {
@@ -48,6 +56,7 @@ static int	calculate_exit_status(char *arg)
 	return (status);
 }
 
+<<<<<<< HEAD
 void	handle_exit(char **args, t_shell *shell)
 {
 	int	status;
@@ -55,6 +64,12 @@ void	handle_exit(char **args, t_shell *shell)
 	ft_putstr_fd("exit\n", STDOUT_FILENO);
 	if (!args[1])
 		exit(0);
+=======
+static void	ft_exit(char **args)
+{
+	if (!args[1])
+		exit(EXIT_SUCCESS);
+>>>>>>> 592d8acb6f76f104019ec385ef186264a06f64cc
 	if (!is_numeric(args[1]))
 	{
 		print_exit_error(args[1], ": numeric argument required\n");
@@ -63,10 +78,31 @@ void	handle_exit(char **args, t_shell *shell)
 	if (args[2])
 	{
 		print_exit_error(NULL, "too many arguments\n");
+<<<<<<< HEAD
 		shell->last_status = 1;
 		return ;
 	}
 	status = calculate_exit_status(args[1]);
 	shell->last_status = status;
 	exit(status);
+=======
+		exit_status = 1;
+		return ;
+	}
+	exit_status = calculate_exit_status(args[1]);
+	exit(exit_status);
+}
+
+void	handle_exit(char *input)
+{
+	char	**args;
+
+	args = ft_split(input, ' ');
+	if (args && args[0] && ft_strcmp(args[0], "exit") == 0)
+	{
+		ft_putstr_fd("exit\n", STDOUT_FILENO);
+		ft_exit(args);
+	}
+	free_2d(args);
+>>>>>>> 592d8acb6f76f104019ec385ef186264a06f64cc
 }

@@ -6,11 +6,19 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 18:34:11 by ssbaytri          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2025/05/06 16:37:42 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/builtins.h"
+=======
+/*   Updated: 2025/05/02 20:29:44 by ssbaytri         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../minishell.h"
+>>>>>>> 592d8acb6f76f104019ec385ef186264a06f64cc
 
 static void	print_echo_args(char **args, int i)
 {
@@ -61,9 +69,22 @@ void	ft_echo(char **args)
 		write(STDOUT_FILENO, "\n", 1);
 }
 
+<<<<<<< HEAD
 void	handle_echo(char **args)
 {
 	if (!args)
 		return ;
 	ft_echo(args);
+=======
+void	handle_echo(char *input)
+{
+	char	**args;
+
+	args = ft_split(input, ' ');
+	if (!args)
+		return ;
+	if (ft_strcmp(args[0], "echo") == 0)
+		ft_echo(args);
+	free_2d(args);
+>>>>>>> 592d8acb6f76f104019ec385ef186264a06f64cc
 }

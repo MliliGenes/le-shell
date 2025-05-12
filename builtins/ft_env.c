@@ -6,11 +6,19 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 20:02:52 by ssbaytri          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2025/05/06 16:25:24 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/builtins.h"
+=======
+/*   Updated: 2025/05/02 20:20:20 by ssbaytri         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../minishell.h"
+>>>>>>> 592d8acb6f76f104019ec385ef186264a06f64cc
 
 static char	**split_env_var(char *arg)
 {
@@ -87,8 +95,18 @@ t_env_var	*init_env(char *envp[])
 	return (head);
 }
 
+<<<<<<< HEAD
 void	handle_env(t_env_var *env)
 {
 	if (env)
 		print_env(env);
+=======
+void	handle_env(char *input, t_env_var *env)
+{
+	if (ft_strcmp(input, "env") == 0)
+	{
+		if (env)
+			print_env(env);
+	}
+>>>>>>> 592d8acb6f76f104019ec385ef186264a06f64cc
 }

@@ -6,11 +6,19 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 20:16:18 by ssbaytri          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2025/05/06 16:24:20 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/builtins.h"
+=======
+/*   Updated: 2025/05/02 20:20:10 by ssbaytri         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../minishell.h"
+>>>>>>> 592d8acb6f76f104019ec385ef186264a06f64cc
 
 t_env_var	*handle_empty_env(void)
 {
@@ -45,6 +53,7 @@ void	free_env_list(t_env_var *head)
 		current = next;
 	}
 }
+<<<<<<< HEAD
 
 void	free_2d(char **arr)
 {
@@ -58,3 +67,5 @@ void	free_2d(char **arr)
 	}
 	free(arr);
 }
+=======
+>>>>>>> 592d8acb6f76f104019ec385ef186264a06f64cc
