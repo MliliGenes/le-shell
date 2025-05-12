@@ -22,15 +22,15 @@ int	execute_ast(t_shell *shell)
 		return (1);
 	if (root->node->type == CMD)
 		execute_command(root->node->p_token, shell);
-	// else if (root->node->type == OP)
-	// {
-	// 	if (((t_op *)root->node->p_token)->type == OP_PIPE)
-	// 		return (handle_pipe());
+	else if (root->node->type == OP)
+	{
+		if (((t_op *)root->node->p_token)->type == OP_PIPE)
+			return (handle_pipe(root, shell));
 	// 	if (((t_op *)root->node->p_token)->type == OP_AND)
 	// 		return (handle_and());
 	// 	if (((t_op *)root->node->p_token)->type == OP_OR)
 	// 		return (handle_or());
-	// }
+	}
 	return (0);
 }
 

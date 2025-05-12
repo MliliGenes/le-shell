@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_cmd_handle.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 15:54:34 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/12 13:59:09 by le-saad          ###   ########.fr       */
+/*   Updated: 2025/05/12 20:22:55 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,60 +53,15 @@ int	apply_redirections(t_cmd *cmd, t_shell *shell)
 		}
 		free(expended);
 		if (redir->type == REDIR_IN)
-			fd = handle_redir_in(dequoted, cmd);
+			fd = handle_redir_in(dequoted);
 		else if (redir->type == REDIR_OUT)
-			fd = handle_redir_out(dequoted, cmd);
+			fd = handle_redir_out(dequoted);
 		else if (redir->type == REDIR_APPEND)
-			fd = handle_redir_append(dequoted, cmd);
+			fd = handle_redir_append(dequoted);
 		redir = redir->next;
 	}
 	return (0);
 }
-
-bool	has_quotes(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str && str[i])
-	{
-		if (str[i] == '\'' || str[i] == '\"')
-			return (true);
-		i++;
-	}
-	return (false);
-}
-
-// void	update_args(t_cmd *cmd, t_shell *shell)
-// {
-// 	int		i;
-// 	char	*tmp;
-// 	char	*new_arg;
-// 	int		j;
-
-// 	i = 0;
-// 	j = 0;
-// 	while (cmd->args && cmd->args[i])
-// 	{
-// 		new_arg = expand_vars(cmd->args[i], shell);
-// 		if (has_quotes(cmd->args[i]))
-// 		{
-// 			tmp = new_arg;
-// 			new_arg = remove_quotes(tmp);
-// 			free(tmp);
-// 		}
-// 		if (!has_quotes(cmd->args[i]) && !*new_arg)
-// 		{
-// 			free(cmd->args[i]);
-// 			i++;
-// 			continue ;
-// 		}
-// 		cmd->args[j++] = new_arg;
-// 		i++;
-// 	}
-// 		cmd->args[j] = NULL;
-// 	cmd->cmd = cmd->args[0];
-// }
 
 int	execute_command(t_cmd *cmd, t_shell *shell)
 {
