@@ -25,6 +25,7 @@
 # include <string.h>
 # include <unistd.h>
 # include <limits.h>
+# include <sys/wait.h>
 
 # define RESET "\033[0m"
 # define BLACK "\033[30m"

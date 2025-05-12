@@ -26,7 +26,7 @@ int	execute_ast(t_shell *shell)
 	if (!root)
 		return (1);
 	if (root->node->type == CMD)
-		execute_command(root->node->p_token, shell);
+		shell->last_status = execute_command(root->node->p_token, shell);
 	// else if (root->node->type == OP)
 	// {
 	// 	if (((t_op *)root->node->p_token)->type == OP_PIPE)

@@ -20,8 +20,8 @@ char	**env_to_array(t_env_var *env);
 int		execute_command(t_cmd *cmd, t_shell *shell);
 int		apply_redirections(t_cmd *cmd, t_shell *shell);
 int		handle_ambiguous(char *expanded, char *dequoted, char *raw);
-int		handle_redir_in(const char *filename, t_cmd *cmd);
-int		handle_redir_out(const char *filename, t_cmd *cmd);
-int		handle_redir_append(const char *filename, t_cmd *cmd);
+int		handle_redir_in(const char *filename);
+int		handle_redir_out(const char *filename);
+int		handle_redir_append(const char *filename);
 
 #endif

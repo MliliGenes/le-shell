@@ -38,7 +38,7 @@ int	apply_redirections(t_cmd *cmd, t_shell *shell)
 	t_redir	*redir;
 	char	*expended;
 	char	*dequoted;
-	int		fd;
+	int 	result;
 
 	redir = cmd->redirs;
 	while (redir)
@@ -51,13 +51,18 @@ int	apply_redirections(t_cmd *cmd, t_shell *shell)
 			free(dequoted);
 			return (1);
 		}
-		free(expended);
 		if (redir->type == REDIR_IN)
-			fd = handle_redir_in(dequoted, cmd);
+			result = handle_redir_in(dequoted);
 		else if (redir->type == REDIR_OUT)
-			fd = handle_redir_out(dequoted, cmd);
+			result = handle_redir_out(dequoted);
 		else if (redir->type == REDIR_APPEND)
-			fd = handle_redir_append(dequoted, cmd);
+			result = handle_redir_append(dequoted);
+		else
+			result = 1;
+		free(expended);
+		free(dequoted);
+		if (result != 0)
+			return (1);
 		redir = redir->next;
 	}
 	return (0);
