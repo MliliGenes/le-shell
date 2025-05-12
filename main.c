@@ -13,10 +13,7 @@
 #include "include/execution.h"
 #include "include/parsing.h"
 
-// void ll()
-// {
-// 	system("leaks -q minishell");
-// }
+volatile sig_atomic_t g_signal_received = 0;
 
 int	execute_ast(t_shell *shell)
 {
@@ -39,39 +36,89 @@ int	execute_ast(t_shell *shell)
 	return (0);
 }
 
-int	main(int ac, char **av, char **envp)
+int	init_shell(t_shell *shell, char **envp)
 {
-	t_shell	shell;
+	shell->env = init_env(envp);
+	if (!shell->env)
+		return (1);
+	shell->last_status = 0;
+	shell->path = ft_split(get_env_value(shell->env, "PATH"), ':');
+	shell->parser = NULL;
+	shell->running = 1;
+	return (0);
+}
+
+void	cleanup_iteration(t_shell *shell, char *input)
+{
+	if (shell->parser)
+	{
+		if (shell->parser->holy_tree)
+			free_ast(shell->parser->holy_tree);
+		if (shell->parser->postfix_note)
+			free_ready_tokens_list(shell->parser->postfix_note);
+		free(shell->parser);
+		shell->parser = NULL;
+	}
+	if (input)
+		free(input);
+}
+
+void	setup_signals(void)
+{
+	signal(SIGQUIT, SIG_IGN);
+}
+
+int	shell_loop(t_shell *shell)
+{
 	char	*input;
 
-	(void)ac;
-	(void)av;
-	// atexit(ll);
+	setup_signals();
 	rl_bind_key('\t', rl_complete);
-	shell.env = init_env(envp);
-	shell.last_status = 0;
-	shell.path = ft_split(get_env_value(shell.env, "PATH"), ':');
-	shell.parser = NULL;
-	shell.running = 1;
-	while (shell.running)
+	while (shell->running)
 	{
 		input = readline(PROMPT);
 		if (!input)
-			break ;
-		if (*input)
-			add_history(input);
-		shell.parser = parse_input(input);
-		if (shell.parser && shell.parser->holy_tree)
 		{
-			execute_ast(&shell);
-			free_ast(shell.parser->holy_tree);
-			free_ready_tokens_list(shell.parser->postfix_note);
-			free(shell.parser);
+			printf("exit\n");
+			break;
 		}
-		free(input);
+		if (*input)
+		{
+			add_history(input);
+			shell->parser = parse_input(input);
+			if (shell->parser && shell->parser->holy_tree)
+			{
+				execute_ast(shell);
+			}
+		}
+		cleanup_iteration(shell, input);
 	}
-	free(input);
-	free_env_list(shell.env);
-	free_2d(shell.path);
-	return (shell.last_status);
+	return (shell->last_status);
+}
+
+void	cleanup_shell(t_shell *shell)
+{
+	if (shell->env)
+		free_env_list(shell->env);
+	if (shell->path)
+		free_2d(shell->path);
+}
+
+
+int	main(int ac, char **av, char **envp)
+{
+	t_shell	shell;
+	int	status;
+
+	(void)ac;
+	(void)av;
+	
+	if (init_shell(&shell, envp) != 0)
+	{
+		fprintf(stderr, "Failed to initialize shell\n");
+		return (1);
+	}
+	status = shell_loop(&shell);
+	cleanup_shell(&shell);
+	return (status);
 }
