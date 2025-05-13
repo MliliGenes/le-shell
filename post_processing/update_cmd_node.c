@@ -6,12 +6,13 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 23:08:16 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/12 19:08:12 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/13 00:08:15 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/execution.h"
 #include "../include/parsing.h"
+#include <stdbool.h>
 
 static bool	has_quotes(char *str)
 {
@@ -37,7 +38,7 @@ static int	args_count(char **args)
 	return (i);
 }
 
-static int	empty(char *str)
+static bool	empty(char *str)
 {
 	int	i;
 
@@ -45,10 +46,10 @@ static int	empty(char *str)
 	while (str && str[i])
 	{
 		if (!is_white_space(str[i]))
-			return (0);
+			return (false);
 		i++;
 	}
-	return (1);
+	return (true);
 }
 
 void	update_cmd_node(t_cmd *cmd, t_shell *shell)
@@ -59,18 +60,23 @@ void	update_cmd_node(t_cmd *cmd, t_shell *shell)
 	char	*join_arg;
 	int		index_old;
 
+	if (!cmd || !cmd->args)
+		return ;
 	join_arg = holy_joint(cmd->args);
-	if (has_quotes(join_arg))
+	if (join_arg && has_quotes(join_arg))
 		join_arg = mark_quotes(join_arg);
 	expended_arg = expand_vars(join_arg, shell);
 	free(join_arg);
+	if (!expended_arg)
+		return ;
 	new_args = holy_split(expended_arg);
 	index_old = 0;
-	while (new_args[index_old])
+	while (new_args && new_args[index_old])
 	{
 		new_args[index_old] = remove_quotes(new_args[index_old]);
 		index_old++;
 	}
 	cmd->args = new_args;
-	cmd->cmd = cmd->args[0];
+	if (cmd->args)
+		cmd->cmd = cmd->args[0];
 }

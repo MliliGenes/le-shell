@@ -3,149 +3,138 @@
 /*                                                        :::      ::::::::   */
 /*   execute_cmd_handle.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 15:54:34 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/12 13:59:09 by le-saad          ###   ########.fr       */
+/*   Updated: 2025/05/13 02:41:24 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/execution.h"
 #include "../include/parsing.h"
 
-char	*get_cmd_path(t_cmd *cmd, char **paths)
+void	cleanup_fds(t_cmd *cmd)
 {
-	char	*tmp;
-	char	*full_path;
-
-	if (access(cmd->cmd, F_OK) == 0 && access(cmd->cmd, X_OK) == 0)
-		return (ft_strdup(cmd->cmd));
-	while (paths && *paths)
-	{
-		tmp = ft_strjoin(*paths, "/");
-		full_path = ft_strjoin(tmp, cmd->cmd);
-		free(tmp);
-		if (access(full_path, F_OK) == 0 && access(full_path, X_OK) == 0)
-			return (full_path);
-		free(full_path);
-		paths++;
-	}
-	return (NULL);
-} 
-
-int	apply_redirections(t_cmd *cmd, t_shell *shell)
-{
-	t_redir	*redir;
-	char	*expended;
-	char	*dequoted;
-	int		fd;
-
-	redir = cmd->redirs;
-	while (redir)
-	{
-		expended = expand_vars(redir->file_or_limiter, shell);
-		dequoted = remove_quotes(expended);
-		if (handle_ambiguous(expended, dequoted, redir->file_or_limiter))
-		{
-			free(expended);
-			free(dequoted);
-			return (1);
-		}
-		free(expended);
-		if (redir->type == REDIR_IN)
-			fd = handle_redir_in(dequoted, cmd);
-		else if (redir->type == REDIR_OUT)
-			fd = handle_redir_out(dequoted, cmd);
-		else if (redir->type == REDIR_APPEND)
-			fd = handle_redir_append(dequoted, cmd);
-		redir = redir->next;
-	}
-	return (0);
+	if (cmd->fds[0] != STDIN_FILENO)
+		close(cmd->fds[0]);
+	if (cmd->fds[1] != STDOUT_FILENO)
+		close(cmd->fds[1]);
 }
 
-bool	has_quotes(char *str)
+void	save_std_fds(int *saved_stdin, int *saved_stdout)
 {
-	int	i;
-
-	i = 0;
-	while (str && str[i])
-	{
-		if (str[i] == '\'' || str[i] == '\"')
-			return (true);
-		i++;
-	}
-	return (false);
+	*saved_stdin = dup(STDIN_FILENO);
+	*saved_stdout = dup(STDOUT_FILENO);
 }
 
-// void	update_args(t_cmd *cmd, t_shell *shell)
-// {
-// 	int		i;
-// 	char	*tmp;
-// 	char	*new_arg;
-// 	int		j;
-
-// 	i = 0;
-// 	j = 0;
-// 	while (cmd->args && cmd->args[i])
-// 	{
-// 		new_arg = expand_vars(cmd->args[i], shell);
-// 		if (has_quotes(cmd->args[i]))
-// 		{
-// 			tmp = new_arg;
-// 			new_arg = remove_quotes(tmp);
-// 			free(tmp);
-// 		}
-// 		if (!has_quotes(cmd->args[i]) && !*new_arg)
-// 		{
-// 			free(cmd->args[i]);
-// 			i++;
-// 			continue ;
-// 		}
-// 		cmd->args[j++] = new_arg;
-// 		i++;
-// 	}
-// 		cmd->args[j] = NULL;
-// 	cmd->cmd = cmd->args[0];
-// }
-
-int	execute_command(t_cmd *cmd, t_shell *shell)
+void	restore_std_fds(int saved_stdin, int saved_stdout)
 {
-	pid_t	pid;
-	int		status;
-	char	*cmd_path;
-	char	**tmp_env;
+	dup2(saved_stdin, STDIN_FILENO);
+	dup2(saved_stdout, STDOUT_FILENO);
+	close(saved_stdin);
+	close(saved_stdout);
+}
 
-	if (!cmd->cmd || !cmd->cmd[0])
-		return (0);
-	update_cmd_node(cmd, shell);
-	if (is_builtin(cmd->cmd))
-		return (execute_builtins_with_redir(cmd, shell));
-	cmd_path = get_cmd_path(cmd, shell->path);
-	if (!cmd_path)
+void	apply_fds(t_cmd *cmd)
+{
+	if (cmd->fds[0] != STDIN_FILENO)
 	{
-		ft_putstr_fd(cmd->cmd, STDERR_FILENO);
-		ft_putstr_fd(": command not found\n", STDERR_FILENO);
-		return (127);
+		dup2(cmd->fds[0], STDIN_FILENO);
+		close(cmd->fds[0]);
 	}
-	pid = fork();
-	if (pid < 0)
+	if (cmd->fds[1] != STDOUT_FILENO)
 	{
-		perror("fork");
-		free(cmd_path);
-		return (1);
+		dup2(cmd->fds[1], STDOUT_FILENO);
+		close(cmd->fds[1]);
 	}
-	tmp_env = env_to_array(shell->env);
-	if (pid == 0)
-	{
-		if (cmd->redirs)
-			if (apply_redirections(cmd, shell) != 0)
-				exit(1);
-		execve(cmd_path, cmd->args, tmp_env);
-		perror("execve");
-		exit(127);
-	}
+}
+
+int	handle_builtin(t_cmd *cmd, t_shell *shell)
+{
+	int	status;
+	int	saved_stdin;
+	int	saved_stdout;
+
+	save_std_fds(&saved_stdin, &saved_stdout);
+	if (cmd->fds[0] != STDIN_FILENO)
+		dup2(cmd->fds[0], STDIN_FILENO);
+	if (cmd->fds[1] != STDOUT_FILENO)
+		dup2(cmd->fds[1], STDOUT_FILENO);
+	status = execute_builtin(cmd, shell);
+	restore_std_fds(saved_stdin, saved_stdout);
+	cleanup_fds(cmd);
+	return (status);
+}
+
+static int	handle_child_process(t_cmd *cmd, char *cmd_path, char **tmp_env)
+{
+	apply_fds(cmd);
+	execve(cmd_path, cmd->args, tmp_env);
+	perror("execve");
+	free(cmd_path);
+	free_2d(tmp_env);
+	exit(127);
+}
+
+static int	handle_parent_process(pid_t pid, t_cmd *cmd, char *cmd_path,
+		char **tmp_env)
+{
+	int	status;
+
+	cleanup_fds(cmd);
 	waitpid(pid, &status, 0);
 	free(cmd_path);
 	free_2d(tmp_env);
 	return (WEXITSTATUS(status));
+}
+
+static int	handle_fork_error(char *cmd_path, char **tmp_env, t_cmd *cmd)
+{
+	perror("fork");
+	free(cmd_path);
+	free_2d(tmp_env);
+	cleanup_fds(cmd);
+	return (1);
+}
+
+static int	handle_cmd_not_found(t_cmd *cmd)
+{
+	ft_putstr_fd(cmd->cmd, STDERR_FILENO);
+	ft_putstr_fd(": command not found\n", STDERR_FILENO);
+	cleanup_fds(cmd);
+	return (127);
+}
+
+int	handle_exec(t_cmd *cmd, t_shell *shell)
+{
+	pid_t	pid;
+	char	*cmd_path;
+	char	**tmp_env;
+
+	cmd_path = get_cmd_path(cmd, shell->path);
+	if (!cmd_path)
+		return (handle_cmd_not_found(cmd));
+	tmp_env = env_to_array(shell->env);
+	pid = fork();
+	if (pid < 0)
+		return (handle_fork_error(cmd_path, tmp_env, cmd));
+	if (pid == 0)
+		handle_child_process(cmd, cmd_path, tmp_env);
+	return (handle_parent_process(pid, cmd, cmd_path, tmp_env));
+}
+
+int	execute_command(t_cmd *cmd, t_shell *shell)
+{
+	if (!cmd)
+		return (1);
+	update_cmd_node(cmd, shell);
+	apply_redirections(cmd, shell);
+	if (!cmd->cmd || !cmd->cmd[0])
+	{
+		cleanup_fds(cmd);
+		return (1);
+	}
+	if (is_builtin(cmd->cmd))
+		return (handle_builtin(cmd, shell));
+	return (handle_exec(cmd, shell));
 }

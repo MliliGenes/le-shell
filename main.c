@@ -13,25 +13,29 @@
 #include "include/execution.h"
 #include "include/parsing.h"
 
-int	execute_ast(t_shell *shell)
+int	execute_ast_node(t_ast *node, t_shell *shell)
 {
-	t_ast	*root;
+	int		status;
+	t_op	*op;
 
-	root = shell->parser->holy_tree;
-	if (!root)
+	if (!node)
 		return (1);
-	if (root->node->type == CMD)
-		execute_command(root->node->p_token, shell);
-	// else if (root->node->type == OP)
-	// {
-	// 	if (((t_op *)root->node->p_token)->type == OP_PIPE)
-	// 		return (handle_pipe());
-	// 	if (((t_op *)root->node->p_token)->type == OP_AND)
-	// 		return (handle_and());
-	// 	if (((t_op *)root->node->p_token)->type == OP_OR)
-	// 		return (handle_or());
-	// }
-	return (0);
+	if (node->node->type == CMD)
+		return (execute_command((t_cmd *)node->node->p_token, shell));
+	else if (node->node->type == OP)
+	{
+		op = (t_op *)node->node->p_token;
+		if (op->type == OP_PIPE)
+			;
+		// return (handle_pipe(node, shell));
+		else if (op->type == OP_AND)
+			;
+		// return (handle_and(node, shell));
+		else if (op->type == OP_OR)
+			;
+		// return (handle_or(node, shell));
+	}
+	return (1);
 }
 
 int	init_shell(t_shell *shell, char **envp)
@@ -66,7 +70,7 @@ void	setup_signals(void)
 	signal(SIGQUIT, SIG_IGN);
 }
 
-int	shell_loop(t_shell *shell)
+void	shell_loop(t_shell *shell)
 {
 	char	*input;
 
@@ -78,20 +82,18 @@ int	shell_loop(t_shell *shell)
 		if (!input)
 		{
 			printf("exit\n");
-			break;
+			break ;
 		}
 		if (*input)
 		{
 			add_history(input);
 			shell->parser = parse_input(input);
 			if (shell->parser && shell->parser->holy_tree)
-			{
-				execute_ast(shell);
-			}
+				shell->last_status = execute_ast_node(shell->parser->holy_tree,
+						shell);
 		}
 		cleanup_iteration(shell, input);
 	}
-	return (shell->last_status);
 }
 
 void	cleanup_shell(t_shell *shell)
@@ -102,18 +104,16 @@ void	cleanup_shell(t_shell *shell)
 		free_2d(shell->path);
 }
 
-
 int	main(int ac, char **av, char **envp)
 {
-	t_shell	shell;
-	int	status;
+	t_shell shell;
 
 	(void)ac;
 	(void)av;
-	
+
 	if (init_shell(&shell, envp) != 0)
 		return (1);
-	status = shell_loop(&shell);
+	shell_loop(&shell);
 	cleanup_shell(&shell);
-	return (status);
+	return (shell.last_status);
 }

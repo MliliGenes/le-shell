@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 06:20:05 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/09 20:28:04 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/13 01:10:08 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,5 +153,13 @@ typedef struct s_expansion
 	int						len;
 	t_shell					*shell;
 }							t_expansion;
+
+typedef struct s_file
+{
+	bool	has_quotes;
+	char	*name;
+	char	*limiter;
+	char	*raw;
+}			t_file;
 
 #endif

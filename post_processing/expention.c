@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 16:36:33 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/12 19:08:08 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/13 00:05:59 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,8 @@ char	*expand_vars(char *input, t_shell *shell)
 {
 	t_expansion	exp;
 
+	if (!input)
+		return NULL;
 	init_expansion(&exp, input, shell);
 	calc_exp_len(&exp);
 	exp.output = (char *)malloc(exp.len + 1);
