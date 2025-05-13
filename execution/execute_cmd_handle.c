@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 15:54:34 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/13 02:47:47 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/13 02:49:51 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,8 @@ int	execute_command(t_cmd *cmd, t_shell *shell)
 	if (!cmd)
 		return (1);
 	update_cmd_node(cmd, shell);
-	apply_redirections(cmd, shell);
+	if (apply_redirections(cmd, shell))
+		return (1);
 	if (!cmd->cmd || !cmd->cmd[0])
 	{
 		cleanup_fds(cmd);
