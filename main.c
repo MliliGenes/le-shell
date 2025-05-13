@@ -40,6 +40,7 @@ int	init_shell(t_shell *shell, char **envp)
 	shell->path = ft_split(get_env_value(shell->env, "PATH"), ':');
 	shell->parser = NULL;
 	shell->running = 1;
+	shell->fork_level = 0;
 	return (0);
 }
 

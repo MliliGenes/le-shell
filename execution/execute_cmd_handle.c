@@ -6,7 +6,7 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 15:54:34 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/13 00:23:36 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/13 16:55:33 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,43 +66,92 @@ int	apply_redirections(t_cmd *cmd, t_shell *shell)
 	return (0);
 }
 
-int	execute_command(t_cmd *cmd, t_shell *shell)
+int execute_command(t_cmd *cmd, t_shell *shell)
 {
-	pid_t	pid;
-	int		status;
-	char	*cmd_path;
-	char	**tmp_env;
-	
-	update_cmd_node(cmd, shell);
-	if (is_builtin(cmd->cmd))
-		return (execute_builtins_with_redir(cmd, shell));
-	cmd_path = get_cmd_path(cmd, shell->path);
-	if (!cmd_path)
-	{
-		ft_putstr_fd(cmd->cmd, STDERR_FILENO);
-		ft_putstr_fd(": command not found\n", STDERR_FILENO);
-		return (127);
-	}
-	pid = fork();
-	if (pid < 0)
-	{
-		perror("fork");
-		free(cmd_path);
-		return (1);
-	}
-	tmp_env = env_to_array(shell->env);
-	if (pid == 0)
-	{
-		if (cmd->redirs)
-			if (apply_redirections(cmd, shell) != 0)
-				exit(1);
-		execve(cmd_path, cmd->args, tmp_env);
-		perror("execve");
-		exit(127);
-	}
-	waitpid(pid, &status, 0);
-	free(cmd_path);
-	free_2d(tmp_env);
-	printf("status: %d\n", WEXITSTATUS(status));
-	return (WEXITSTATUS(status));
+    char *cmd_path;
+    char **tmp_env;
+    int status;
+
+    if (!cmd->cmd || !cmd->cmd[0])
+        return (0);
+
+    update_cmd_node(cmd, shell);
+
+    // 🔸 Case 1: It's a built-in
+    if (is_builtin(cmd->cmd))
+    {
+        // 🔹 No pipeline: run directly (e.g., `cd`, `export`)
+        if (shell->fork_level == 0)
+            return (execute_builtins_with_redir(cmd, shell));
+
+        // 🔹 In pipeline: fork for I/O isolation
+        pid_t pid = fork();
+        if (pid < 0)
+        {
+            perror("fork");
+            return (1);
+        }
+
+        if (pid == 0) // Child
+        {
+            if (cmd->redirs && apply_redirections(cmd, shell) != 0)
+                exit(1);
+            exit(execute_builtins_with_redir(cmd, shell));
+        }
+
+        // Parent
+        waitpid(pid, &status, 0);
+        return (WEXITSTATUS(status));
+    }
+
+    // 🔸 Case 2: External command
+    cmd_path = get_cmd_path(cmd, shell->path);
+    if (!cmd_path)
+    {
+        ft_putstr_fd(cmd->cmd, STDERR_FILENO);
+        ft_putstr_fd(": command not found\n", STDERR_FILENO);
+        return (127);
+    }
+
+    // 🔹 shell->fork_level == 0: top-level command, we fork
+    if (shell->fork_level == 0)
+    {
+        pid_t pid = fork();
+        if (pid < 0)
+        {
+            perror("fork");
+            free(cmd_path);
+            return (1);
+        }
+
+        if (pid == 0)
+        {
+            tmp_env = env_to_array(shell->env);
+            if (cmd->redirs && apply_redirections(cmd, shell) != 0)
+                exit(1);
+            execve(cmd_path, cmd->args, tmp_env);
+            perror("execve");
+            free_2d(tmp_env);
+            exit(127);
+        }
+
+        waitpid(pid, &status, 0);
+        free(cmd_path);
+        return (WEXITSTATUS(status));
+    }
+    else
+    {
+        // 🔹 Already in a fork (pipe child): exec directly
+        tmp_env = env_to_array(shell->env);
+        if (cmd->redirs && apply_redirections(cmd, shell) != 0)
+        {
+            free_2d(tmp_env);
+            return (1);
+        }
+        execve(cmd_path, cmd->args, tmp_env);
+        perror("execve");
+        free_2d(tmp_env);
+        exit(127);
+    }
 }
+

@@ -6,7 +6,7 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 06:20:05 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/12 23:47:12 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/13 15:34:28 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,6 +140,7 @@ typedef struct s_shell
 	char					**path;
 	t_parser				*parser;
 	int						running;
+	int 					fork_level;
 }							t_shell;
 
 typedef struct s_expansion

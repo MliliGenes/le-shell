@@ -6,7 +6,7 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 21:25:05 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/05/13 00:39:28 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/13 15:38:33 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ int handle_pipe(t_ast* node, t_shell *shell)
 
     if (pipe(pipefd) == -1)
         return (perror("pipe"), 1);
+    shell->fork_level++;
+    printf("fork_level: %d\n", shell->fork_level);
     left_pid = fork();
     if (left_pid == 0)
     {
@@ -36,6 +38,7 @@ int handle_pipe(t_ast* node, t_shell *shell)
         close(pipefd[1]);
         exit(execute_ast(node->right, shell));
     }    
+    shell->fork_level--;
     close(pipefd[0]);
     close(pipefd[1]);
     waitpid(left_pid, NULL, 0);
