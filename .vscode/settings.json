@@ -3,6 +3,10 @@
 		"*.c": "c",
 		"parsing.h": "c",
 		"execution.h": "c",
-		"string.h": "c"
+		"string.h": "c",
+		"builtins.h": "c",
+		"lib.h": "c",
+		"dependencies.h": "c",
+		"readline.h": "c"
 	}
 }
