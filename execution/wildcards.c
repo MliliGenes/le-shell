@@ -6,7 +6,7 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 01:42:39 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/05/01 06:46:03 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/13 21:08:43 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static void	*ft_realloc(void *ptr, size_t oldsize, size_t newsize)
 		return (malloc(newsize));
 	if (newsize <= oldsize)
 		return (ptr);
-	newptr = malloc(newsize);
+	newptr = malloc(newsize); 	
 	if (!newptr)
 		return (NULL);
 	ft_memcpy(newptr, ptr, oldsize);
