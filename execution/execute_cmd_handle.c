@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 15:54:34 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/13 02:49:51 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/13 02:52:53 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,14 +49,6 @@ static int	handle_fork_error(char *cmd_path, char **tmp_env, t_cmd *cmd)
 	return (1);
 }
 
-static int	handle_cmd_not_found(t_cmd *cmd)
-{
-	ft_putstr_fd(cmd->cmd, STDERR_FILENO);
-	ft_putstr_fd(": command not found\n", STDERR_FILENO);
-	cleanup_fds(cmd);
-	return (127);
-}
-
 int	handle_exec(t_cmd *cmd, t_shell *shell)
 {
 	pid_t	pid;
@@ -66,7 +58,12 @@ int	handle_exec(t_cmd *cmd, t_shell *shell)
 
 	cmd_path = get_cmd_path(cmd, shell->path);
 	if (!cmd_path)
-		return (handle_cmd_not_found(cmd));
+	{
+		ft_putstr_fd(cmd->cmd, STDERR_FILENO);
+		ft_putstr_fd(": command not found\n", STDERR_FILENO);
+		cleanup_fds(cmd);
+		return (127);
+	}
 	tmp_env = env_to_array(shell->env);
 	pid = fork();
 	if (pid < 0)

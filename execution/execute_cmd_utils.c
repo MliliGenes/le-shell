@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 02:40:06 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/13 02:45:14 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/13 02:53:52 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ static void	init_file_name(t_file *file, char *origin, t_shell *shell)
 	file->limiter = remove_quotes(buff);
 }
 
+// else if (redir->type == REDIR_HEREDOC)
+// status = handle_redir_heredoc(cmd, redir);
 int	apply_redirections(t_cmd *cmd, t_shell *shell)
 {
 	t_redir	*redir;
@@ -73,8 +75,6 @@ int	apply_redirections(t_cmd *cmd, t_shell *shell)
 			status = handle_redir_out(cmd, &file);
 		else if (redir->type == REDIR_APPEND)
 			status = handle_redir_append(cmd, &file);
-		// else if (redir->type == REDIR_HEREDOC)
-		//     status = handle_redir_heredoc(cmd, redir);
 		if (status != 0)
 			return (status);
 		redir = redir->next;
