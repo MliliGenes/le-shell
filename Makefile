@@ -77,7 +77,7 @@ RESET	= \033[0m
 
 all: $(NAME)
 	@printf "$(GREEN)✅  Cleaned terminal$(RESET)\n"
-	@clear
+	# @clear
 
 run: re
 	@printf "$(GREEN)✅  Cleaned terminal$(RESET)\n"
