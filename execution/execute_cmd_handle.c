@@ -6,48 +6,12 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 15:54:34 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/13 02:41:24 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/13 02:47:47 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/execution.h"
 #include "../include/parsing.h"
-
-void	cleanup_fds(t_cmd *cmd)
-{
-	if (cmd->fds[0] != STDIN_FILENO)
-		close(cmd->fds[0]);
-	if (cmd->fds[1] != STDOUT_FILENO)
-		close(cmd->fds[1]);
-}
-
-void	save_std_fds(int *saved_stdin, int *saved_stdout)
-{
-	*saved_stdin = dup(STDIN_FILENO);
-	*saved_stdout = dup(STDOUT_FILENO);
-}
-
-void	restore_std_fds(int saved_stdin, int saved_stdout)
-{
-	dup2(saved_stdin, STDIN_FILENO);
-	dup2(saved_stdout, STDOUT_FILENO);
-	close(saved_stdin);
-	close(saved_stdout);
-}
-
-void	apply_fds(t_cmd *cmd)
-{
-	if (cmd->fds[0] != STDIN_FILENO)
-	{
-		dup2(cmd->fds[0], STDIN_FILENO);
-		close(cmd->fds[0]);
-	}
-	if (cmd->fds[1] != STDOUT_FILENO)
-	{
-		dup2(cmd->fds[1], STDOUT_FILENO);
-		close(cmd->fds[1]);
-	}
-}
 
 int	handle_builtin(t_cmd *cmd, t_shell *shell)
 {
@@ -76,18 +40,6 @@ static int	handle_child_process(t_cmd *cmd, char *cmd_path, char **tmp_env)
 	exit(127);
 }
 
-static int	handle_parent_process(pid_t pid, t_cmd *cmd, char *cmd_path,
-		char **tmp_env)
-{
-	int	status;
-
-	cleanup_fds(cmd);
-	waitpid(pid, &status, 0);
-	free(cmd_path);
-	free_2d(tmp_env);
-	return (WEXITSTATUS(status));
-}
-
 static int	handle_fork_error(char *cmd_path, char **tmp_env, t_cmd *cmd)
 {
 	perror("fork");
@@ -110,6 +62,7 @@ int	handle_exec(t_cmd *cmd, t_shell *shell)
 	pid_t	pid;
 	char	*cmd_path;
 	char	**tmp_env;
+	int		status;
 
 	cmd_path = get_cmd_path(cmd, shell->path);
 	if (!cmd_path)
@@ -120,7 +73,11 @@ int	handle_exec(t_cmd *cmd, t_shell *shell)
 		return (handle_fork_error(cmd_path, tmp_env, cmd));
 	if (pid == 0)
 		handle_child_process(cmd, cmd_path, tmp_env);
-	return (handle_parent_process(pid, cmd, cmd_path, tmp_env));
+	cleanup_fds(cmd);
+	waitpid(pid, &status, 0);
+	free(cmd_path);
+	free_2d(tmp_env);
+	return (WEXITSTATUS(status));
 }
 
 int	execute_command(t_cmd *cmd, t_shell *shell)

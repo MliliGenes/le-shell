@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 02:40:06 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/13 02:41:28 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/13 02:45:14 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ char	*get_cmd_path(t_cmd *cmd, char **paths)
 	return (NULL);
 }
 
-void	init_file_name(t_file *file, char *origin, t_shell *shell)
+static void	init_file_name(t_file *file, char *origin, t_shell *shell)
 {
 	char	*tmp;
 	char	*buff;
