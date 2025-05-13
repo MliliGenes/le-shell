@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 21:35:10 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/05/13 02:45:45 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/13 04:58:05 by le-saad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,16 @@ int		handle_redir_out(t_cmd *cmd, t_file *file);
 int		handle_redir_append(t_cmd *cmd, t_file *file);
 int		handle_redir_heredoc(t_cmd *cmd, t_file *file);
 
+int     handle_pipe(t_ast *node, t_shell *shell);
+int     handle_and(t_ast *node, t_shell *shell);
+int     handle_or(t_ast *node, t_shell *shell);
+
 void	cleanup_fds(t_cmd *cmd);
 void	save_std_fds(int *saved_stdin, int *saved_stdout);
 void	restore_std_fds(int saved_stdin, int saved_stdout);
 void	apply_fds(t_cmd *cmd);
+
+int     execute_ast_node(t_ast *node, t_shell *shell);
 
 char	*find_env_var(t_shell *shell, const char *key);
 void	init_expansion(t_expansion *exp, char *input, t_shell *shell);

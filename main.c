@@ -26,14 +26,11 @@ int	execute_ast_node(t_ast *node, t_shell *shell)
 	{
 		op = (t_op *)node->node->p_token;
 		if (op->type == OP_PIPE)
-			;
-		// return (handle_pipe(node, shell));
+			return (handle_pipe(node, shell));
 		else if (op->type == OP_AND)
-			;
-		// return (handle_and(node, shell));
+			return (handle_and(node, shell));
 		else if (op->type == OP_OR)
-			;
-		// return (handle_or(node, shell));
+			return (handle_or(node, shell));
 	}
 	return (1);
 }
@@ -89,8 +86,9 @@ void	shell_loop(t_shell *shell)
 			add_history(input);
 			shell->parser = parse_input(input);
 			if (shell->parser && shell->parser->holy_tree)
-				shell->last_status = execute_ast_node(shell->parser->holy_tree,
-						shell);
+				shell->last_status = execute_ast_node(shell->parser->holy_tree,shell);
+			else
+				shell->last_status = 2;
 		}
 		cleanup_iteration(shell, input);
 	}

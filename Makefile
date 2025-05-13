@@ -1,5 +1,5 @@
 CC = cc
-CFLAGS = -g -fsanitize=address #-Wall -Wextra -Werror -O3 #
+CFLAGS = #-g -fsanitize=address #-Wall -Wextra -Werror -O3 #
 LIB = -lreadline
 
 NAME = minishell
@@ -56,6 +56,8 @@ SRC_FILES = main.c \
 	$(EXECUTION_DIR)/execute_cmd_utils.c \
 	$(EXECUTION_DIR)/redirections.c \
 	$(EXECUTION_DIR)/redir_utils.c \
+	$(EXECUTION_DIR)/pipe.c \
+	$(EXECUTION_DIR)/and_or.c \
 	$(EXEC_PROC_DIR)/args_utils.c \
 	$(EXEC_PROC_DIR)/expention_utils.c \
 	$(EXEC_PROC_DIR)/expention.c \
