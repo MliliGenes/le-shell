@@ -6,13 +6,12 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 23:08:16 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/13 00:08:15 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/14 00:55:33 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/execution.h"
 #include "../include/parsing.h"
-#include <stdbool.h>
 
 static bool	has_quotes(char *str)
 {
@@ -28,28 +27,23 @@ static bool	has_quotes(char *str)
 	return (false);
 }
 
-static int	args_count(char **args)
+void	apply_wild_card(t_cmd *cmd)
 {
-	int	i;
+	int		index;
+	char 	*joined;
 
-	i = 0;
-	while (args && args[i])
-		i++;
-	return (i);
-}
-
-static bool	empty(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str && str[i])
+	if (!cmd || !cmd->args)
+		return ;
+	index = 0;
+	while (cmd->args && cmd->args[index])
 	{
-		if (!is_white_space(str[i]))
-			return (false);
-		i++;
+		cmd->args[index] = expand_wildcard(cmd->args[index]);
+		index++;
 	}
-	return (true);
+	joined = holy_joint(cmd->args);
+	cmd->args = holy_split(joined);
+	if (cmd->args)
+		cmd->cmd = cmd->args[0];
 }
 
 void	update_cmd_node(t_cmd *cmd, t_shell *shell)
@@ -70,13 +64,17 @@ void	update_cmd_node(t_cmd *cmd, t_shell *shell)
 	if (!expended_arg)
 		return ;
 	new_args = holy_split(expended_arg);
+	free(expended_arg);
 	index_old = 0;
 	while (new_args && new_args[index_old])
 	{
+		tmp = new_args[index_old];
 		new_args[index_old] = remove_quotes(new_args[index_old]);
+		free(tmp);
 		index_old++;
 	}
 	cmd->args = new_args;
 	if (cmd->args)
 		cmd->cmd = cmd->args[0];
+	apply_wild_card(cmd);
 }

@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 15:54:34 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/13 02:52:53 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/13 22:16:11 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,18 @@ static int	handle_fork_error(char *cmd_path, char **tmp_env, t_cmd *cmd)
 	return (1);
 }
 
+void	print_2d(char **arr)
+{
+	int	i;
+
+	i = 0;
+	while (arr && arr[i])
+	{
+		printf("%s\n", arr[i]);
+		i++;
+	}
+}
+
 int	handle_exec(t_cmd *cmd, t_shell *shell)
 {
 	pid_t	pid;
@@ -56,6 +68,8 @@ int	handle_exec(t_cmd *cmd, t_shell *shell)
 	char	**tmp_env;
 	int		status;
 
+	free_2d(shell->path);
+	shell->path = ft_split(get_env_value(shell->env, "PATH"), ':');
 	cmd_path = get_cmd_path(cmd, shell->path);
 	if (!cmd_path)
 	{
@@ -72,9 +86,7 @@ int	handle_exec(t_cmd *cmd, t_shell *shell)
 		handle_child_process(cmd, cmd_path, tmp_env);
 	cleanup_fds(cmd);
 	waitpid(pid, &status, 0);
-	free(cmd_path);
-	free_2d(tmp_env);
-	return (WEXITSTATUS(status));
+	return (free(cmd_path), free_2d(tmp_env), WEXITSTATUS(status));
 }
 
 int	execute_command(t_cmd *cmd, t_shell *shell)

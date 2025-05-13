@@ -6,11 +6,12 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 09:47:52 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/12 19:07:10 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/13 20:09:45 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/execution.h"
+#include "../include/parsing.h"
 
 int	args_total_len(char **args)
 {

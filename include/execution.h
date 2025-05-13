@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 21:35:10 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/05/13 04:58:05 by le-saad          ###   ########.fr       */
+/*   Updated: 2025/05/14 00:42:39 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,5 +50,16 @@ bool	is_in_quote(bool in_single, bool in_double);
 char	*remove_quotes(char *str);
 char	*mark_quotes(char *str);
 void	update_cmd_node(t_cmd *cmd, t_shell *shell);
+
+t_entry     *create_entry(char *value);
+void        free_entry_list(t_entry *head);
+void        add_back_entry(t_entry **head, t_entry *node);
+t_entry     *get_all_entries(void);
+void        print_entries(t_entry *head);
+char        *join_entries(t_entry *head);
+int         wildcardMatch(const char *input, const char *pattern);
+t_entry     *filter_entries_by_pattern(t_entry *old, const char *pattern);
+char        *expand_wildcard(char *arg);
+
 
 #endif

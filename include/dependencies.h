@@ -6,28 +6,27 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 08:49:15 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/13 00:16:43 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/14 00:58:17 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef DEPENDENCIES_H
 # define DEPENDENCIES_H
 
+# include <dirent.h>
 # include <fcntl.h>
+# include <limits.h>
 # include <readline/history.h>
 # include <readline/readline.h>
+# include <signal.h>
 # include <stdbool.h>
 # include <stddef.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
 # include <unistd.h>
-# include <limits.h>
-#include <signal.h>
 
-// volatile sig_atomic_t g_signal_received = 0;
-
-# define PROMPT "\033[1m╭─\033[32mle-shell\033[0m \n\033[1m╰─$\033[0m "
+# define PROMPT "\001\033[1;32m\002le-shell\001\033[0m\002$ "
 
 # define RESET "\033[0m"
 # define BLACK "\033[30m"

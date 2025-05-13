@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 23:32:26 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/05/06 23:47:10 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/13 19:59:46 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ char	*get_env_value(t_env_var *env_list, char *key)
 {
 	t_env_var	*current;
 
+	if (!env_list)
+		return (NULL);
 	current = env_list;
 	while (current)
 	{

@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 06:20:05 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/13 01:10:08 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/14 00:14:26 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,10 +128,10 @@ typedef struct s_env_var
 
 typedef struct s_env_kv
 {
-	char				*key;
-	char				*value;
-	int					has_value;
-}						t_env_kv;
+	char					*key;
+	char					*value;
+	int						has_value;
+}							t_env_kv;
 
 typedef struct s_shell
 {
@@ -140,6 +140,7 @@ typedef struct s_shell
 	char					**path;
 	t_parser				*parser;
 	int						running;
+	int						lvl;
 }							t_shell;
 
 typedef struct s_expansion
@@ -156,10 +157,17 @@ typedef struct s_expansion
 
 typedef struct s_file
 {
-	bool	has_quotes;
-	char	*name;
-	char	*limiter;
-	char	*raw;
-}			t_file;
+	bool					has_quotes;
+	char					*name;
+	char					*limiter;
+	char					*raw;
+}							t_file;
+
+typedef struct s_entry
+{
+	char					*value;
+	int						entry_len;
+	struct s_entry			*next;
+}							t_entry;
 
 #endif

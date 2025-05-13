@@ -1,6 +1,6 @@
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -O3
-LIB = -L/goinfre/sel-mlil/homebrew/opt/readline/lib -lreadline 
+CFLAGS = #-g -fsanitize=address #-Wall -Wextra -Werror -O3 #
+LIB = -lreadline
 
 NAME = minishell
 
@@ -10,13 +10,12 @@ LIB_DIR = lib
 TOKENIZER_DIR = tokenizer
 PROCESSING_DIR = processing
 PARSING_DIR = parsing
-INCLUDE_DIR = include 
+INCLUDE_DIR = include
 BUILLTINS_DIR = builtins
 EXECUTION_DIR = execution
 EXEC_PROC_DIR = post_processing
 
 SRC_FILES = main.c \
-	signals.c \
 	$(LIB_DIR)/string_utils_1.c \
 	$(LIB_DIR)/string_utils_2.c \
 	$(LIB_DIR)/string_utils_3.c \
@@ -61,21 +60,16 @@ SRC_FILES = main.c \
 	$(EXECUTION_DIR)/and_or.c \
 	$(EXEC_PROC_DIR)/args_utils.c \
 	$(EXEC_PROC_DIR)/expention_utils.c \
-	$(EXEC_PROC_DIR)/expension.c \
+	$(EXEC_PROC_DIR)/expention.c \
 	$(EXEC_PROC_DIR)/join_args.c \
 	$(EXEC_PROC_DIR)/split_args.c \
 	$(EXEC_PROC_DIR)/remove_quotes.c \
 	$(EXEC_PROC_DIR)/update_cmd_node.c \
-	$(EXEC_PROC_DIR)/entry.c \
-	$(EXEC_PROC_DIR)/entry_utils.c \
-	$(EXEC_PROC_DIR)/wildcard.c \
-	$(EXEC_PROC_DIR)/entry_operations.c \
-	$(EXEC_PROC_DIR)/expansion_wildcard.c 
 
 
 OBJ_FILES = $(patsubst %.c, ${BUILD_DIR}/%.o, $(SRC_FILES))
 
-INC_FLAGS = -I$(INCLUDE_DIR) -I/goinfre/sel-mlil/homebrew/opt/readline/include/readline
+INC_FLAGS = -I$(INCLUDE_DIR)
 
 GREEN	= \033[0;32m
 YELLOW	= \033[0;33m

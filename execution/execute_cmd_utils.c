@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 02:40:06 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/13 02:53:52 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/13 21:30:51 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ static void	init_file_name(t_file *file, char *origin, t_shell *shell)
 	char	*tmp;
 	char	*buff;
 	char	*ready;
-	bool	in_quotes;
 
 	free(file->name);
 	free(file->limiter);
@@ -79,5 +78,8 @@ int	apply_redirections(t_cmd *cmd, t_shell *shell)
 			return (status);
 		redir = redir->next;
 	}
+	free(file.name);
+	free(file.limiter);
+	free(file.raw);
 	return (0);
 }

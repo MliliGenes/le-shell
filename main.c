@@ -12,10 +12,10 @@
 
 #include "include/execution.h"
 #include "include/parsing.h"
+#include "include/signals.h"
 
 int	execute_ast_node(t_ast *node, t_shell *shell)
 {
-	int		status;
 	t_op	*op;
 
 	if (!node)
@@ -62,10 +62,6 @@ void	cleanup_iteration(t_shell *shell, char *input)
 		free(input);
 }
 
-void	setup_signals(void)
-{
-	signal(SIGQUIT, SIG_IGN);
-}
 
 void	shell_loop(t_shell *shell)
 {

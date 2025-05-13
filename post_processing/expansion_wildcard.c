@@ -1,25 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signals.h                                          :+:      :+:    :+:   */
+/*   expansion_wildcard.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/13 18:55:22 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/14 00:48:54 by sel-mlil         ###   ########.fr       */
+/*   Created: 2025/05/14 00:25:28 by sel-mlil          #+#    #+#             */
+/*   Updated: 2025/05/14 00:35:56 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SIGNALS_H
-# define SIGNALS_H
+#include "../include/execution.h"
 
-# include "../include/dependencies.h"
+char	*expand_wildcard(char *arg)
+{
+	t_entry	*entries;
+	char	*result;
 
-extern void	rl_replace_line(const char *, int);
-extern int	rl_catch_signals;
-
-void		handle_sigint(int sig);
-void		setup_signals(void);
-void		reset_signals_for_child(void);
-
-#endif
+	if (!arg)
+		return (NULL);
+	entries = get_all_entries();
+	if (!entries)
+		return (arg);
+	entries = filter_entries_by_pattern(entries, arg);
+	if (!entries)
+		return (arg);
+	result = join_entries(entries);
+	free_entry_list(entries);
+	free(arg);
+	return (result);
+}
