@@ -1,5 +1,7 @@
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -O3
+ERRORS = #-Wall -Wextra -Werror
+SANITIZER = #-fsanitize=address -g3
+CFLAGS = $(ERRORS) -O3 $(SANITIZER)
 LIB = -L/goinfre/sel-mlil/homebrew/opt/readline/lib -lreadline 
 
 NAME = minishell

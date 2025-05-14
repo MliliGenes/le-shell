@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   string_utils_2.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/05/06 16:38:38 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/14 04:30:39 by le-saad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	ft_putstr_fd(char *s, int fd)
 {
 	if (!s)
 		return ;
-	write(fd, s, ft_strlen(s));
+	(void)write(fd, s, ft_strlen(s));
 }
 
 int	ft_isdigit(int c)

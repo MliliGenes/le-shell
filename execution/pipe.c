@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 04:49:14 by le-saad           #+#    #+#             */
-/*   Updated: 2025/05/13 22:51:02 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/14 03:36:36 by le-saad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/execution.h"
-#include <sys/_types/_pid_t.h>
 
 void	close_fds(int fds[2])
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/07 21:35:10 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/05/14 02:00:49 by sel-mlil         ###   ########.fr       */
+/*   Created: 2025/05/14 04:16:25 by le-saad           #+#    #+#             */
+/*   Updated: 2025/05/14 04:16:28 by le-saad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,8 @@ t_entry	*create_entry(char *value);
 void	free_entry_list(t_entry *head);
 void	add_back_entry(t_entry **head, t_entry *node);
 t_entry	*get_all_entries(void);
-void	print_entries(t_entry *head);
 char	*join_entries(t_entry *head);
-int		wildcardMatch(const char *input, const char *pattern);
+int		wild_match(const char *input, const char *pattern);
 t_entry	*filter_entries_by_pattern(t_entry *old, const char *pattern);
 char	*expand_wildcard(char *arg);
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   update_cmd_node.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 23:08:16 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/14 02:00:19 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/14 04:03:14 by le-saad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ void	apply_wild_card(t_cmd *cmd)
 	int		index;
 	char	*tmp;
 	char	*joined;
+	char	**new_args;
 
 	if (!cmd || !cmd->args)
 		return ;
@@ -47,8 +48,8 @@ void	apply_wild_card(t_cmd *cmd)
 		index++;
 	}
 	joined = holy_joint(cmd->args);
-	cmd->args = holy_split(joined);
-	cmd->cmd = cmd->args[0];
+	new_args = holy_split(joined);
+	cmd->args = new_args;
 }
 
 void	update_cmd_node(t_cmd *cmd, t_shell *shell)
@@ -69,7 +70,7 @@ void	update_cmd_node(t_cmd *cmd, t_shell *shell)
 	new_args = holy_split(expended_arg);
 	free(expended_arg);
 	cmd->args = new_args;
+	apply_wild_card(cmd);
 	if (cmd->args)
 		cmd->cmd = cmd->args[0];
-	apply_wild_card(cmd);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_cmd_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 02:40:06 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/13 21:30:51 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/14 04:05:42 by le-saad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,10 @@ static void	init_file_name(t_file *file, char *origin, t_shell *shell)
 	free(file->raw);
 	file->raw = ft_strdup(origin);
 	buff = mark_quotes(origin);
+	buff = mark_astrestisk(buff);
 	ready = expand_vars(buff, shell);
+	ready = expand_wildcard(ready);
+	ready = reset_astrestisk(ready);
 	tmp = ready;
 	ready = remove_quotes(ready);
 	free(tmp);

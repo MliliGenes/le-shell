@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 18:34:11 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/05/06 16:37:42 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/14 04:38:40 by le-saad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,5 +65,10 @@ void	handle_echo(char **args)
 {
 	if (!args)
 		return ;
+	if (write(STDOUT_FILENO, NULL, 0) == -1)
+	{
+		ft_putstr_fd("bash: echo: write error: Bad file descriptor\n", STDERR_FILENO);
+        return;
+	}
 	ft_echo(args);
 }

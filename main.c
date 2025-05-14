@@ -62,6 +62,14 @@ void	cleanup_iteration(t_shell *shell, char *input)
 		free(input);
 }
 
+char* prompt_stderr(const char* prompt) {
+    int stdout_save = dup(STDOUT_FILENO);
+    dup2(STDERR_FILENO, STDOUT_FILENO);
+    char* input = readline(prompt);
+    dup2(stdout_save, STDOUT_FILENO);
+    close(stdout_save);
+    return input;
+}
 
 void	shell_loop(t_shell *shell)
 {
@@ -71,7 +79,7 @@ void	shell_loop(t_shell *shell)
 	rl_bind_key('\t', rl_complete);
 	while (shell->running)
 	{
-		input = readline(PROMPT);
+		input = prompt_stderr(PROMPT);
 		if (!input)
 		{
 			printf("exit\n");
