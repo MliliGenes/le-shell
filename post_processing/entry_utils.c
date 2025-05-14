@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 00:22:35 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/14 00:22:41 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/14 00:59:55 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,18 +27,6 @@ void	add_back_entry(t_entry **head, t_entry *new)
 	while (tmp->next)
 		tmp = tmp->next;
 	tmp->next = new;
-}
-
-void	print_entries(t_entry *head)
-{
-	t_entry	*tmp;
-
-	tmp = head;
-	while (tmp)
-	{
-		printf("%s\n", tmp->value);
-		tmp = tmp->next;
-	}
 }
 
 t_entry	*get_all_entries(void)
