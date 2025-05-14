@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_env.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 20:02:52 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/05/02 20:20:20 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/14 08:20:31 by le-saad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../include/builtins.h"
 
 static char	**split_env_var(char *arg)
 {
@@ -87,11 +87,8 @@ t_env_var	*init_env(char *envp[])
 	return (head);
 }
 
-void	handle_env(char *input, t_env_var *env)
+void	handle_env(t_env_var *env)
 {
-	if (ft_strcmp(input, "env") == 0)
-	{
-		if (env)
-			print_env(env);
-	}
+	if (env)
+		print_env(env);
 }

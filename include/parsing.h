@@ -6,13 +6,14 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:51:57 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/29 15:18:45 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/12 19:05:56 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSING_H
 # define PARSING_H
 
+# include "builtins.h"
 # include "dependencies.h"
 # include "lib.h"
 # include "structs.h"
@@ -117,12 +118,5 @@ t_ast							*post_to_tree(t_ready_token *postfix);
 // MARK: - Parser Core Functions
 t_parser						*init_parser(void);
 t_parser						*parse_input(char *cmd_line);
-
-char							*find_env_var(t_env_var *env_vars,
-									const char *key);
-void							init_expansion(t_expansion *exp, char *input,
-									t_env_var *vars);
-void							update_quote_state(t_expansion *exp,
-									char current_char);
 
 #endif

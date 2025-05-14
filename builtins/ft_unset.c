@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_unset.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 22:52:54 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/05/02 23:07:51 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/14 08:24:05 by le-saad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../include/builtins.h"
 
 static void	free_env_node(t_env_var *node)
 {
@@ -44,29 +44,23 @@ static void	env_remove(t_env_var **env_list, char *key)
 	}
 }
 
-void	handle_unset(char *input, t_env_var **env_list)
+void	handle_unset(char **args, t_env_var **env_list)
 {
-	char	**args;
-	int		i;
+	int	i;
 
-	i = 1;
-	args = ft_split(input, ' ');
 	if (!args || !args[0])
 		return ;
-	if (ft_strcmp(args[0], "unset") == 0)
+	i = 1;
+	while (args[i])
 	{
-		while (args[i])
+		if (!is_valid_key(args[i]))
 		{
-			if (!is_valid_key(args[i]))
-			{
-				ft_putstr_fd("unset: `", 2);
-				ft_putstr_fd(args[i], 2);
-				ft_putstr_fd("': not a valid identifier\n", 2);
-			}
-			else if (key_exist(*env_list, args[i]))
-				env_remove(env_list, args[i]);
-			i++;
+			ft_putstr_fd("unset: `", 2);
+			ft_putstr_fd(args[i], 2);
+			ft_putstr_fd("': not a valid identifier\n", 2);
 		}
+		else if (key_exist(*env_list, args[i]))
+			env_remove(env_list, args[i]);
+		i++;
 	}
-	free_2d(args);
 }

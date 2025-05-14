@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 06:20:05 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/01 11:50:36 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/14 08:30:02 by le-saad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,10 +62,12 @@ typedef struct s_redir
 {
 	t_redir_type			type;
 	char					*file_or_limiter;
-	int 					fd;
+	int						here_doc_read;
 	struct s_redir			*next;
 }							t_redir;
 
+// fds[0] cmd input
+// fds[1] cmd output
 typedef struct s_cmd
 {
 	char					**args;
@@ -124,6 +126,23 @@ typedef struct s_env_var
 	struct s_env_var		*next;
 }							t_env_var;
 
+typedef struct s_env_kv
+{
+	char					*key;
+	char					*value;
+	int						has_value;
+}							t_env_kv;
+
+typedef struct s_shell
+{
+	t_env_var				*env;
+	int						last_status;
+	char					**path;
+	t_parser				*parser;
+	int						running;
+	char                    *input;
+}							t_shell;
+
 typedef struct s_expansion
 {
 	char					*input;
@@ -133,16 +152,22 @@ typedef struct s_expansion
 	int						i_index;
 	int						o_index;
 	int						len;
-	t_env_var				*vars;
+	t_shell					*shell;
 }							t_expansion;
 
-typedef struct s_shell
+typedef struct s_file
 {
-	t_env_var				*env;
-	int						last_status;
-	char					**path;
-	t_ast					*ast;
-	int						running;
-}							t_shell;
+	bool					has_quotes;
+	char					*name;
+	char					*limiter;
+	char					*raw;
+}							t_file;
+
+typedef struct s_entry
+{
+	char					*value;
+	int						entry_len;
+	struct s_entry			*next;
+}							t_entry;
 
 #endif

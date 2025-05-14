@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 12:37:49 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/25 12:37:51 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/13 22:34:54 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,6 @@ t_ready_token	*cmd_line_to_ready_tokens(char *cmd_line)
 	classify_tokens(tokens);
 	ready_tokens = NULL;
 	extract_tokens(tokens, &ready_tokens);
-	// print_ready_tokens(ready_tokens);
 	free_token_list(tokens);
 	free(lexer);
 	return (ready_tokens);
@@ -91,7 +90,6 @@ t_parser	*parse_input(char *cmd_line)
 		return (NULL);
 	parser->infix_note = cmd_line_to_ready_tokens(cmd_line);
 	shunting_yard(parser);
-	print_ready_tokens(parser->postfix_note);
 	parser->holy_tree = post_to_tree(parser->postfix_note);
 	return (parser);
 }

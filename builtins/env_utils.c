@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   env_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 20:16:18 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/05/02 20:20:10 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/14 08:16:59 by le-saad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../include/builtins.h"
 
 t_env_var	*handle_empty_env(void)
 {
@@ -44,4 +44,17 @@ void	free_env_list(t_env_var *head)
 		free(current);
 		current = next;
 	}
+}
+
+void	free_2d(char **arr)
+{
+	int	i;
+
+	i = 0;
+	while (arr && arr[i])
+	{
+		free(arr[i]);
+		i++;
+	}
+	free(arr);
 }

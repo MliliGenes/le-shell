@@ -1,14 +1,7 @@
 {
-    "files.associations": {
-        "parsing.h": "c",
-        "stdbool.h": "c",
-        "readline.h": "c",
-        "unistd.h": "c",
-        "history.h": "c",
-        "dependencies.h": "c",
-        "cctype": "c",
-        "stdio.h": "c",
-        "lib.h": "c"
-    },
-    "C_Cpp.errorSquiggles": "disabled"
+	"files.associations": {
+		"*.c": "c",
+		"parsing.h": "c",
+		"execution.h": "c"
+	}
 }

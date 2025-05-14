@@ -1,250 +1,225 @@
-#include <ctype.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   test.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/14 00:14:02 by sel-mlil          #+#    #+#             */
+/*   Updated: 2025/05/14 00:59:35 by sel-mlil         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-typedef struct var
+#include "include/execution.h"
+
+t_entry	*create_entry(char *value)
 {
-	char		*key;
-	char		*value;
-	struct var	*next;
-}				t_env_var;
+	t_entry	*new;
 
-t_env_var	*create_var(const char *key, const char *value)
-{
-	t_env_var	*new_var;
-
-	new_var = malloc(sizeof(t_env_var));
-	if (!new_var)
+	new = malloc(sizeof(t_entry));
+	if (!new)
 		return (NULL);
-	new_var->key = strdup(key);
-	new_var->value = strdup(value);
-	new_var->next = NULL;
-	return (new_var);
-}
-
-void	free_var_list(t_env_var *head)
-{
-	t_env_var	*current;
-	t_env_var	*next;
-
-	current = head;
-	while (current)
+	new->value = strdup(value);
+	if (!new->value)
 	{
-		next = current->next;
-		free(current->key);
-		free(current->value);
-		free(current);
-		current = next;
-	}
-}
-
-char	*find_env_var(t_env_var *env_vars, const char *key)
-{
-	while (env_vars != NULL)
-	{
-		if (strcmp(env_vars->key, key) == 0)
-			return (env_vars->value);
-		env_vars = env_vars->next;
-	}
-	return (NULL);
-}
-
-char	*ft_substr(char const *s, unsigned int start, size_t len)
-{
-	size_t	i;
-	size_t	s_len;
-	char	*ptr;
-
-	s_len = strlen(s);
-	if (start > s_len)
-		return (strdup(""));
-	if (len > s_len - start)
-		len = s_len - start;
-	ptr = (char *)malloc(len + 1);
-	if (!ptr)
+		free(new);
 		return (NULL);
-	i = 0;
-	while (s[start + i] && i < len)
-	{
-		ptr[i] = s[start + i];
-		i++;
 	}
-	ptr[i] = '\0';
-	return (ptr);
+	new->entry_len = strlen(new->value);
+	new->next = NULL;
+	return (new);
 }
 
-typedef struct s_expansion
+void	free_entry_list(t_entry *head)
 {
-	char		*input;
-	char		*output;
-	int			s_quote;
-	int			d_quote;
-	int			i_index;
-	int			o_index;
-	int			len;
-	t_env_var	*vars;
-}				t_expansion;
+	t_entry	*tmp;
 
-void	init_expansion(t_expansion *exp, char *input, t_env_var *vars)
-{
-	exp->input = input;
-	exp->len = strlen(input);
-	exp->s_quote = 0;
-	exp->d_quote = 0;
-	exp->i_index = 0;
-	exp->o_index = 0;
-	exp->vars = vars;
-}
-
-void	update_quote_state(t_expansion *exp, char current_char)
-{
-	if (current_char == '\'' && !exp->d_quote)
-		exp->s_quote = !exp->s_quote;
-	if (current_char == '\"' && !exp->s_quote)
-		exp->d_quote = !exp->d_quote;
-}
-
-void	process_variable_length(t_expansion *exp)
-{
-	int		start;
-	char	*key;
-	char	*value;
-
-	exp->i_index++;
-	start = exp->i_index;
-	exp->len--;
-	while (exp->input[exp->i_index] && (isalnum(exp->input[exp->i_index])
-			|| exp->input[exp->i_index] == '_'))
+	while (head)
 	{
-		exp->len--;
-		exp->i_index++;
+		tmp = head;
+		head = head->next;
+		free(tmp->value);
+		free(tmp);
 	}
-	key = ft_substr(exp->input, start, exp->i_index - start);
-	value = find_env_var(exp->vars, key);
-	if (value)
-		exp->len += strlen(value);
-	free(key);
 }
 
-void	calculate_expanded_length(t_expansion *exp)
+void	add_back_entry(t_entry **head, t_entry *new)
 {
-	while (exp->input[exp->i_index])
-	{
-		update_quote_state(exp, exp->input[exp->i_index]);
-		if (!exp->s_quote && exp->input[exp->i_index] == '$'
-			&& (isalpha(exp->input[exp->i_index + 1]) || exp->input[exp->i_index
-				+ 1] == '_'))
-			process_variable_length(exp);
-		else
-			exp->i_index++;
-	}
-	exp->i_index = 0;
-}
+	t_entry	*tmp;
 
-char	*extract_var_name(t_expansion *exp)
-{
-	int	start;
-	int	length;
-
-	start = exp->i_index;
-	length = 0;
-	while (exp->input[exp->i_index] && (isalnum(exp->input[exp->i_index])
-			|| exp->input[exp->i_index] == '_'))
-	{
-		exp->i_index++;
-		length++;
-	}
-	return (ft_substr(exp->input, start, length));
-}
-
-void	expand_variable(t_expansion *exp)
-{
-	char	*key;
-	char	*value;
-	int		value_index;
-
-	value_index = 0;
-	exp->i_index++;
-	key = extract_var_name(exp);
-	value = find_env_var(exp->vars, key);
-	if (value)
-	{
-		while (value[value_index])
-			exp->output[exp->o_index++] = value[value_index++];
-	}
-	free(key);
-}
-
-void	expand_vars(char *input, t_env_var *vars)
-{
-	t_expansion	exp;
-
-	init_expansion(&exp, input, vars);
-	calculate_expanded_length(&exp);
-	exp.output = (char *)malloc(exp.len + 1);
-	if (!exp.output)
+	if (!head || !new)
 		return ;
-	while (input[exp.i_index])
+	if (!*head)
 	{
-		update_quote_state(&exp, input[exp.i_index]);
-		if (!exp.s_quote && input[exp.i_index] == '$'
-			&& (isalpha(input[exp.i_index + 1]) || input[exp.i_index
-				+ 1] == '_'))
-			expand_variable(&exp);
-		else
-			exp.output[exp.o_index++] = input[exp.i_index++];
+		*head = new;
+		return ;
 	}
-	exp.output[exp.o_index] = 0;
-	printf("before: %s\n", input);
-	printf("after: %s\n", exp.output);
-	free(exp.output);
+	tmp = *head;
+	while (tmp->next)
+		tmp = tmp->next;
+	tmp->next = new;
 }
 
-int	main(void)
+t_entry	*get_all_entries(void)
 {
-	t_env_var *env_vars;
-	t_env_var *current;
-	char *test1;
-	char *test2;
-	char *test3;
-	char *test4;
-	char *test5;
+	DIR				*dir;
+	struct dirent	*entry;
+	t_entry			*head;
+	t_entry			*new;
 
-	env_vars = create_var("HOME", "/home/user");
-	current = env_vars;
-	current->next = create_var("USER", "johndoe");
-	current = current->next;
-	current->next = create_var("VAR", "s -al");
-	current = current->next;
-	current->next = create_var("PATH", "/usr/bin:/bin");
-	current = current->next;
-	current->next = create_var("SHELL", "/bin/bash");
-	current = current->next;
-	current->next = create_var("TERM", "xterm");
-	current = current->next;
-	current->next = create_var("PWD", "/home/user/projects");
-	current = current->next;
-	current->next = create_var("LANG", "en_US.UTF-8");
-	test1 = "l\"'$VAR'\"";
-	test2 = "Current directory: $PWD using $SHELL";
-	test3 = "Missing variable: $NONEXISTENT should be skipped";
-	test4 = "Multiple variables: $USER is using $TERM in $HOME";
-	test5 = "$VAR at the beginning and at the end $PWD";
-	printf("Environment Variables:\n");
-	current = env_vars;
+	head = NULL;
+	dir = opendir(".");
+	if (!dir)
+		return (perror("opendir"), NULL);
+	entry = readdir(dir);
+	while (entry)
+	{
+		new = create_entry(entry->d_name);
+		if (!new)
+			return (free_entry_list(head), NULL);
+		add_back_entry(&head, new);
+		entry = readdir(dir);
+	}
+	return (closedir(dir), head);
+}
+
+int	wildcardMatch(const char *input, const char *pattern)
+{
+	if (*pattern == '\0')
+		return (*input == '\0');
+	if (*pattern == '*')
+	{
+		while (*(pattern + 1) == '*')
+			pattern++;
+		if (*(pattern + 1) == '\0')
+			return (1);
+		while (*input != '\0')
+		{
+			if (wildcardMatch(input, pattern + 1))
+				return (1);
+			input++;
+		}
+		return (wildcardMatch(input, pattern + 1));
+	}
+	if (*input != '\0' && (*pattern == *input))
+		return (wildcardMatch(input + 1, pattern + 1));
+	return (0);
+}
+
+t_entry	*filter_entries_by_pattern(t_entry *old, const char *pattern)
+{
+	t_entry	*current;
+	t_entry	*new_list;
+	t_entry	*new_entry;
+
+	current = old;
+	new_list = NULL;
 	while (current)
 	{
-		printf("%s=%s\n", current->key, current->value);
+		if (pattern[0] == '*' && *current->value == '.')
+		{
+			current = current->next;
+		}
+		else if (wildcardMatch(current->value, pattern))
+		{
+			new_entry = create_entry(current->value);
+			if (!new_entry)
+				return (NULL);
+			add_back_entry(&new_list, new_entry);
+		}
 		current = current->next;
 	}
-	printf("\n");
-	printf("Test Strings:\n");
-	expand_vars(test1, env_vars);
-	expand_vars(test2, env_vars);
-	expand_vars(test3, env_vars);
-	expand_vars(test4, env_vars);
-	expand_vars(test5, env_vars);
-	free_var_list(env_vars);
-	return (0);
+	free_entry_list(old);
+	return (new_list);
+}
+
+static int	calculate_total_length(t_entry *head)
+{
+	int		total_len;
+	int		entry_count;
+	t_entry	*current;
+
+	total_len = 0;
+	entry_count = 0;
+	current = head;
+	while (current != NULL)
+	{
+		if (current->value != NULL)
+		{
+			total_len += current->entry_len;
+			entry_count++;
+		}
+		current = current->next;
+	}
+	total_len += (entry_count - 1);
+	total_len += 1;
+	return (total_len);
+}
+
+static void	copy_to_buffer(t_entry *head, char *result)
+{
+	t_entry	*current;
+	int		position;
+	int		is_first_entry;
+
+	current = head;
+	position = 0;
+	is_first_entry = 1;
+	while (current != NULL)
+	{
+		if (current->value != NULL)
+		{
+			if (!is_first_entry)
+			{
+				result[position] = ' ';
+				position++;
+			}
+			strcpy(result + position, current->value);
+			position += current->entry_len;
+			is_first_entry = 0;
+		}
+		current = current->next;
+	}
+	result[position] = '\0';
+}
+
+char	*join_entries(t_entry *head)
+{
+	int		total_len;
+	char	*result;
+
+	if (head == NULL)
+		return (NULL);
+	total_len = calculate_total_length(head);
+	result = (char *)malloc(total_len * sizeof(char));
+	if (result == NULL)
+		return (NULL);
+	copy_to_buffer(head, result);
+	return (result);
+}
+
+char	*expend_wild_card(char *arg)
+{
+	t_entry *entries;
+	char *result;
+	char *pattern;
+
+	if (arg == NULL)
+		return (NULL);
+	pattern = arg;
+	entries = get_all_entries();
+	if (entries == NULL)
+		return (NULL);
+	entries = filter_entries_by_pattern(entries, pattern);
+	if (entries == NULL)
+		return (NULL);
+	result = join_entries(entries);
+	if (result == NULL)
+	{
+		free_entry_list(entries);
+		return (NULL);
+	}
+	free_entry_list(entries);
+	free(arg);
+	return (result);
 }

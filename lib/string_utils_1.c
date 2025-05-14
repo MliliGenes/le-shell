@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   string_utils_1.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/04/29 12:47:28 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/09 18:11:37 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,10 @@ size_t	ft_strlen(const char *s)
 {
 	size_t	len;
 
+	if (!s)
+		return (0);
 	len = 0;
-	while (s && s[len])
+	while (s[len])
 		len++;
 	return (len);
 }
@@ -87,7 +89,7 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 
 int	ft_strcmp(const char *s1, const char *s2)
 {
-	while (*s1 && (*s1 == *s2))
+	while (s1 && s2 && *s1 && *s1 == *s2)
 	{
 		s1++;
 		s2++;

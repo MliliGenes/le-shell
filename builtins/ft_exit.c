@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 18:34:28 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/05/02 21:40:24 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/14 08:39:08 by le-saad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../include/builtins.h"
 
 static int	is_numeric(char *str)
 {
@@ -48,34 +48,41 @@ static int	calculate_exit_status(char *arg)
 	return (status);
 }
 
-static void	ft_exit(char **args)
+int	handle_exit(char **args, t_shell *shell)
 {
+	int	status;
+
+	ft_putstr_fd("exit\n", STDOUT_FILENO);
 	if (!args[1])
-		exit(EXIT_SUCCESS);
+		exit(0);
 	if (!is_numeric(args[1]))
 	{
 		print_exit_error(args[1], ": numeric argument required\n");
-		exit(255);
+		if (shell->parser)
+		{
+			if (shell->parser->holy_tree)
+				free_ast(shell->parser->holy_tree);
+			if (shell->parser->postfix_note)
+				free_ready_tokens_list(shell->parser->postfix_note);
+			free(shell->parser);
+			shell->parser = NULL;
+			if (shell->input)
+			    free(shell->input);
+			if (shell->env)
+				free_env_list(shell->env);
+			if (shell->path)
+				free_2d(shell->path);
+		}
+		exit(2);
 	}
 	if (args[2])
 	{
 		print_exit_error(NULL, "too many arguments\n");
-		exit_status = 1;
-		return ;
+		shell->last_status = 1;
+		return 1;
 	}
-	exit_status = calculate_exit_status(args[1]);
-	exit(exit_status);
-}
-
-void	handle_exit(char *input)
-{
-	char	**args;
-
-	args = ft_split(input, ' ');
-	if (args && args[0] && ft_strcmp(args[0], "exit") == 0)
-	{
-		ft_putstr_fd("exit\n", STDOUT_FILENO);
-		ft_exit(args);
-	}
-	free_2d(args);
+	status = calculate_exit_status(args[1]);
+	shell->last_status = status;
+	exit(status);
+	return 0;
 }
