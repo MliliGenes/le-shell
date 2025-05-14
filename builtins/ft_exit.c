@@ -6,7 +6,7 @@
 /*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 18:34:28 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/05/14 10:52:16 by le-saad          ###   ########.fr       */
+/*   Updated: 2025/05/14 19:43:19 by le-saad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,27 +52,16 @@ int	handle_exit(char **args, t_shell *shell)
 {
 	int	status;
 
-	ft_putstr_fd("exit\n", STDERR_FILENO);
 	if (!args[1])
-		exit(0);
+	{
+		shell->running = 0;
+		return 0;
+	}
 	if (!is_numeric(args[1]))
 	{
 		print_exit_error(args[1], ": numeric argument required\n");
-		if (shell->parser)
-		{
-			if (shell->parser->holy_tree)
-				free_ast(shell->parser->holy_tree);
-			if (shell->parser->postfix_note)
-				free_ready_tokens_list(shell->parser->postfix_note);
-			free(shell->parser);
-			shell->parser = NULL;
-			if (shell->input)
-			    free(shell->input);
-			if (shell->env)
-				free_env_list(shell->env);
-			if (shell->path)
-				free_2d(shell->path);
-		}
+		shell->running = 0;
+		shell->last_status = 2;
 		exit(2);
 	}
 	if (args[2])
@@ -83,6 +72,6 @@ int	handle_exit(char **args, t_shell *shell)
 	}
 	status = calculate_exit_status(args[1]);
 	shell->last_status = status;
-	exit(status);
+	shell->running = 0;
 	return 0;
 }

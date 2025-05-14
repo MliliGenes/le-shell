@@ -81,6 +81,7 @@ void	shell_loop(t_shell *shell)
 		if (!shell->input)
 		{
 			printf("exit\n");
+			shell->running = 0;
 			break ;
 		}
 		if (*shell->input)
@@ -93,6 +94,8 @@ void	shell_loop(t_shell *shell)
 				shell->last_status = 2;
 		}
 		cleanup_iteration(shell);
+		if (!shell->running)
+			break;
 	}
 }
 
