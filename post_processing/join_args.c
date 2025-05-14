@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   join_args.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 09:47:52 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/12 19:07:10 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/14 18:39:15 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/execution.h"
+#include "../include/parsing.h"
 
 int	args_total_len(char **args)
 {
