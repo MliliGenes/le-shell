@@ -6,7 +6,7 @@
 /*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 00:23:06 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/14 05:29:44 by le-saad          ###   ########.fr       */
+/*   Updated: 2025/05/14 05:36:17 by le-saad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 int wild_match(const char *input, const char *pattern)
 {
-    printf("Comparing: '%s' with pattern '%s'\n", input, pattern);
     if (*pattern == '\0')
         return (*input == '\0');
     if (*pattern == '*') {
@@ -38,7 +37,6 @@ t_entry *filter_entries_by_pattern(t_entry *old, const char *pattern)
 {
     t_entry *new_list = NULL;
     t_entry *current = old;
-    int i = 0;
     
     while (current) {
         if (pattern[0] == '*' && pattern[1] != '.' && *current->value == '.') {
@@ -49,12 +47,9 @@ t_entry *filter_entries_by_pattern(t_entry *old, const char *pattern)
             if (!new_entry)
                 return NULL;
             add_back_entry(&new_list, new_entry);
-            printf("Found match: %s\n", current->value);
         }
-        i++;
         current = current->next;
     }
-    printf("total found: %d\n", i);
     free_entry_list(old);
     return new_list;
 }
