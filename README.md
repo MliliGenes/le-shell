@@ -12,9 +12,9 @@ Ops, never mind - not only parsing I did, but the expansion, wildcard, and execu
 
 ## Regrets (A Haiku of Bitterness):
 
-> "I did ninety-five,
-> Yet here I stand, unpaid, unseen.
-> Lesson learned? Trust none."
+> "I did *ninety-five*,
+> Yet here I stand, *unpaid*, *unseen*.
+> Lesson learned? Trust *none*."
 
 —Yours in eternal suffering,
 le-saad (a.k.a. sax, MliliGenes, sel-mlil, The Fool Who Thought This Would Be Fine)
