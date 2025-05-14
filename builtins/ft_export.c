@@ -6,7 +6,7 @@
 /*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 21:42:50 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/05/14 08:42:37 by le-saad          ###   ########.fr       */
+/*   Updated: 2025/05/14 22:17:11 by le-saad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,8 +110,6 @@ int	handle_export(char **args, t_env_var **env_list)
 {
 	int	i;
 
-	if (!args || !args[0])
-		return ;
 	i = 1;
 	if (!args[i])
 	{
