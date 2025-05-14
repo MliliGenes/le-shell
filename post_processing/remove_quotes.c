@@ -6,11 +6,48 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 17:28:50 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/13 00:31:06 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/14 02:00:30 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/execution.h"
+
+char	*mark_astrestisk(char *str)
+{
+	bool	s_quote;
+	bool	d_quote;
+	int		i;
+
+	if (!str)
+		return (NULL);
+	s_quote = false;
+	d_quote = false;
+	i = 0;
+	while (str[i])
+	{
+		update_quote_status_new(str[i], &s_quote, &d_quote);
+		if (str[i] == '*' && (d_quote || s_quote))
+			str[i] = 3;
+		i++;
+	}
+	return (str);
+}
+
+char	*reset_astrestisk(char *str)
+{
+	int	i;
+
+	if (!str)
+		return (NULL);
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == 3)
+			str[i] = '*';
+		i++;
+	}
+	return (str);
+}
 
 char	*mark_quotes(char *str)
 {

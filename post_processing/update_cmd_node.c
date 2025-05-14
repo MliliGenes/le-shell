@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 23:08:16 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/14 01:59:21 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/14 02:00:19 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,50 +25,6 @@ static bool	has_quotes(char *str)
 		i++;
 	}
 	return (false);
-}
-
-void	_update_quote_status(char c, bool *in_single, bool *in_double)
-{
-	if (c == 1 && !(*in_double))
-		*in_single = !(*in_single);
-	else if (c == 2 && !(*in_single))
-		*in_double = !(*in_double);
-}
-
-char	*mark_astrestisk(char *str)
-{
-	bool	s_quote;
-	bool	d_quote;
-	int		i;
-
-	if (!str)
-		return (NULL);
-	s_quote = false;
-	d_quote = false;
-	i = 0;
-	while (str[i])
-	{
-		_update_quote_status(str[i], &s_quote, &d_quote);
-		if (str[i] == '*' && (d_quote || s_quote))
-				str[i] = 3;
-		i++;
-	}	return (str);
-}
-
-char	*reset_astrestisk(char *str)
-{
-	int	i;
-
-	if (!str)
-		return (NULL);
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == 3)
-			str[i] = '*';
-		i++;
-	}
-	return (str);
 }
 
 void	apply_wild_card(t_cmd *cmd)
