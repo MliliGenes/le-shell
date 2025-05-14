@@ -79,11 +79,7 @@ void	shell_loop(t_shell *shell)
 	{
 		shell->input = prompt_stderr(PROMPT);
 		if (!shell->input)
-		{
-			printf("exit\n");
-			shell->running = 0;
 			break ;
-		}
 		if (*shell->input)
 		{
 			add_history(shell->input);
@@ -94,7 +90,7 @@ void	shell_loop(t_shell *shell)
 				shell->last_status = 2;
 		}
 		cleanup_iteration(shell);
-		if (!shell->running)
+		if (!shell->running)	
 			break;
 	}
 }
@@ -113,10 +109,11 @@ int	main(int ac, char **av, char **envp)
 
 	(void)ac;
 	(void)av;
-	// i hate this
+
 	if (init_shell(&shell, envp) != 0)
 		return (1);
 	shell_loop(&shell);
 	cleanup_shell(&shell);
+	printf("exit\n");
 	return (shell.last_status);
 }

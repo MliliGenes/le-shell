@@ -6,7 +6,7 @@
 /*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 15:54:34 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/14 10:43:53 by le-saad          ###   ########.fr       */
+/*   Updated: 2025/05/14 21:52:37 by le-saad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int	handle_exec(t_cmd *cmd, t_shell *shell)
             {
                 ft_putstr_fd("minishell: ", STDERR_FILENO);
                 ft_putstr_fd(cmd->cmd, STDERR_FILENO);
-                ft_putstr_fd(": Is a directory\n", STDERR_FILENO);
+                ft_putstr_fd(": is a directory\n", STDERR_FILENO);
                 cleanup_fds(cmd);
                 return (126);
             }
@@ -88,7 +88,7 @@ int	handle_exec(t_cmd *cmd, t_shell *shell)
             {
                 ft_putstr_fd("minishell: ", STDERR_FILENO);
                 ft_putstr_fd(cmd->cmd, STDERR_FILENO);
-                ft_putstr_fd(": Permission denied\n", STDERR_FILENO);
+                ft_putstr_fd(": permission denied\n", STDERR_FILENO);
                 cleanup_fds(cmd);
                 return (126);
             }
