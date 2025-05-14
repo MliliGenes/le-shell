@@ -6,7 +6,7 @@
 /*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 21:42:50 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/05/14 08:40:01 by le-saad          ###   ########.fr       */
+/*   Updated: 2025/05/14 08:42:37 by le-saad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ int	handle_export(char **args, t_env_var **env_list)
 	{
 		if (!is_valid_key(args[i]))
 		{
-			ft_putstr_fd("export: `", 2);~
+			ft_putstr_fd("export: `", 2);
 			ft_putstr_fd(args[i], 2);
 			ft_putstr_fd("': not a valid identifier\n", 2);
 			return 1;
