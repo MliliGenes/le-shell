@@ -110,6 +110,7 @@ int	main(int ac, char **av, char **envp)
 
 	(void)ac;
 	(void)av;
+	// i hate this
 	if (init_shell(&shell, envp) != 0)
 		return (1);
 	shell_loop(&shell);
