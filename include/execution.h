@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 04:16:25 by le-saad           #+#    #+#             */
-/*   Updated: 2025/05/14 07:45:51 by le-saad          ###   ########.fr       */
+/*   Updated: 2025/05/14 23:27:07 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,18 +37,22 @@ void	apply_fds(t_cmd *cmd);
 
 int		execute_ast_node(t_ast *node, t_shell *shell);
 
+int		whitespace_to_unprintable(char c);
+char	unprintable_to_whitespace(char code);
 char	*find_env_var(t_shell *shell, const char *key);
 void	init_expansion(t_expansion *exp, char *input, t_shell *shell);
 void	update_quote_state(t_expansion *exp, char current_char);
 char	*holy_joint(char **args);
 int		holy_count_words(char *str);
 char	**holy_split(char *joint);
-int     handle_exit_status(t_expansion *exp);
+int		handle_exit_status(t_expansion *exp);
 char	*expand_vars(char *input, t_shell *shell);
 void	update_quote_status(char c, bool *in_single, bool *in_double);
 void	update_quote_status_new(char c, bool *in_single, bool *in_double);
 bool	is_in_quote(bool in_single, bool in_double);
 char	*remove_quotes(char *str);
+char	*mark_space(char *str);
+char	*reset_spaces(char *str);
 char	*mark_quotes(char *str);
 char	*mark_astrestisk(char *str);
 char	*reset_astrestisk(char *str);

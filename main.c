@@ -13,6 +13,7 @@
 #include "include/execution.h"
 #include "include/parsing.h"
 #include "include/signals.h"
+#include <stdlib.h>
 
 int	execute_ast_node(t_ast *node, t_shell *shell)
 {
@@ -103,13 +104,18 @@ void	cleanup_shell(t_shell *shell)
 		free_2d(shell->path);
 }
 
+void ll()
+{
+	system("leaks -q minishell");
+}
+
 int	main(int ac, char **av, char **envp)
 {
 	t_shell shell;
 
 	(void)ac;
 	(void)av;
-
+	atexit(ll);
 	if (init_shell(&shell, envp) != 0)
 		return (1);
 	shell_loop(&shell);

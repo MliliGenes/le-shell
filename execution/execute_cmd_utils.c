@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_cmd_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 02:40:06 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/14 10:24:18 by le-saad          ###   ########.fr       */
+/*   Updated: 2025/05/14 22:31:55 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ char	*get_cmd_path(t_cmd *cmd, char **paths)
 	return (NULL);
 }
 
-static free_file(t_file *file)
+static void free_file(t_file *file)
 {
 	free(file->name);
 	free(file->limiter);
@@ -49,9 +49,7 @@ static void	init_file_name(t_file *file, char *origin, t_shell *shell)
 	file->raw = ft_strdup(origin);
 	buff = mark_quotes(file->raw);
 	buff = mark_astrestisk(buff);
-	tmp = ready;
 	ready = expand_vars(buff, shell);
-	free(tmp);
 	ready = expand_wildcard(ready);
 	ready = reset_astrestisk(ready);
 	tmp = ready;

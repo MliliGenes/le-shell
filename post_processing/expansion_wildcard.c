@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion_wildcard.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 00:25:28 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/14 20:01:51 by le-saad          ###   ########.fr       */
+/*   Updated: 2025/05/14 23:00:33 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ int	sort_entries_bubble(t_entry *head)
 	if (!head || !head->next)
 		return (0);
     current = head;
+	count = 0;
     while (current)
     {
         count++;
@@ -103,6 +104,7 @@ int	sort_entries_bubble(t_entry *head)
 char	*expand_wildcard(char *arg)
 {
 	t_entry	*entries;
+	t_entry	*tmp;
 	char	*result;
 
 	if (!arg)
@@ -110,7 +112,9 @@ char	*expand_wildcard(char *arg)
 	entries = get_all_entries();
 	if (!entries || sort_entries_bubble(entries) < 0)
 		return (arg);
+	tmp = entries;
 	entries = filter_entries_by_pattern(entries, arg);
+	free_entry_list(tmp);
 	if (!entries)
 		return (arg);
 	result = join_entries(entries);

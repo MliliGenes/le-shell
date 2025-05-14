@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 00:23:32 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/14 00:24:38 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/14 23:45:23 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static void	copy_to_buffer(t_entry *head, char *result)
 		{
 			if (!is_first_entry)
 				result[position++] = ' ';
-			strcpy(result + position, current->value);
+			strcpy(result + position, mark_space(current->value));
 			position += current->entry_len;
 			is_first_entry = 0;
 		}
@@ -69,7 +69,6 @@ char	*join_entries(t_entry *head)
 	char *result = malloc(total_len);
 	if (!result)
 		return (NULL);
-
 	copy_to_buffer(head, result);
 	return (result);
 }

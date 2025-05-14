@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   update_cmd_node.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 23:08:16 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/14 09:26:29 by le-saad          ###   ########.fr       */
+/*   Updated: 2025/05/14 23:45:36 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,9 @@ static bool	has_quotes(char *str)
 	return (false);
 }
 
-void loop_rm_quoutes(t_cmd *cmd)
+void	loop_rm_quoutes(t_cmd *cmd)
 {
-	int index;
+	int		index;
 	char	*tmp;
 
 	index = 0;
@@ -38,6 +38,7 @@ void loop_rm_quoutes(t_cmd *cmd)
 		tmp = cmd->args[index];
 		cmd->args[index] = remove_quotes(cmd->args[index]);
 		free(tmp);
+		cmd->args[index] = reset_spaces(cmd->args[index]);
 		index++;
 	}
 }
