@@ -6,7 +6,7 @@
 /*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 15:54:34 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/14 07:21:06 by le-saad          ###   ########.fr       */
+/*   Updated: 2025/05/14 10:43:53 by le-saad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,14 +84,14 @@ int	handle_exec(t_cmd *cmd, t_shell *shell)
                 cleanup_fds(cmd);
                 return (126);
             }
-            // else if (access(cmd->cmd, X_OK) == -1)
-            // {
-            //     ft_putstr_fd("minishell: ", STDERR_FILENO);
-            //     ft_putstr_fd(cmd->cmd, STDERR_FILENO);
-            //     ft_putstr_fd(": Permission denied\n", STDERR_FILENO);
-            //     cleanup_fds(cmd);
-            //     return (126);
-            // }
+            else if (access(cmd->cmd, X_OK) == -1)
+            {
+                ft_putstr_fd("minishell: ", STDERR_FILENO);
+                ft_putstr_fd(cmd->cmd, STDERR_FILENO);
+                ft_putstr_fd(": Permission denied\n", STDERR_FILENO);
+                cleanup_fds(cmd);
+                return (126);
+            }
         }
 		ft_putstr_fd(cmd->cmd, STDERR_FILENO);
 		ft_putstr_fd(": command not found\n", STDERR_FILENO);

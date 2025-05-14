@@ -6,7 +6,7 @@
 /*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 18:34:28 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/05/14 08:39:08 by le-saad          ###   ########.fr       */
+/*   Updated: 2025/05/14 10:52:16 by le-saad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	handle_exit(char **args, t_shell *shell)
 {
 	int	status;
 
-	ft_putstr_fd("exit\n", STDOUT_FILENO);
+	ft_putstr_fd("exit\n", STDERR_FILENO);
 	if (!args[1])
 		exit(0);
 	if (!is_numeric(args[1]))

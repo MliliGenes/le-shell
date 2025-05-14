@@ -6,7 +6,7 @@
 /*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 04:49:14 by le-saad           #+#    #+#             */
-/*   Updated: 2025/05/14 03:36:36 by le-saad          ###   ########.fr       */
+/*   Updated: 2025/05/14 10:47:32 by le-saad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,8 @@ static int	create_pipe(int pipefd[2])
 	return (1);
 }
 
-static void	setup_pipe_side(int pipefd[2], int fd_to_replace, int fd_to_close)
+static void	setup_pipe_side(int pipefd[2], int fd_to_replace)
 {
-	(void)fd_to_close;
 	dup2(pipefd[fd_to_replace], fd_to_replace);
 	close(pipefd[0]);
 	close(pipefd[1]);
@@ -44,7 +43,7 @@ static pid_t	launch_process(int pipefd[2], int fd_to_replace, t_ast *node,
 	pid = fork();
 	if (pid == 0)
 	{
-		setup_pipe_side(pipefd, fd_to_replace, !fd_to_replace);
+		setup_pipe_side(pipefd, fd_to_replace);
 		exit(execute_ast_node(node, shell));
 	}
 	else if (pid == -1)
