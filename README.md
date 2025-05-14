@@ -12,8 +12,8 @@ Ops, never mind - not only parsing I did, but the expansion, wildcard, and execu
 
 ## Regrets (A Haiku of Bitterness):
 
-"I did *ninety-five*,
-Yet here I stand, *unpaid*, *unseen*.
+"I did *ninety-five*, <br>
+Yet here I stand, *unpaid*, *unseen*. <br>
 Lesson learned? Trust *none*."
 
 —Yours in eternal suffering,
