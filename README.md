@@ -9,4 +9,4 @@ Stay away from parsing! That's my tip for you.
 ## Regrets
 
 i didn't lock in this project on my own, after all i did 95% of the project <br>
-best regads le-saad aka sax aka MliliGenes aka sel-mlil
+best regards le-saad aka sax aka MliliGenes aka sel-mlil
