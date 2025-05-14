@@ -6,7 +6,7 @@
 /*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 23:08:21 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/05/14 08:18:00 by le-saad          ###   ########.fr       */
+/*   Updated: 2025/05/14 10:02:25 by le-saad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ int	handle_cd(char **args, t_env_var *env)
 		success = handle_oldpwd(env);
 	else if (chdir(args[1]) == -1)
 	{
+		free(old_pwd);
 		print_cd_error(NULL, args[1], "No such file or directory\n");
 		return 1;
 	}

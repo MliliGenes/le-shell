@@ -6,7 +6,7 @@
 /*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 23:08:16 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/14 06:23:16 by le-saad          ###   ########.fr       */
+/*   Updated: 2025/05/14 09:26:29 by le-saad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,24 @@ static bool	has_quotes(char *str)
 	return (false);
 }
 
+void loop_rm_quoutes(t_cmd *cmd)
+{
+	int index;
+	char	*tmp;
+
+	index = 0;
+	while (cmd->args && cmd->args[index])
+	{
+		tmp = cmd->args[index];
+		cmd->args[index] = remove_quotes(cmd->args[index]);
+		free(tmp);
+		index++;
+	}
+}
+
 void	apply_wild_card(t_cmd *cmd)
 {
 	int		index;
-	char	*tmp;
 	char	*joined;
 	char	**new_args;
 
@@ -40,16 +54,15 @@ void	apply_wild_card(t_cmd *cmd)
 	while (cmd->args && cmd->args[index])
 	{
 		cmd->args[index] = mark_astrestisk(cmd->args[index]);
-		tmp = cmd->args[index];
-		cmd->args[index] = remove_quotes(cmd->args[index]);
-		free(tmp);
 		cmd->args[index] = expand_wildcard(cmd->args[index]);
 		cmd->args[index] = reset_astrestisk(cmd->args[index]);
 		index++;
 	}
-	// joined = holy_joint(cmd->args);
-	// new_args = holy_split(joined);
-	// cmd->args = new_args;
+	joined = holy_joint(cmd->args);
+	new_args = holy_split(joined);
+	free(joined);
+	cmd->args = new_args;
+	loop_rm_quoutes(cmd);
 }
 
 void	update_cmd_node(t_cmd *cmd, t_shell *shell)

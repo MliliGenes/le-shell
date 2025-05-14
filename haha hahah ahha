@@ -1,0 +1,20 @@
+Makefile
+README.md
+build
+builtins
+execution
+file
+haha hahah ahha
+here_doc
+include
+lib
+main.c
+minishell
+minishell_tester
+parsing
+post_processing
+processing
+signals.c
+test.c
+tokenizer
+validator.js

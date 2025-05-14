@@ -6,7 +6,7 @@
 /*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 02:40:06 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/14 06:51:06 by le-saad          ###   ########.fr       */
+/*   Updated: 2025/05/14 10:24:18 by le-saad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,19 +32,26 @@ char	*get_cmd_path(t_cmd *cmd, char **paths)
 	return (NULL);
 }
 
+static free_file(t_file *file)
+{
+	free(file->name);
+	free(file->limiter);
+	free(file->raw);
+}
+
 static void	init_file_name(t_file *file, char *origin, t_shell *shell)
 {
 	char	*tmp;
 	char	*buff;
 	char	*ready;
 
-	free(file->name);
-	free(file->limiter);
-	free(file->raw);
+	free_file(file);
 	file->raw = ft_strdup(origin);
-	buff = mark_quotes(origin);
+	buff = mark_quotes(file->raw);
 	buff = mark_astrestisk(buff);
+	tmp = ready;
 	ready = expand_vars(buff, shell);
+	free(tmp);
 	ready = expand_wildcard(ready);
 	ready = reset_astrestisk(ready);
 	tmp = ready;
@@ -80,11 +87,9 @@ int	apply_redirections(t_cmd *cmd, t_shell *shell)
 		else if (redir->type == REDIR_APPEND)
 			status = handle_redir_append(cmd, &file);
 		if (status != 0)
-			return (status);
+			return (free_file(&file), status);
 		redir = redir->next;
 	}
-	free(file.name);
-	free(file.limiter);
-	free(file.raw);
+    free_file(&file);
 	return (0);
 }
