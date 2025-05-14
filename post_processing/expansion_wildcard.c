@@ -6,75 +6,92 @@
 /*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 00:25:28 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/14 05:12:24 by le-saad          ###   ########.fr       */
+/*   Updated: 2025/05/14 06:15:34 by le-saad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/execution.h"
 
-int sort_entries_bubble(t_entry *head)
+static char	**copy_values_to_array(t_entry *head, int count)
 {
-    // Return early if list is empty or has only one element
-    if (!head || !head->next)
-        return 0;
-    
-    // Count the number of nodes
-    int count = 0;
-    t_entry *current = head;
+	char	**values;
+	t_entry	*current;
+	int		i;
+
+	values = (char **)malloc(sizeof(char *) * count);
+	if (!values)
+		return (NULL);
+	current = head;
+	i = 0;
+	while (i < count)
+	{
+		values[i] = current->value;
+		current = current->next;
+		i++;
+	}
+	return (values);
+}
+
+static void	perform_bubble_sort(char **values, int count)
+{
+	int		i;
+	int		j;
+	char	*temp;
+
+	i = 0;
+	while (i < count - 1)
+	{
+		j = 0;
+		while (j < count - i - 1)
+		{
+			if (ft_strcmp(values[j], values[j + 1]) > 0)
+			{
+				temp = values[j];
+				values[j] = values[j + 1];
+				values[j + 1] = temp;
+			}
+			j++;
+		}
+		i++;
+	}
+}
+
+static void	reconstruct_list(t_entry *head, char **values, int count)
+{
+	t_entry	*current;
+	int		i;
+
+	current = head;
+	i = 0;
+	while (i < count)
+	{
+		current->value = values[i];
+		current = current->next;
+		i++;
+	}
+}
+
+int	sort_entries_bubble(t_entry *head)
+{
+	char	**values;
+	int		count;
+    t_entry *current;
+
+	if (!head || !head->next)
+		return (0);
+    current = head;
     while (current)
     {
         count++;
         current = current->next;
     }
-    
-    // Allocate array to hold all values
-    char **values = (char **)malloc(sizeof(char *) * count);
-    if (!values)
-        return -1; // Memory allocation failed
-    
-    // Copy all values to the array
-    current = head;
-    for (int i = 0; i < count; i++)
-    {
-        values[i] = current->value;
-        current = current->next;
-    }
-    
-    // Bubble sort the array using strcmp
-    int swapped;
-    char *temp;
-    for (int i = 0; i < count - 1; i++)
-    {
-        swapped = 0;
-        for (int j = 0; j < count - i - 1; j++)
-        {
-            if (ft_strcmp(values[j], values[j + 1]) > 0)
-            {
-                // Swap values[j] and values[j + 1]
-                temp = values[j];
-                values[j] = values[j + 1];
-                values[j + 1] = temp;
-                swapped = 1;
-            }
-        }
-        
-        // If no swapping occurred in this pass, array is sorted
-        if (swapped == 0)
-            break;
-    }
-    
-    // Reconstruct the linked list with sorted values
-    current = head;
-    for (int i = 0; i < count; i++)
-    {
-        current->value = values[i];
-        current = current->next;
-    }
-    
-    // Free the temporary array
-    free(values);
-    
-    return 0;
+	values = copy_values_to_array(head, count);
+	if (!values)
+		return (-1);
+	perform_bubble_sort(values, count);
+	reconstruct_list(head, values, count);
+	free(values);
+	return (0);
 }
 
 char	*expand_wildcard(char *arg)
@@ -85,7 +102,7 @@ char	*expand_wildcard(char *arg)
 	if (!arg)
 		return (NULL);
 	entries = get_all_entries();
-	if (!entries )
+	if (!entries || sort_entries_bubble(entries) < 0)
 		return (arg);
 	entries = filter_entries_by_pattern(entries, arg);
 	if (!entries)

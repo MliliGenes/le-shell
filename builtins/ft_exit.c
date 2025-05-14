@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 18:34:28 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/05/06 18:23:57 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/14 07:24:01 by le-saad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static int	calculate_exit_status(char *arg)
 	return (status);
 }
 
-void	handle_exit(char **args, t_shell *shell)
+int	handle_exit(char **args, t_shell *shell)
 {
 	int	status;
 
@@ -58,15 +58,16 @@ void	handle_exit(char **args, t_shell *shell)
 	if (!is_numeric(args[1]))
 	{
 		print_exit_error(args[1], ": numeric argument required\n");
-		exit(255);
+		exit(2);
 	}
 	if (args[2])
 	{
 		print_exit_error(NULL, "too many arguments\n");
 		shell->last_status = 1;
-		return ;
+		return 1;
 	}
 	status = calculate_exit_status(args[1]);
 	shell->last_status = status;
 	exit(status);
+	return 0;
 }

@@ -6,7 +6,7 @@
 /*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 00:23:06 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/14 05:36:17 by le-saad          ###   ########.fr       */
+/*   Updated: 2025/05/14 05:57:46 by le-saad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,11 @@ t_entry *filter_entries_by_pattern(t_entry *old, const char *pattern)
 {
     t_entry *new_list = NULL;
     t_entry *current = old;
-    
+
     while (current) {
         if (pattern[0] == '*' && pattern[1] != '.' && *current->value == '.') {
             current = current->next;
+            continue;
         }
         else if (wild_match(current->value, pattern)) {
             t_entry *new_entry = create_entry(current->value);

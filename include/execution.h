@@ -6,7 +6,7 @@
 /*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 04:16:25 by le-saad           #+#    #+#             */
-/*   Updated: 2025/05/14 04:16:28 by le-saad          ###   ########.fr       */
+/*   Updated: 2025/05/14 07:45:51 by le-saad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ void	update_quote_state(t_expansion *exp, char current_char);
 char	*holy_joint(char **args);
 int		holy_count_words(char *str);
 char	**holy_split(char *joint);
+int     handle_exit_status(t_expansion *exp);
 char	*expand_vars(char *input, t_shell *shell);
 void	update_quote_status(char c, bool *in_single, bool *in_double);
 void	update_quote_status_new(char c, bool *in_single, bool *in_double);

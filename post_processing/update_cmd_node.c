@@ -6,7 +6,7 @@
 /*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 23:08:16 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/14 04:03:14 by le-saad          ###   ########.fr       */
+/*   Updated: 2025/05/14 06:23:16 by le-saad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,9 @@ void	apply_wild_card(t_cmd *cmd)
 		cmd->args[index] = reset_astrestisk(cmd->args[index]);
 		index++;
 	}
-	joined = holy_joint(cmd->args);
-	new_args = holy_split(joined);
-	cmd->args = new_args;
+	// joined = holy_joint(cmd->args);
+	// new_args = holy_split(joined);
+	// cmd->args = new_args;
 }
 
 void	update_cmd_node(t_cmd *cmd, t_shell *shell)

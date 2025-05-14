@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 23:09:18 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/05/09 00:40:26 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/14 07:22:44 by le-saad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,11 @@ void		free_2d(char **arr);
 
 void		handle_pwd(void);
 void		handle_echo(char **args);
-void		handle_exit(char **args, t_shell *shell);
+int		handle_exit(char **args, t_shell *shell);
 void		handle_env(t_env_var *env);
-void		handle_export(char **args, t_env_var **env_list);
+int		    handle_export(char **args, t_env_var **env_list);
 void		handle_unset(char **args, t_env_var **env_list);
-void		handle_cd(char **args, t_env_var *env);
+int		    handle_cd(char **args, t_env_var *env);
 
 t_env_var	*init_env(char *envp[]);
 void		free_env_list(t_env_var *head);

@@ -6,7 +6,7 @@
 /*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 18:34:11 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/05/14 04:38:40 by le-saad          ###   ########.fr       */
+/*   Updated: 2025/05/14 07:07:46 by le-saad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,10 @@ static void	print_echo_args(char **args, int i)
 	first = 1;
 	while (args[i])
 	{
-		if (*args[i] == '\0')
+		if (!first)
 			write(STDOUT_FILENO, " ", 1);
-		else
-		{
-			if (!first)
-				write(STDOUT_FILENO, " ", 1);
-			write(STDOUT_FILENO, args[i], ft_strlen(args[i]));
-			first = 0;
-		}
+		write(STDOUT_FILENO, args[i], ft_strlen(args[i]));
+		first = 0;
 		i++;
 	}
 }

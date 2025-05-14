@@ -6,7 +6,7 @@
 /*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 02:40:06 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/14 04:05:42 by le-saad          ###   ########.fr       */
+/*   Updated: 2025/05/14 06:51:06 by le-saad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,10 @@ static void	init_file_name(t_file *file, char *origin, t_shell *shell)
 	ready = remove_quotes(ready);
 	free(tmp);
 	file->name = ready;
-	file->name = ready;
-	file->has_quotes = !ft_strcmp(buff, ready);
+	if (ft_strcmp(buff, ready) == 0)
+	    file->has_quotes = false;
+	else
+	    file->has_quotes = true;
 	file->limiter = remove_quotes(buff);
 }
 

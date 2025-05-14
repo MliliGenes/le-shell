@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 00:05:57 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/05/13 01:12:57 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/14 06:50:59 by le-saad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	handle_redir_in(t_cmd *cmd, t_file *file)
 {
 	int	fd;
 
-	if (file->has_quotes == false && handle_ambiguous(file->name, file->raw))
+	if (!file->has_quotes && handle_ambiguous(file->name, file->raw))
 		return (1);
 	fd = open(file->name, O_RDONLY);
 	if (fd < 0)

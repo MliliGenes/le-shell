@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 21:42:50 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/05/07 16:57:43 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/14 07:04:44 by le-saad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ static void	process_export_arg(char *arg, t_env_var **env_list)
 	free(kv.value);
 }
 
-void	handle_export(char **args, t_env_var **env_list)
+int	handle_export(char **args, t_env_var **env_list)
 {
 	int	i;
 
@@ -116,7 +116,7 @@ void	handle_export(char **args, t_env_var **env_list)
 	if (!args[i])
 	{
 		print_export(*env_list);
-		return ;
+		return 0;
 	}
 	while (args[i])
 	{
@@ -125,9 +125,11 @@ void	handle_export(char **args, t_env_var **env_list)
 			ft_putstr_fd("export: `", 2);
 			ft_putstr_fd(args[i], 2);
 			ft_putstr_fd("': not a valid identifier\n", 2);
+			return 1;
 		}
 		else
 			process_export_arg(args[i], env_list);
 		i++;
 	}
+	return 0;
 }

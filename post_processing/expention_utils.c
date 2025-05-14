@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expention_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 16:36:33 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/12 19:07:10 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/14 07:45:15 by le-saad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,3 +46,19 @@ void	update_quote_state(t_expansion *exp, char current_char)
 	if (current_char == 2 && !exp->s_quote)
 		exp->d_quote = !exp->d_quote;
 }
+
+int handle_exit_status(t_expansion *exp)
+{
+    char    *exit_status;
+    int     len_adjustment;
+
+    exp->i_index++;
+    exp->len--;
+    exit_status = ft_itoa(exp->shell->last_status);
+    if (!exit_status)
+        return (0);
+    len_adjustment = ft_strlen(exit_status);
+    free(exit_status);
+    return (len_adjustment);
+}
+

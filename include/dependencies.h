@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dependencies.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 08:49:15 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/14 00:58:17 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/14 07:53:32 by le-saad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,10 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
+# include <sys/stat.h>
 # include <unistd.h>
 
-# define PROMPT "\001\033[1;32m\002le-shell\001\033[0m\002$ "
+# define PROMPT "\001\033[1;32m\002sel-shell\001\033[0m\002$ "
 
 # define RESET "\033[0m"
 # define BLACK "\033[30m"

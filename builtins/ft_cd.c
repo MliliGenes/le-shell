@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 23:08:21 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/05/06 23:39:20 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/14 07:01:56 by le-saad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,13 @@ static int	handle_oldpwd(t_env_var *env)
 	return (1);
 }
 
-void	handle_cd(char **args, t_env_var *env)
+int	handle_cd(char **args, t_env_var *env)
 {
 	char	*old_pwd;
 	int		success;
 
-	if (!args || !args[0])
-		return ;
+	if (args[2] != NULL)
+		return 1;
 	old_pwd = getcwd(NULL, 0);
 	success = 0;
 	if (!args[1] || ft_strcmp(args[1], "~") == 0)
@@ -63,10 +63,14 @@ void	handle_cd(char **args, t_env_var *env)
 	else if (ft_strcmp(args[1], "-") == 0)
 		success = handle_oldpwd(env);
 	else if (chdir(args[1]) == -1)
+	{
 		print_cd_error(NULL, args[1], "No such file or directory\n");
+		return 1;
+	}
 	else
 		success = 1;
 	if (success)
 		update_pwd(env, old_pwd);
 	free(old_pwd);
+	return (0);
 }
