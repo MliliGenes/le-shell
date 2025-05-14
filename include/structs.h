@@ -6,7 +6,7 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 06:20:05 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/13 15:34:28 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/13 22:51:41 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,5 +154,12 @@ typedef struct s_expansion
 	int						len;
 	t_shell					*shell;
 }							t_expansion;
+
+typedef struct s_entry
+{
+	char					*value;
+	int						entry_len;
+	struct s_entry			*next;
+}							t_entry;
 
 #endif

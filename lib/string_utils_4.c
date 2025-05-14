@@ -6,11 +6,11 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 21:28:15 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/05/09 16:57:56 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/13 23:23:00 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lib.h"
+#include "../include/lib.h"
 
 static int	word_count(char *s, char sep)
 {
