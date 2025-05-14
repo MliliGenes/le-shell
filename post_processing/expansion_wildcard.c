@@ -6,7 +6,7 @@
 /*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 00:25:28 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/14 06:15:34 by le-saad          ###   ########.fr       */
+/*   Updated: 2025/05/14 18:36:03 by le-saad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,10 @@ static void	perform_bubble_sort(char **values, int count)
 	int		i;
 	int		j;
 	char	*temp;
+    int sorted;
 
 	i = 0;
+	sorted = 0;
 	while (i < count - 1)
 	{
 		j = 0;
@@ -49,9 +51,12 @@ static void	perform_bubble_sort(char **values, int count)
 				temp = values[j];
 				values[j] = values[j + 1];
 				values[j + 1] = temp;
+                sorted = 1;
 			}
 			j++;
 		}
+        if (!sorted)
+             break;
 		i++;
 	}
 }
