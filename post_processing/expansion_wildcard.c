@@ -6,7 +6,7 @@
 /*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 00:25:28 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/14 18:36:03 by le-saad          ###   ########.fr       */
+/*   Updated: 2025/05/14 18:42:26 by le-saad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static char	**copy_values_to_array(t_entry *head, int count)
 	t_entry	*current;
 	int		i;
 
-	values = (char **)malloc(sizeof(char *) * count);
+	values = (char **)malloc(sizeof(char *) * (count + 1));
 	if (!values)
 		return (NULL);
 	current = head;
@@ -29,6 +29,7 @@ static char	**copy_values_to_array(t_entry *head, int count)
 		current = current->next;
 		i++;
 	}
+    values[i] = NULL;
 	return (values);
 }
 
