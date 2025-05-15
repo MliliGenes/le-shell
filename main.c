@@ -86,7 +86,10 @@ void	shell_loop(t_shell *shell)
 			add_history(shell->input);
 			shell->parser = parse_input(shell->input);
 			if (shell->parser && shell->parser->holy_tree)
+			{
+				// open_here_docs(shell->parser->postfix_note);
 				shell->last_status = execute_ast_node(shell->parser->holy_tree,shell);
+			}
 			else
 				shell->last_status = 2;
 		}
@@ -115,7 +118,7 @@ int	main(int ac, char **av, char **envp)
 
 	(void)ac;
 	(void)av;
-	atexit(ll);
+	// atexit(ll);
 	if (init_shell(&shell, envp) != 0)
 		return (1);
 	shell_loop(&shell);

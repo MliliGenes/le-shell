@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 01:11:30 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/01 11:50:24 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/15 04:54:13 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ t_redir	*create_redir_node(t_redir_type type, char *file_or_limiter)
 	if (!redir || !file_or_limiter)
 		return (NULL);
 	redir->type = type;
+	redir->here_doc_read = -1;
 	redir->file_or_limiter = file_or_limiter;
 	redir->next = NULL;
 	return (redir);
@@ -50,6 +51,8 @@ void	free_redirs(t_redir *redirs)
 		redirs = redirs->next;
 		free(temp->file_or_limiter);
 		free(temp);
+		if (temp->here_doc_read != -1)
+			close(temp->here_doc_read);
 	}
 }
 

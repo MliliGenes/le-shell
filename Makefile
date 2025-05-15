@@ -16,6 +16,7 @@ INCLUDE_DIR = include
 BUILLTINS_DIR = builtins
 EXECUTION_DIR = execution
 EXEC_PROC_DIR = post_processing
+HEREDOC_DIR = heredoc
 
 SRC_FILES = main.c \
 	signals.c \
@@ -73,7 +74,8 @@ SRC_FILES = main.c \
 	$(EXEC_PROC_DIR)/entry_utils.c \
 	$(EXEC_PROC_DIR)/wildcard.c \
 	$(EXEC_PROC_DIR)/entry_operations.c \
-	$(EXEC_PROC_DIR)/expansion_wildcard.c 
+	$(EXEC_PROC_DIR)/expansion_wildcard.c \
+	$(HEREDOC_DIR)/open_here_docs.c
 
 
 OBJ_FILES = $(patsubst %.c, ${BUILD_DIR}/%.o, $(SRC_FILES))

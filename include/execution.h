@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 04:16:25 by le-saad           #+#    #+#             */
-/*   Updated: 2025/05/14 23:27:07 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/15 04:28:47 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,5 +66,7 @@ char	*join_entries(t_entry *head);
 int		wild_match(const char *input, const char *pattern);
 t_entry	*filter_entries_by_pattern(t_entry *old, const char *pattern);
 char	*expand_wildcard(char *arg);
+
+int open_here_docs(t_ready_token *tokens);
 
 #endif
