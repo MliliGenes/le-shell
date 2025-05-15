@@ -6,7 +6,7 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 15:54:34 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/15 20:38:07 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/15 21:16:36 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,8 @@ int	handle_exec(t_cmd *cmd, t_shell *shell)
 	if (WIFSIGNALED(status))
 		if (WTERMSIG(status) == SIGINT)
 			status = 130;
+		if (WTERMSIG(status) == SIGQUIT)
+			status = 131;
 	else if (WIFEXITED(status))
 		status = WEXITSTATUS(status);
 	return (free(cmd_path), free_2d(tmp_env), status);
