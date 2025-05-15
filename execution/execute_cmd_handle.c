@@ -6,7 +6,7 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 15:54:34 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/15 17:19:31 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/15 20:38:07 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ int	handle_builtin(t_cmd *cmd, t_shell *shell)
 static int	handle_child_process(t_cmd *cmd, char *cmd_path, char **tmp_env)
 {
 	apply_fds(cmd);
+	reset_signals_for_child();
 	execve(cmd_path, cmd->args, tmp_env);
 	perror("execve");
 	free(cmd_path);
