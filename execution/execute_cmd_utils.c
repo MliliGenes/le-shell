@@ -6,7 +6,7 @@
 /*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 02:40:06 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/15 11:43:21 by le-saad          ###   ########.fr       */
+/*   Updated: 2025/05/15 11:56:01 by le-saad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,5 @@ int	apply_redirections(t_cmd *cmd, t_shell *shell)
 			return (free_file(&file), status);
 		redir = redir->next;
 	}
-	free_file(&file);
-	return (0);
+	return (free_file(&file) , 0);
 }
