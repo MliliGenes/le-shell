@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_cmd_handle.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 15:54:34 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/15 06:30:59 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/15 10:03:47 by le-saad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int	handle_exec(t_cmd *cmd, t_shell *shell)
 	cmd_path = get_cmd_path(cmd, shell->path);
 	if (!cmd_path)
 	{
-		if (stat(cmd->cmd, &st) == 0 && access(cmd->cmd, F_OK) == -1)
+		if (stat(cmd->cmd, &st) == 0)
         {
             if (S_ISDIR(st.st_mode))
             {
