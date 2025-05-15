@@ -6,7 +6,7 @@
 /*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 08:49:15 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/14 07:53:32 by le-saad          ###   ########.fr       */
+/*   Updated: 2025/05/15 12:28:45 by le-saad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@
 # include <sys/stat.h>
 # include <unistd.h>
 
-# define PROMPT "\001\033[1;32m\002sel-shell\001\033[0m\002$ "
+# define PROMPT "sel-shell$ "
+// # define PROMPT "\001\033[1;32m\002sel-shell\001\033[0m\002$ "
 
 # define RESET "\033[0m"
 # define BLACK "\033[30m"
