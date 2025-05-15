@@ -6,7 +6,7 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 02:40:06 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/15 17:25:15 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/15 21:54:26 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,5 +89,6 @@ int	apply_redirections(t_cmd *cmd, t_shell *shell)
 			return (free_file(&file), status);
 		redir = redir->next;
 	}
-	return (free_file(&file) , 0);
+	free_file(&file);
+	return (0);
 }
