@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 01:11:30 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/15 05:08:57 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/15 11:41:54 by le-saad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,9 @@ void	free_redirs(t_redir *redirs)
 		temp = redirs;
 		redirs = redirs->next;
 		free(temp->file_or_limiter);
-		free(temp);
 		if (temp->here_doc_read != -1)
 			close(temp->here_doc_read);
+		free(temp);
 	}
 }
 
