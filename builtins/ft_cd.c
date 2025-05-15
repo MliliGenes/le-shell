@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 23:08:21 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/05/14 10:02:25 by le-saad          ###   ########.fr       */
+/*   Updated: 2025/05/15 07:40:26 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,6 @@ int	handle_cd(char **args, t_env_var *env)
 	char	*old_pwd;
 	int		success;
 
-	if (args[2] != NULL)
-		return 1;
 	old_pwd = getcwd(NULL, 0);
 	success = 0;
 	if (!args[1] || ft_strcmp(args[1], "~") == 0)

@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 00:23:32 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/14 23:45:23 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/15 05:18:47 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,21 +39,25 @@ static int	calculate_total_length(t_entry *head)
 static void	copy_to_buffer(t_entry *head, char *result)
 {
 	int		position;
-	int		is_first_entry;
+	int		first;
 	t_entry	*current;
+	int		i;
+	char	*value;
 
 	position = 0;
-	is_first_entry = 1;
+	first = 1;
 	current = head;
 	while (current)
 	{
 		if (current->value)
 		{
-			if (!is_first_entry)
+			if (!first)
 				result[position++] = ' ';
-			strcpy(result + position, mark_space(current->value));
-			position += current->entry_len;
-			is_first_entry = 0;
+			i = 0;
+			value = mark_space(current->value);
+			while (value[i] != '\0')
+				result[position++] = value[i++];
+			first = 0;
 		}
 		current = current->next;
 	}
@@ -62,11 +66,13 @@ static void	copy_to_buffer(t_entry *head, char *result)
 
 char	*join_entries(t_entry *head)
 {
+	int		total_len;
+	char	*result;
+
 	if (!head)
 		return (NULL);
-
-	int total_len = calculate_total_length(head);
-	char *result = malloc(total_len);
+	total_len = calculate_total_length(head);
+	result = malloc(total_len);
 	if (!result)
 		return (NULL);
 	copy_to_buffer(head, result);

@@ -63,13 +63,17 @@ void	cleanup_iteration(t_shell *shell)
 		free(shell->input);
 }
 
-char* prompt_stderr(const char* prompt) {
-    int stdout_save = dup(STDOUT_FILENO);
-    dup2(STDERR_FILENO, STDOUT_FILENO);
-    char* input = readline(prompt);
-    dup2(stdout_save, STDOUT_FILENO);
-    close(stdout_save);
-    return input;
+char	*prompt_stderr(const char *prompt)
+{
+	int		stdout_save;
+	char	*input;
+
+	stdout_save = dup(STDOUT_FILENO);
+	dup2(STDERR_FILENO, STDOUT_FILENO);
+	input = readline(prompt);
+	dup2(stdout_save, STDOUT_FILENO);
+	close(stdout_save);
+	return (input);
 }
 
 void	shell_loop(t_shell *shell)
@@ -87,15 +91,17 @@ void	shell_loop(t_shell *shell)
 			shell->parser = parse_input(shell->input);
 			if (shell->parser && shell->parser->holy_tree)
 			{
-				// open_here_docs(shell->parser->postfix_note);
-				shell->last_status = execute_ast_node(shell->parser->holy_tree,shell);
+				if (open_here_docs(shell->parser->postfix_note))
+					break ;
+				shell->last_status = execute_ast_node(shell->parser->holy_tree,
+						shell);
 			}
 			else
 				shell->last_status = 2;
 		}
 		cleanup_iteration(shell);
-		if (!shell->running)	
-			break;
+		if (!shell->running)
+			break ;
 	}
 }
 
@@ -107,14 +113,14 @@ void	cleanup_shell(t_shell *shell)
 		free_2d(shell->path);
 }
 
-void ll()
+void	ll(void)
 {
 	system("leaks -q minishell");
 }
 
 int	main(int ac, char **av, char **envp)
 {
-	t_shell shell;
+	t_shell	shell;
 
 	(void)ac;
 	(void)av;

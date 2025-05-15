@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 04:16:25 by le-saad           #+#    #+#             */
-/*   Updated: 2025/05/15 04:28:47 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/15 05:48:58 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ int		handle_ambiguous(char *name, char *raw);
 int		handle_redir_in(t_cmd *cmd, t_file *file);
 int		handle_redir_out(t_cmd *cmd, t_file *file);
 int		handle_redir_append(t_cmd *cmd, t_file *file);
-int		handle_redir_heredoc(t_cmd *cmd, t_file *file);
+int		handle_redir_heredoc(t_cmd *cmd, t_redir *redir, t_file *file,
+			t_shell *shell);
 
 int		handle_pipe(t_ast *node, t_shell *shell);
 int		handle_and(t_ast *node, t_shell *shell);
@@ -67,6 +68,7 @@ int		wild_match(const char *input, const char *pattern);
 t_entry	*filter_entries_by_pattern(t_entry *old, const char *pattern);
 char	*expand_wildcard(char *arg);
 
-int open_here_docs(t_ready_token *tokens);
+int		open_here_docs(t_ready_token *tokens);
+char	*get_line(int fd);
 
 #endif

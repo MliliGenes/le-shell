@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 02:40:06 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/14 22:31:55 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/15 06:19:43 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ char	*get_cmd_path(t_cmd *cmd, char **paths)
 	return (NULL);
 }
 
-static void free_file(t_file *file)
+static void	free_file(t_file *file)
 {
 	free(file->name);
 	free(file->limiter);
@@ -57,14 +57,12 @@ static void	init_file_name(t_file *file, char *origin, t_shell *shell)
 	free(tmp);
 	file->name = ready;
 	if (ft_strcmp(buff, ready) == 0)
-	    file->has_quotes = false;
+		file->has_quotes = false;
 	else
-	    file->has_quotes = true;
+		file->has_quotes = true;
 	file->limiter = remove_quotes(buff);
 }
 
-// else if (redir->type == REDIR_HEREDOC)
-// status = handle_redir_heredoc(cmd, redir);
 int	apply_redirections(t_cmd *cmd, t_shell *shell)
 {
 	t_redir	*redir;
@@ -75,6 +73,7 @@ int	apply_redirections(t_cmd *cmd, t_shell *shell)
 	file.name = NULL;
 	file.limiter = NULL;
 	file.raw = NULL;
+	status = 0;
 	while (redir)
 	{
 		init_file_name(&file, redir->file_or_limiter, shell);
@@ -84,10 +83,12 @@ int	apply_redirections(t_cmd *cmd, t_shell *shell)
 			status = handle_redir_out(cmd, &file);
 		else if (redir->type == REDIR_APPEND)
 			status = handle_redir_append(cmd, &file);
+		else if (redir->type == REDIR_HEREDOC)
+			status = handle_redir_heredoc(cmd, redir, &file, shell);
 		if (status != 0)
 			return (free_file(&file), status);
 		redir = redir->next;
 	}
-    free_file(&file);
+	free_file(&file);
 	return (0);
 }

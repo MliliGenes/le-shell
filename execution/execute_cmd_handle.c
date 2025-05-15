@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   execute_cmd_handle.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 15:54:34 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/14 21:52:37 by le-saad          ###   ########.fr       */
+/*   Updated: 2025/05/15 06:30:59 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/execution.h"
 #include "../include/parsing.h"
+#include <stdio.h>
 
 int	handle_builtin(t_cmd *cmd, t_shell *shell)
 {
@@ -112,8 +113,7 @@ int	handle_exec(t_cmd *cmd, t_shell *shell)
 int	execute_command(t_cmd *cmd, t_shell *shell)
 {
 	if (!cmd)
-		return (1);
-	update_cmd_node(cmd, shell);
+		return (1);	update_cmd_node(cmd, shell);
 	if (cmd->redirs && apply_redirections(cmd, shell))
 		return (1);
 	if (!cmd->cmd || !cmd->cmd[0])

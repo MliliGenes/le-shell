@@ -62,6 +62,7 @@ SRC_FILES = main.c \
 	$(EXECUTION_DIR)/redir_utils.c \
 	$(EXECUTION_DIR)/pipe.c \
 	$(EXECUTION_DIR)/and_or.c \
+	$(EXECUTION_DIR)/readfile.c \
 	$(EXEC_PROC_DIR)/args_utils.c \
 	$(EXEC_PROC_DIR)/expention_utils.c \
 	$(EXEC_PROC_DIR)/expension.c \
@@ -90,7 +91,7 @@ RESET	= \033[0m
 
 all: $(NAME)
 	@printf "$(GREEN)✅  Cleaned terminal$(RESET)\n"
-	# @clear
+	@clear
 
 run: re
 	@printf "$(GREEN)✅  Cleaned terminal$(RESET)\n"
