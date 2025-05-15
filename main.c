@@ -93,7 +93,7 @@ void	shell_loop(t_shell *shell)
 			{
 				if (open_here_docs(shell->parser->postfix_note))
 				{
-					shell->last_status = 130;
+					shell->last_status = 1;
 					continue ;
 				}
 				shell->last_status = execute_ast_node(shell->parser->holy_tree,
