@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_cmd_handle.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 15:54:34 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/15 10:03:47 by le-saad          ###   ########.fr       */
+/*   Updated: 2025/05/15 17:19:31 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,12 @@ int	handle_exec(t_cmd *cmd, t_shell *shell)
 		handle_child_process(cmd, cmd_path, tmp_env);
 	cleanup_fds(cmd);
 	waitpid(pid, &status, 0);
-	return (free(cmd_path), free_2d(tmp_env), WEXITSTATUS(status));
+	if (WIFSIGNALED(status))
+		if (WTERMSIG(status) == SIGINT)
+			status = 130;
+	else if (WIFEXITED(status))
+		status = WEXITSTATUS(status);
+	return (free(cmd_path), free_2d(tmp_env), status);
 }
 
 int	execute_command(t_cmd *cmd, t_shell *shell)

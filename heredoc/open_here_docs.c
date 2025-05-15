@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   open_here_docs.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 06:17:40 by le-saad           #+#    #+#             */
-/*   Updated: 2025/05/15 07:34:29 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/15 17:03:15 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,10 @@ int	pipe_fork_write(t_redir *redirs)
 	}
 	free(limiter);
 	close(fd[1]);
-	waitpid(pid, &status, 0);
-	status = WEXITSTATUS(status);
+	waitpid(pid, &status, 0);        
+	if (WIFSIGNALED(status))
+		if (WTERMSIG(status) == SIGINT)
+			status = 130;
 	if (status != 0)
 	{
 		close(fd[0]);
