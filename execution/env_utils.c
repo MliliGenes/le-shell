@@ -1,16 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_utils.c                                       :+:      :+:    :+:   */
+/*   env_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 21:34:57 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/05/08 19:37:58 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/16 03:42:57 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/execution.h"
+#include "../include/parsing.h"
 
 static int	count_nodes(t_env_var *env)
 {
@@ -67,4 +68,18 @@ char	**env_to_array(t_env_var *env)
 		tmp = tmp->next;
 	}
 	return (arr[count] = NULL, arr);
+}
+
+int	empty(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str && str[i])
+	{
+		if (!is_white_space(str[i]))
+			return (0);
+		i++;
+	}
+	return (1);
 }

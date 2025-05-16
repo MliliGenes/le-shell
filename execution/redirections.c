@@ -6,27 +6,12 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 00:05:57 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/05/15 07:35:00 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/16 03:42:36 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/execution.h"
 #include "../include/parsing.h"
-#include <stdio.h>
-
-static int	empty(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str && str[i])
-	{
-		if (!is_white_space(str[i]))
-			return (0);
-		i++;
-	}
-	return (1);
-}
 
 int	handle_ambiguous(char *name, char *raw)
 {
@@ -91,34 +76,6 @@ int	handle_redir_append(t_cmd *cmd, t_file *file)
 	if (cmd->fds[1] != STDOUT_FILENO)
 		close(cmd->fds[1]);
 	cmd->fds[1] = fd;
-	return (0);
-}
-
-int	update_heredoc_pipe(t_redir *redir, t_file *file, t_shell *shell)
-{
-	char	*line;
-	char	*tmp;
-	int		fd[2];
-
-	if (pipe(fd) == -1)
-	{
-		perror("pipe");
-		return (1);
-	}
-	while (true)
-	{
-		line = get_line(redir->here_doc_read);
-		if (!line)
-			break ;
-		tmp = line;
-		line = expand_vars(tmp, shell);
-		free(tmp);
-		write(fd[1], line, ft_strlen(line));
-		free(line);
-	}
-	close(fd[1]);
-	close(redir->here_doc_read);
-	redir->here_doc_read = fd[0];
 	return (0);
 }
 
