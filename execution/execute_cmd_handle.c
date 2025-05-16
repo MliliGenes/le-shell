@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   execute_cmd_handle.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/08 15:54:34 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/15 17:19:31 by ssbaytri         ###   ########.fr       */
+/*   Created: 2025/05/16 01:14:29 by sel-mlil          #+#    #+#             */
+/*   Updated: 2025/05/16 01:14:35 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/execution.h"
 #include "../include/parsing.h"
-#include <stdio.h>
+#include "../include/signals.h"
 
 int	handle_builtin(t_cmd *cmd, t_shell *shell)
 {
@@ -33,6 +33,7 @@ int	handle_builtin(t_cmd *cmd, t_shell *shell)
 
 static int	handle_child_process(t_cmd *cmd, char *cmd_path, char **tmp_env)
 {
+	reset_signals_for_child();
 	apply_fds(cmd);
 	execve(cmd_path, cmd->args, tmp_env);
 	perror("execve");

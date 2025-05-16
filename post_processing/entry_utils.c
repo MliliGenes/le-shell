@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 00:22:35 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/14 00:59:55 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/16 01:19:25 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,21 +31,26 @@ void	add_back_entry(t_entry **head, t_entry *new)
 
 t_entry	*get_all_entries(void)
 {
-	DIR *dir = opendir(".");
+	DIR				*dir;
+	t_entry			*head;
+	struct dirent	*entry;
+	t_entry			*new;
+
+	dir = opendir(".");
 	if (!dir)
 		return (perror("opendir"), NULL);
-
-	t_entry *head = NULL;
-	struct dirent *entry;
-	while ((entry = readdir(dir)))
+	head = NULL;
+	entry = readdir(dir);
+	while (entry)
 	{
-		t_entry *new = create_entry(entry->d_name);
+		new = create_entry(entry->d_name);
 		if (!new)
 		{
 			free_entry_list(head);
 			return (NULL);
 		}
 		add_back_entry(&head, new);
+		entry = readdir(dir);
 	}
 	closedir(dir);
 	return (head);

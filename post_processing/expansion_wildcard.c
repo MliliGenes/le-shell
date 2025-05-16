@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 00:25:28 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/14 23:00:33 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/16 01:18:35 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static char	**copy_values_to_array(t_entry *head, int count)
 		current = current->next;
 		i++;
 	}
-    values[i] = NULL;
+	values[i] = NULL;
 	return (values);
 }
 
@@ -38,7 +38,7 @@ static void	perform_bubble_sort(char **values, int count)
 	int		i;
 	int		j;
 	char	*temp;
-    int sorted;
+	int		sorted;
 
 	i = 0;
 	sorted = 0;
@@ -52,12 +52,12 @@ static void	perform_bubble_sort(char **values, int count)
 				temp = values[j];
 				values[j] = values[j + 1];
 				values[j + 1] = temp;
-                sorted = 1;
+				sorted = 1;
 			}
 			j++;
 		}
-        if (!sorted)
-             break;
+		if (!sorted)
+			break ;
 		i++;
 	}
 }
@@ -81,17 +81,17 @@ int	sort_entries_bubble(t_entry *head)
 {
 	char	**values;
 	int		count;
-    t_entry *current;
+	t_entry	*current;
 
 	if (!head || !head->next)
 		return (0);
-    current = head;
+	current = head;
 	count = 0;
-    while (current)
-    {
-        count++;
-        current = current->next;
-    }
+	while (current)
+	{
+		count++;
+		current = current->next;
+	}
 	values = copy_values_to_array(head, count);
 	if (!values)
 		return (-1);

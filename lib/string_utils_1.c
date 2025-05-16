@@ -3,13 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   string_utils_1.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/05/09 18:11:37 by ssbaytri         ###   ########.fr       */
+/*   Created: 2025/05/16 01:21:05 by sel-mlil          #+#    #+#             */
+/*   Updated: 2025/05/16 01:21:08 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "../include/lib.h"
 

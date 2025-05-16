@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 06:20:05 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/15 06:03:42 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/16 01:21:21 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,7 @@ typedef struct s_shell
 	char					**path;
 	t_parser				*parser;
 	int						running;
-	char                    *input;
+	char					*input;
 }							t_shell;
 
 typedef struct s_expansion

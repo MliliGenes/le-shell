@@ -13,7 +13,6 @@
 #include "include/execution.h"
 #include "include/parsing.h"
 #include "include/signals.h"
-#include <stdlib.h>
 
 int	execute_ast_node(t_ast *node, t_shell *shell)
 {

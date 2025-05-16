@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expension.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 16:36:33 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/14 07:45:05 by le-saad          ###   ########.fr       */
+/*   Updated: 2025/05/16 01:18:28 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,13 @@ void	process_variable_length(t_expansion *exp)
 	start = exp->i_index;
 	exp->len--;
 	if (exp->input[exp->i_index] == '?')
-    {
-        exp->len += handle_exit_status(exp);
-        return;
-    }
+	{
+		exp->len += handle_exit_status(exp);
+		return ;
+	}
 	while (exp->input[exp->i_index] && (ft_isalnum(exp->input[exp->i_index])
-			|| exp->input[exp->i_index] == '_' || exp->input[exp->i_index] == '?'))
+			|| exp->input[exp->i_index] == '_'
+			|| exp->input[exp->i_index] == '?'))
 	{
 		exp->len--;
 		exp->i_index++;
@@ -63,7 +64,6 @@ char	*extract_var_name(t_expansion *exp)
 
 	start = exp->i_index;
 	length = 0;
-	
 	while (exp->input[exp->i_index] && (ft_isalnum(exp->input[exp->i_index])
 			|| exp->input[exp->i_index] == '_'
 			|| exp->input[exp->i_index] == '?'))
@@ -82,18 +82,18 @@ void	expand_variable(t_expansion *exp)
 
 	value_index = 0;
 	exp->i_index++;
-	   if (exp->input[exp->i_index] == '?')
-    {
-        exp->i_index++;
-        value = ft_itoa(exp->shell->last_status);
-        if (value)
-        {
-            while (value[value_index])
-                exp->output[exp->o_index++] = value[value_index++];
-            free(value);
-        }
-        return;
-    }
+	if (exp->input[exp->i_index] == '?')
+	{
+		exp->i_index++;
+		value = ft_itoa(exp->shell->last_status);
+		if (value)
+		{
+			while (value[value_index])
+				exp->output[exp->o_index++] = value[value_index++];
+			free(value);
+		}
+		return ;
+	}
 	key = extract_var_name(exp);
 	value = find_env_var(exp->shell, key);
 	while (value && value[value_index])
@@ -107,7 +107,7 @@ char	*expand_vars(char *input, t_shell *shell)
 	t_expansion	exp;
 
 	if (!input)
-		return NULL;
+		return (NULL);
 	init_expansion(&exp, input, shell);
 	calc_exp_len(&exp);
 	exp.output = (char *)malloc(exp.len + 1);

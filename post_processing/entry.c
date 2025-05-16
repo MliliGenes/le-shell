@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 00:22:09 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/14 00:22:16 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/16 01:19:36 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,8 @@ void	free_entry(t_entry *entry)
 
 void	free_entry_list(t_entry *head)
 {
-	t_entry *tmp;
+	t_entry	*tmp;
+
 	while (head)
 	{
 		tmp = head;

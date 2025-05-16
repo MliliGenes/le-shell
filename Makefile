@@ -2,7 +2,7 @@ CC = cc
 ERRORS = #-Wall -Wextra -Werror
 SANITIZER = -fsanitize=address -g3
 CFLAGS = $(ERRORS) -O3 $(SANITIZER)
-LIB = -L/goinfre/ssbaytri/homebrew/opt/readline/lib -lreadline 
+LIB = -L/goinfre/sel-mlil/homebrew/opt/readline/lib -lreadline 
 
 NAME = minishell
 
@@ -81,7 +81,7 @@ SRC_FILES = main.c \
 
 OBJ_FILES = $(patsubst %.c, ${BUILD_DIR}/%.o, $(SRC_FILES))
 
-INC_FLAGS = -I$(INCLUDE_DIR) -I/goinfre/ssbaytri/homebrew/opt/readline/include/readline
+INC_FLAGS = -I$(INCLUDE_DIR) -I"goinfre/sel-mlil/homebrew/opt/readline/include/readline"
 
 GREEN	= \033[0;32m
 YELLOW	= \033[0;33m
@@ -102,7 +102,7 @@ run: re
 
 ${NAME}: ${OBJ_FILES}
 	@printf "$(YELLOW)🔨  Linking objects...$(RESET)\n"
-	@$(CC) $(CFLAGS) ${OBJ_FILES} $(LIB) -o ${NAME}
+	@$(CC) $(CFLAGS) ${OBJ_FILES} $(INC_FLAGS) $(LIB) -o ${NAME}
 	@printf "$(GREEN)✅  Executable $(NAME) created$(RESET)\n"
 
 $(BUILD_DIR)/%.o: %.c

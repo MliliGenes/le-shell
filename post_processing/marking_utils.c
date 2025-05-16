@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 23:09:35 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/14 23:30:47 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/16 01:17:08 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ char	unprintable_to_whitespace(char code)
 	else
 		return (code);
 }
-
 
 char	*mark_space(char *str)
 {

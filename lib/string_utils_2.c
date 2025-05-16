@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   string_utils_2.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/05/14 08:24:34 by le-saad          ###   ########.fr       */
+/*   Created: 2025/05/16 01:20:46 by sel-mlil          #+#    #+#             */
+/*   Updated: 2025/05/16 01:20:51 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,16 +36,17 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	return (ptr);
 }
 
-int ft_isalpha(char c)
+int	ft_isalpha(char c)
 {
 	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
-		return 1;
-	return 0;
+		return (1);
+	return (0);
 }
 
 int	ft_isalnum(int c)
 {
-	if (((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) || (c >= '0' && c <= '9'))
+	if (((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) || (c >= '0'
+			&& c <= '9'))
 		return (1);
 	return (0);
 }

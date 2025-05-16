@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   open_here_docs.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 06:17:40 by le-saad           #+#    #+#             */
-/*   Updated: 2025/05/15 17:03:15 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/16 01:14:00 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/execution.h"
 #include "../include/signals.h"
-#include <unistd.h>
 
 char	*trunc_newline(char *line)
 {
@@ -50,7 +49,7 @@ int	pipe_fork_write(t_redir *redirs)
 	}
 	if (pid == 0)
 	{
-		reset_signals_for_child();
+		reset_signals_for_heredoc();
 		close(fd[0]);
 		while (true)
 		{
