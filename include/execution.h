@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 04:16:25 by le-saad           #+#    #+#             */
-/*   Updated: 2025/05/15 05:48:58 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/16 03:35:08 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,10 @@ t_entry	*filter_entries_by_pattern(t_entry *old, const char *pattern);
 char	*expand_wildcard(char *arg);
 
 int		open_here_docs(t_ready_token *tokens);
+int		setup_pipe(int fd[2]);
+void	handle_heredoc_child_process(int fd[2], char *limiter);
+pid_t	create_heredoc_process(int fd[2], char *limiter);
+int		wait_for_heredoc_process(pid_t pid);
 char	*get_line(int fd);
 
 #endif

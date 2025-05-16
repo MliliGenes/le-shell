@@ -6,76 +6,32 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 06:17:40 by le-saad           #+#    #+#             */
-/*   Updated: 2025/05/16 01:14:00 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/16 03:35:18 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/execution.h"
-#include "../include/signals.h"
 
-char	*trunc_newline(char *line)
-{
-	char	*str;
-
-	str = ft_strdup(line);
-	if (!str)
-		return (NULL);
-	str[ft_strlen(str) - 1] = '\0';
-	return (str);
-}
 
 int	pipe_fork_write(t_redir *redirs)
 {
 	int		fd[2];
 	pid_t	pid;
 	int		status;
-	char	*line;
-	char	*line_tmp;
 	char	*limiter;
 
 	limiter = remove_quotes(mark_quotes(redirs->file_or_limiter));
-	if (pipe(fd) == -1)
-	{
-		perror("pipe");
+	if (setup_pipe(fd) != 0)
 		return (1);
-	}
-	pid = fork();
+	pid = create_heredoc_process(fd, limiter);
 	if (pid == -1)
 	{
-		perror("fork");
-		close(fd[0]);
-		close(fd[1]);
+		free(limiter);
 		return (1);
-	}
-	if (pid == 0)
-	{
-		reset_signals_for_heredoc();
-		close(fd[0]);
-		while (true)
-		{
-			write(STDOUT_FILENO, "> ", 2);
-			line = get_line(STDIN_FILENO);
-			line_tmp = trunc_newline(line);
-			if (!line || ft_strcmp(line_tmp, limiter) == 0)
-			{
-                free(line_tmp);
-				break ;
-			}
-            free(line_tmp);
-			write(fd[1], line, ft_strlen(line));
-			free(line);
-		}
-		if (line)
-			free(line);
-		close(fd[1]);
-		exit(0);
 	}
 	free(limiter);
 	close(fd[1]);
-	waitpid(pid, &status, 0);        
-	if (WIFSIGNALED(status))
-		if (WTERMSIG(status) == SIGINT)
-			status = 130;
+	status = wait_for_heredoc_process(pid);
 	if (status != 0)
 	{
 		close(fd[0]);

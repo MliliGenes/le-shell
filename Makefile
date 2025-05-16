@@ -1,6 +1,6 @@
 CC = cc
 ERRORS = #-Wall -Wextra -Werror
-SANITIZER = -fsanitize=address -g3
+SANITIZER = #-fsanitize=address -g3
 CFLAGS = $(ERRORS) -O3 $(SANITIZER)
 LIB = -L/goinfre/sel-mlil/homebrew/opt/readline/lib -lreadline 
 
@@ -26,7 +26,6 @@ SRC_FILES = main.c \
 	$(LIB_DIR)/string_utils_4.c \
 	$(LIB_DIR)/string_utils_5.c \
 	$(LIB_DIR)/error_utils.c \
-	$(LIB_DIR)/printing_tools.c \
 	$(TOKENIZER_DIR)/token_classification.c \
 	$(TOKENIZER_DIR)/token_handling.c \
 	$(TOKENIZER_DIR)/token_utils.c \
