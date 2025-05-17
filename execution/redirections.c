@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 00:05:57 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/05/17 09:57:51 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/17 23:49:18 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	handle_redir_out(t_cmd *cmd, t_file *file)
 {
 	int	fd;
 
-	if (file->has_quotes == false && handle_ambiguous(file->name, file->raw))
+	if (!file->has_quotes && handle_ambiguous(file->name, file->raw))
 		return (1);
 	fd = open(file->name, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd < 0)
@@ -65,7 +65,7 @@ int	handle_redir_append(t_cmd *cmd, t_file *file)
 {
 	int	fd;
 
-	if (file->has_quotes == false && handle_ambiguous(file->name, file->raw))
+	if (!file->has_quotes && handle_ambiguous(file->name, file->raw))
 		return (1);
 	fd = open(file->name, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (fd < 0)

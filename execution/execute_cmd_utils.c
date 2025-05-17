@@ -6,11 +6,13 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 02:40:06 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/17 23:34:05 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/18 00:33:23 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/execution.h"
+#include <stdbool.h>
+#include <stdio.h>
 
 int	check_path(t_cmd *path)
 {
@@ -84,19 +86,18 @@ static void	init_file_name(t_file *file, char *origin, t_shell *shell)
 
 	free_file(file);
 	file->raw = ft_strdup(origin);
+	file->has_quotes = true;
 	buff = mark_quotes(file->raw);
 	buff = mark_astrestisk(buff);
 	ready = expand_vars(buff, shell);
 	ready = expand_wildcard(ready);
 	ready = reset_astrestisk(ready);
+	if (holy_count_words(ready) > 1)
+		file->has_quotes = false;
 	tmp = ready;
 	ready = remove_quotes(ready);
 	free(tmp);
 	file->name = ready;
-	if (ft_strcmp(buff, ready) == 0)
-		file->has_quotes = false;
-	else
-		file->has_quotes = true;
 	file->limiter = remove_quotes(buff);
 }
 
