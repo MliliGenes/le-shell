@@ -6,7 +6,7 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 06:17:40 by le-saad           #+#    #+#             */
-/*   Updated: 2025/05/15 20:46:06 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/15 22:38:58 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ char	*trunc_newline(char *line)
 	str = ft_strdup(line);
 	if (!str)
 		return (NULL);
-	str[ft_strlen(str) - 1] = '\0';
+	if (str[ft_strlen(str) - 1] == '\n')
+		str[ft_strlen(str) - 1] = '\0';
 	return (str);
 }
 
@@ -54,16 +55,11 @@ int	pipe_fork_write(t_redir *redirs)
 		close(fd[0]);
 		while (true)
 		{
-			write(STDOUT_FILENO, "> ", 2);
-			line = get_line(STDIN_FILENO);
-			line_tmp = trunc_newline(line);
-			if (!line || ft_strcmp(line_tmp, limiter) == 0)
-			{
-                free(line_tmp);
+			line = readline("> ");
+			if (!line || ft_strcmp(line, limiter) == 0)
 				break ;
-			}
-            free(line_tmp);
 			write(fd[1], line, ft_strlen(line));
+			write(fd[1], "\n", 1);
 			free(line);
 		}
 		if (line)
@@ -73,10 +69,11 @@ int	pipe_fork_write(t_redir *redirs)
 	}
 	free(limiter);
 	close(fd[1]);
-	waitpid(pid, &status, 0);        
-	if (WIFSIGNALED(status))
-		if (WTERMSIG(status) == SIGINT)
-			status = 130;
+	waitpid(pid, &status, 0);
+	status = WEXITSTATUS(status);
+	// if (WIFSIGNALED(status))
+	// 	if (WTERMSIG(status) == SIGINT)
+	// 		status = 130;
 	if (status != 0)
 	{
 		close(fd[0]);

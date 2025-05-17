@@ -3,18 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   readfile.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 05:24:36 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/15 07:22:37 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/15 22:15:32 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/execution.h"
-
-#ifndef BUFFER_SIZE
-# define BUFFER_SIZE 42
-#endif
 
 char	*get_line(int fd)
 {

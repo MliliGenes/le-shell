@@ -13,7 +13,6 @@
 #include "include/execution.h"
 #include "include/parsing.h"
 #include "include/signals.h"
-#include <stdlib.h>
 
 int	execute_ast_node(t_ast *node, t_shell *shell)
 {
@@ -78,7 +77,6 @@ char	*prompt_stderr(const char *prompt)
 
 void	shell_loop(t_shell *shell)
 {
-	setup_signals();
 	rl_bind_key('\t', rl_complete);
 	while (shell->running)
 	{
@@ -92,10 +90,8 @@ void	shell_loop(t_shell *shell)
 			if (shell->parser && shell->parser->holy_tree)
 			{
 				if (open_here_docs(shell->parser->postfix_note))
-				{
-					shell->last_status = 1;
 					continue ;
-				}
+				setup_signals();
 				shell->last_status = execute_ast_node(shell->parser->holy_tree,
 						shell);
 			}
