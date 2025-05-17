@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   export_env.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 16:49:28 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/05/11 18:06:21 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/17 17:23:40 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/builtins.h"
-#include "../include/parsing.h"
 
 char	get_quotes_edges(char *str)
 {

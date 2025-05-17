@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 13:12:52 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/17 17:20:52 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/17 17:22:51 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,6 @@ int	execute_ast_node(t_ast *node, t_shell *shell)
 			return (handle_or(node, shell));
 	}
 	return (1);
-}
-
-void	ll(void)
-{
-	system("leaks minishell");
 }
 
 int	main(int ac, char **av, char **envp)
