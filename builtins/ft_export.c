@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 21:42:50 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/05/14 22:17:11 by le-saad          ###   ########.fr       */
+/*   Updated: 2025/05/16 07:08:19 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ int	handle_export(char **args, t_env_var **env_list)
 	if (!args[i])
 	{
 		print_export(*env_list);
-		return 0;
+		return (0);
 	}
 	while (args[i])
 	{
@@ -123,11 +123,11 @@ int	handle_export(char **args, t_env_var **env_list)
 			ft_putstr_fd("export: `", 2);
 			ft_putstr_fd(args[i], 2);
 			ft_putstr_fd("': not a valid identifier\n", 2);
-			return 1;
+			return (1);
 		}
 		else
 			process_export_arg(args[i], env_list);
 		i++;
 	}
-	return 0;
+	return (0);
 }

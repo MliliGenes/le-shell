@@ -3,21 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   execute_cmd_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 02:40:06 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/15 22:00:06 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/17 08:59:59 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/execution.h"
+
+bool	is_path(char *path)
+{
+	return (*path == '.' || *path == '/');
+}
 
 char	*get_cmd_path(t_cmd *cmd, char **paths)
 {
 	char	*tmp;
 	char	*full_path;
 
-	if (access(cmd->cmd, F_OK) == 0 && access(cmd->cmd, X_OK) == 0)
+	if (is_path(cmd->cmd) && access(cmd->cmd, F_OK) == 0 && access(cmd->cmd, X_OK) == 0)
 		return (ft_strdup(cmd->cmd));
 	while (paths && *paths)
 	{
@@ -89,6 +94,5 @@ int	apply_redirections(t_cmd *cmd, t_shell *shell)
 			return (free_file(&file), status);
 		redir = redir->next;
 	}
-	free_file(&file);
-	return (0);
+	return (free_file(&file), 0);
 }

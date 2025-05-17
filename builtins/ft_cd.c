@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 23:08:21 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/05/15 07:40:26 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/16 07:09:06 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	handle_cd(char **args, t_env_var *env)
 	{
 		free(old_pwd);
 		print_cd_error(NULL, args[1], "No such file or directory\n");
-		return 1;
+		return (1);
 	}
 	else
 		success = 1;

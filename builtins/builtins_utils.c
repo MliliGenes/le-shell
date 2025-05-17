@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 21:19:45 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/05/15 16:11:05 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/16 07:08:48 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,11 @@ int	execute_builtin(t_cmd *cmd, t_shell *shell)
 	return (0);
 }
 
-int execute_builtins_with_redir(t_cmd *cmd, t_shell *shell)
+int	execute_builtins_with_redir(t_cmd *cmd, t_shell *shell)
 {
-	int saved_stdin;
-	int saved_stdout;
-	int result;
+	int	saved_stdin;
+	int	saved_stdout;
+	int	result;
 
 	saved_stdin = dup(STDIN_FILENO);
 	saved_stdout = dup(STDOUT_FILENO);
