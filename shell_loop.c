@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 14:46:30 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/17 14:58:18 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/17 16:49:44 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ char	*prompt_stderr(const char *prompt)
 
 void	shell_loop(t_shell *shell)
 {
+	int	status;
+
 	setup_signals();
 	while (shell->running)
 	{
@@ -56,10 +58,11 @@ void	shell_loop(t_shell *shell)
 			shell->parser = parse_input(shell->input);
 			if (shell->parser && shell->parser->holy_tree)
 			{
-				if (open_here_docs(shell->parser->postfix_note))
+				status = open_here_docs(shell->parser->postfix_note);
+				if (status)
 				{
-					shell->last_status = 1;
 					cleanup_iteration(shell);
+					shell->last_status = status;
 					continue ;
 				}
 				shell->last_status = execute_ast_node(shell->parser->holy_tree,
