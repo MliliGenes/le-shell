@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 04:56:00 by le-saad           #+#    #+#             */
-/*   Updated: 2025/05/16 03:40:32 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/17 13:40:46 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,4 +34,12 @@ int	handle_or(t_ast *node, t_shell *shell)
 		return (execute_ast_node(node->right, shell));
 	}
 	return (left_status);
+}
+
+void	get_child_status(int *status)
+{
+	if (WIFSIGNALED(*status))
+		*status = 128 + WTERMSIG(*status);
+	else if (WIFEXITED(*status))
+		*status = WEXITSTATUS(*status);
 }

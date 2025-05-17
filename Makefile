@@ -1,8 +1,8 @@
 CC = cc
-ERRORS = #-Wall -Wextra -Werror
+ERRORS = -Wall -Wextra -Werror
 SANITIZER = #-fsanitize=address -g3
 CFLAGS = $(ERRORS) -O3 $(SANITIZER)
-LIB = -L/goinfre/sel-mlil/homebrew/opt/readline/lib -lreadline 
+LIB = -L ~/goinfre/homebrew/opt/readline/lib -lreadline 
 
 NAME = minishell
 
@@ -20,6 +20,7 @@ HEREDOC_DIR = heredoc
 
 SRC_FILES = main.c \
 	signals.c \
+	shell_loop.c \
 	$(LIB_DIR)/string_utils_1.c \
 	$(LIB_DIR)/string_utils_2.c \
 	$(LIB_DIR)/string_utils_3.c \

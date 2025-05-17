@@ -6,12 +6,13 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 03:33:27 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/16 03:41:59 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/17 15:05:58 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/execution.h"
 #include "../include/signals.h"
+#include <sys/wait.h>
 
 int	setup_pipe(int fd[2])
 {
@@ -31,7 +32,7 @@ void	handle_heredoc_child_process(int fd[2], char *limiter)
 	close(fd[0]);
 	while (true)
 	{
-		line = readline("heredoc > ");
+		line = readline("sel-doc > ");
 		if (!line || ft_strcmp(line, limiter) == 0)
 		{
 			free(line);
@@ -67,12 +68,12 @@ int	wait_for_heredoc_process(pid_t pid)
 	int	status;
 
 	waitpid(pid, &status, 0);
-	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
-		status = 130;
-	return (status);
+	if (WIFSIGNALED(status))
+		status = 128 + WTERMSIG(status);
+	return (WEXITSTATUS(status));
 }
 
-int	update_heredoc_pipe(t_redir *redir, t_file *file, t_shell *shell)
+int	update_heredoc_pipe(t_redir *redir, t_shell *shell)
 {
 	char	*line;
 	char	*tmp;

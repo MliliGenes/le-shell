@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 18:34:28 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/05/15 08:16:30 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/17 09:50:56 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,6 @@ static int	calculate_exit_status(char *arg)
 
 int	handle_exit(char **args, t_shell *shell)
 {
-	int	status;
-
 	if (!args[1])
 	{
 		shell->running = 0;

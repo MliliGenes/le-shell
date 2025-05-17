@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 04:16:25 by le-saad           #+#    #+#             */
-/*   Updated: 2025/05/16 03:53:00 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/17 13:32:05 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,10 @@ int		setup_pipe(int fd[2]);
 void	handle_heredoc_child_process(int fd[2], char *limiter);
 pid_t	create_heredoc_process(int fd[2], char *limiter);
 int		wait_for_heredoc_process(pid_t pid);
-int		update_heredoc_pipe(t_redir *redir, t_file *file, t_shell *shell);
+int		update_heredoc_pipe(t_redir *redir, t_shell *shell);
 char	*get_line(int fd);
 int		empty(char *str);
+int		check_path(t_cmd *path);
+void	get_child_status(int *status);
 
 #endif

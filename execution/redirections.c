@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 00:05:57 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/05/16 03:57:40 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/17 09:57:51 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int	handle_redir_heredoc(t_cmd *cmd, t_redir *redir, t_file *file,
 {
 	if (redir->here_doc_read != -1 && !file->has_quotes)
 	{
-		if (update_heredoc_pipe(redir, file, shell))
+		if (update_heredoc_pipe(redir, shell))
 			return (1);
 	}
 	if (redir->here_doc_read != -1)

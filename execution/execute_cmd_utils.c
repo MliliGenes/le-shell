@@ -6,15 +6,39 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 02:40:06 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/17 08:59:59 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/17 13:46:18 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/execution.h"
 
-bool	is_path(char *path)
+int	check_path(t_cmd *path)
 {
-	return (*path == '.' || *path == '/');
+	struct stat	st;
+
+	if (stat(path->cmd, &st) == 0)
+	{
+		if (S_ISDIR(st.st_mode))
+		{
+			ft_putstr_fd("minishell: ", STDERR_FILENO);
+			ft_putstr_fd(path->cmd, STDERR_FILENO);
+			ft_putstr_fd(": is a directory\n", STDERR_FILENO);
+			cleanup_fds(path);
+			return (127);
+		}
+		else if (access(path->cmd, X_OK) == -1)
+		{
+			ft_putstr_fd("minishell: ", STDERR_FILENO);
+			ft_putstr_fd(path->cmd, STDERR_FILENO);
+			ft_putstr_fd(": permission denied\n", STDERR_FILENO);
+			cleanup_fds(path);
+			return (126);
+		}
+	}
+	ft_putstr_fd(path->cmd, STDERR_FILENO);
+	ft_putstr_fd(": command not found\n", STDERR_FILENO);
+	cleanup_fds(path);
+	return (127);
 }
 
 char	*get_cmd_path(t_cmd *cmd, char **paths)
@@ -22,8 +46,6 @@ char	*get_cmd_path(t_cmd *cmd, char **paths)
 	char	*tmp;
 	char	*full_path;
 
-	if (is_path(cmd->cmd) && access(cmd->cmd, F_OK) == 0 && access(cmd->cmd, X_OK) == 0)
-		return (ft_strdup(cmd->cmd));
 	while (paths && *paths)
 	{
 		tmp = ft_strjoin(*paths, "/");
@@ -34,6 +56,9 @@ char	*get_cmd_path(t_cmd *cmd, char **paths)
 		free(full_path);
 		paths++;
 	}
+	if ((cmd->cmd[0] == '.' || cmd->cmd[0] == '/') && access(cmd->cmd,
+			F_OK) == 0 && access(cmd->cmd, X_OK) == 0)
+		return (ft_strdup(cmd->cmd));
 	return (NULL);
 }
 
