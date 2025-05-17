@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 18:55:05 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/17 16:21:24 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/17 19:28:57 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,5 +38,4 @@ void	reset_signals_for_heredoc(void)
 {
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_IGN);
-	rl_catch_signals = 0;
 }

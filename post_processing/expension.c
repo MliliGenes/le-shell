@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 16:36:33 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/16 01:18:28 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/17 23:43:30 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,8 @@ void	process_variable_length(t_expansion *exp)
 	exp->i_index++;
 	start = exp->i_index;
 	exp->len--;
-	if (exp->input[exp->i_index] == '?')
-	{
-		exp->len += handle_exit_status(exp);
-		return ;
-	}
+	handle_quotes(exp);
+	handle_status(exp);
 	while (exp->input[exp->i_index] && (ft_isalnum(exp->input[exp->i_index])
 			|| exp->input[exp->i_index] == '_'
 			|| exp->input[exp->i_index] == '?'))
@@ -49,7 +46,9 @@ void	calc_exp_len(t_expansion *exp)
 		if (!exp->s_quote && exp->input[exp->i_index] == '$'
 			&& (ft_isalnum(exp->input[exp->i_index + 1])
 				|| exp->input[exp->i_index + 1] == '_'
-				|| exp->input[exp->i_index + 1] == '?'))
+				|| exp->input[exp->i_index + 1] == '?'
+				|| exp->input[exp->i_index + 1] == 1 || exp->input[exp->i_index
+					+ 1] == 2))
 			process_variable_length(exp);
 		else
 			exp->i_index++;
@@ -106,22 +105,25 @@ char	*expand_vars(char *input, t_shell *shell)
 {
 	t_expansion	exp;
 
-	if (!input)
-		return (NULL);
 	init_expansion(&exp, input, shell);
-	calc_exp_len(&exp);
-	exp.output = (char *)malloc(exp.len + 1);
 	if (!exp.output)
 		return (NULL);
 	while (input[exp.i_index])
 	{
-		update_quote_state(&exp, input[exp.i_index]);
-		if (!exp.s_quote && input[exp.i_index] == '$'
+		if (input[exp.i_index] == '$' && (input[exp.i_index + 1] == 1
+				|| input[exp.i_index + 1] == 2))
+		{
+			exp.i_index += 1;
+			continue ;
+		}
+		else if (input[exp.i_index] == '$' && !exp.s_quote
 			&& (ft_isalpha(input[exp.i_index + 1]) || input[exp.i_index
 					+ 1] == '_' || input[exp.i_index + 1] == '?'))
+		{
 			expand_variable(&exp);
-		else
-			exp.output[exp.o_index++] = input[exp.i_index++];
+			continue ;
+		}
+		exp.output[exp.o_index++] = input[exp.i_index++];
 	}
 	exp.output[exp.o_index] = 0;
 	return (exp.output);

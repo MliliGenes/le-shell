@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 02:40:06 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/17 18:00:31 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/17 23:34:05 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ int	check_path(t_cmd *path)
 			ft_putstr_fd(path->cmd, STDERR_FILENO);
 			ft_putstr_fd(": is a directory\n", STDERR_FILENO);
 			cleanup_fds(path);
+			return (127);
 		}
 		else if (access(path->cmd, X_OK) == -1)
 		{
@@ -31,6 +32,7 @@ int	check_path(t_cmd *path)
 			ft_putstr_fd(path->cmd, STDERR_FILENO);
 			ft_putstr_fd(": permission denied\n", STDERR_FILENO);
 			cleanup_fds(path);
+			return (127);
 		}
 	}
 	ft_putstr_fd(path->cmd, STDERR_FILENO);
@@ -41,9 +43,19 @@ int	check_path(t_cmd *path)
 
 char	*get_cmd_path(t_cmd *cmd, char **paths)
 {
-	char	*tmp;
-	char	*full_path;
+	char		*tmp;
+	char		*full_path;
+	struct stat	sb;
 
+	if (!cmd || !cmd->cmd || !cmd->cmd[0])
+		return (NULL);
+	if (cmd->cmd[0] == '/' || cmd->cmd[0] == '.')
+	{
+		if (access(cmd->cmd, F_OK) == 0 && stat(cmd->cmd, &sb) == 0
+			&& S_ISREG(sb.st_mode) && access(cmd->cmd, X_OK) == 0)
+			return (ft_strdup(cmd->cmd));
+		return (NULL);
+	}
 	while (paths && *paths)
 	{
 		tmp = ft_strjoin(*paths, "/");
@@ -54,9 +66,6 @@ char	*get_cmd_path(t_cmd *cmd, char **paths)
 		free(full_path);
 		paths++;
 	}
-	if ((cmd->cmd[0] == '.' || cmd->cmd[0] == '/') && access(cmd->cmd,
-			F_OK) == 0 && access(cmd->cmd, X_OK) == 0)
-		return (ft_strdup(cmd->cmd));
 	return (NULL);
 }
 

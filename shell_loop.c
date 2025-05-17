@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 14:46:30 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/17 17:52:26 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/17 19:37:24 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,7 @@ static int	handle_here_docs(t_shell *shell)
 
 	status = open_here_docs(shell->parser->postfix_note);
 	if (status)
-	{
-		cleanup_iteration(shell);
 		shell->last_status = status;
-	}
 	return (status);
 }
 

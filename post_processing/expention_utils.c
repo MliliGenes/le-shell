@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 16:36:33 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/16 01:17:36 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/17 23:38:01 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ void	init_expansion(t_expansion *exp, char *input, t_shell *shell)
 	exp->i_index = 0;
 	exp->o_index = 0;
 	exp->shell = shell;
+	calc_exp_len(exp);
+	exp->output = (char *)malloc(exp->len + 1);
 }
 
 void	update_quote_state(t_expansion *exp, char current_char)

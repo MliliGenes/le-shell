@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 06:17:40 by le-saad           #+#    #+#             */
-/*   Updated: 2025/05/17 17:01:30 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/17 19:34:17 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ int	open_here_docs(t_ready_token *tokens)
 	t_ready_token	*curret;
 	t_cmd			*cmd;
 	int				status;
-	struct termios	term;
 
 	curret = tokens;
 	status = 0;
@@ -79,8 +78,5 @@ int	open_here_docs(t_ready_token *tokens)
 			return (status);
 		curret = curret->next;
 	}
-	tcgetattr(STDIN_FILENO, &term);
-	term.c_lflag |= (ICANON | ECHO);
-	tcsetattr(STDIN_FILENO, TCSANOW, &term);
 	return (status);
 }

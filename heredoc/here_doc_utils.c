@@ -6,13 +6,12 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 03:33:27 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/17 17:07:50 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/17 23:43:05 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/execution.h"
 #include "../include/signals.h"
-#include <sys/wait.h>
 
 int	setup_pipe(int fd[2])
 {
@@ -69,7 +68,7 @@ int	wait_for_heredoc_process(pid_t pid)
 
 	waitpid(pid, &status, 0);
 	if (WIFSIGNALED(status))
-		status = 128 + WTERMSIG(status);
+		return (128 + WTERMSIG(status));
 	return (WEXITSTATUS(status));
 }
 

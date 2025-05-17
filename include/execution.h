@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 04:16:25 by le-saad           #+#    #+#             */
-/*   Updated: 2025/05/17 13:32:05 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/17 23:42:03 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,5 +78,9 @@ char	*get_line(int fd);
 int		empty(char *str);
 int		check_path(t_cmd *path);
 void	get_child_status(int *status);
+
+void	calc_exp_len(t_expansion *exp);
+void	handle_quotes(t_expansion *exp);
+void	handle_status(t_expansion *exp);
 
 #endif
