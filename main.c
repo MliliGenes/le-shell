@@ -6,12 +6,10 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 13:12:52 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/17 15:02:59 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/17 17:20:52 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "include/execution.h"
-#include "include/parsing.h"
 #include "include/minishell.h"
 
 int	init_shell(t_shell *shell, char **envp)
@@ -45,15 +43,6 @@ int	execute_ast_node(t_ast *node, t_shell *shell)
 			return (handle_or(node, shell));
 	}
 	return (1);
-}
-
-void	cleanup_shell(t_shell *shell)
-{
-	if (shell->env)
-		free_env_list(shell->env);
-	if (shell->path)
-		free_2d(shell->path);
-	rl_clear_history();
 }
 
 void	ll(void)

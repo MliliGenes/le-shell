@@ -21,6 +21,7 @@ HEREDOC_DIR = heredoc
 SRC_FILES = main.c \
 	signals.c \
 	shell_loop.c \
+	cleaning.c \
 	$(LIB_DIR)/string_utils_1.c \
 	$(LIB_DIR)/string_utils_2.c \
 	$(LIB_DIR)/string_utils_3.c \
