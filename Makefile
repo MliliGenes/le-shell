@@ -110,6 +110,13 @@ run: re
 	@printf "$(BLUE)🚀  Running minishell...$(RESET)\n"
 	@./minishell
 
+run_bonus: re_bonus
+	@printf "$(GREEN)✅  Cleaned terminal$(RESET)\n"
+	@clear
+	@make clean_bonus
+	@printf "$(BLUE)🚀  Running minishell bonus...$(RESET)\n"
+	@./minishell_bonus
+
 ${NAME}: ${OBJ_FILES}
 	@printf "$(YELLOW)🔨  Linking objects...$(RESET)\n"
 	@$(CC) $(CFLAGS) ${OBJ_FILES} $(INC_FLAGS) $(LIB) -o ${NAME}
@@ -134,11 +141,18 @@ clean:
 	@printf "$(RED)🧹  Cleaning object files...$(RESET)\n"
 	@rm -rf $(BUILD_DIR)
 
-fclean: clean
-	@printf "$(RED)🧹  Removing executable $(NAME)...$(RESET)\n"
-	@rm -f $(NAME)
+clean_bonus:
+	@printf "$(RED)🧹  Cleaning bonus object files...$(RESET)\n"
+	@rm -rf $(BUILD_DIR_BONUS)
+
+fclean: clean clean_bonus
+	@printf "$(RED)🧹  Removing executables...$(RESET)\n"
+	@rm -f $(NAME) $(NAME_BONUS)
 
 re: fclean all
 	@printf "$(GREEN)♻️  Project rebuilt$(RESET)\n"
 
-.PHONY: all clean fclean re run
+re_bonus: fclean bonus
+	@printf "$(GREEN)♻️  Bonus project rebuilt$(RESET)\n"
+
+.PHONY: all bonus clean clean_bonus fclean re re_bonus run run_bonus

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execute_cmd_utils.c                                :+:      :+:    :+:   */
+/*   execute_cmd_utils_bonus.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 02:40:06 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/17 13:46:18 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/17 18:01:25 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ int	check_path(t_cmd *path)
 			ft_putstr_fd(path->cmd, STDERR_FILENO);
 			ft_putstr_fd(": is a directory\n", STDERR_FILENO);
 			cleanup_fds(path);
-			return (127);
 		}
 		else if (access(path->cmd, X_OK) == -1)
 		{
@@ -32,7 +31,6 @@ int	check_path(t_cmd *path)
 			ft_putstr_fd(path->cmd, STDERR_FILENO);
 			ft_putstr_fd(": permission denied\n", STDERR_FILENO);
 			cleanup_fds(path);
-			return (126);
 		}
 	}
 	ft_putstr_fd(path->cmd, STDERR_FILENO);

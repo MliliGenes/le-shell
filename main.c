@@ -6,11 +6,12 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 13:12:52 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/17 17:22:51 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/17 18:06:04 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include/minishell.h"
+#include <stdlib.h>
 
 int	init_shell(t_shell *shell, char **envp)
 {
