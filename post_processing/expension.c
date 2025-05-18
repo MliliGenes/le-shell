@@ -6,20 +6,23 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 16:36:33 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/18 01:50:48 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/18 02:41:04 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/execution.h"
 
-static void	process_variable_name(t_expansion *exp, int start)
+void	process_variable_length(t_expansion *exp)
 {
-	char	*key;
+	int		start;
 	char	*value;
+	char	*key;
 
+	exp->i_index++;
+	start = exp->i_index;
+	exp->len--;
 	while (exp->input[exp->i_index] && (ft_isalnum(exp->input[exp->i_index])
-			|| exp->input[exp->i_index] == '_'
-			|| exp->input[exp->i_index] == '?'))
+			|| exp->input[exp->i_index] == '_'))
 	{
 		exp->len--;
 		exp->i_index++;
@@ -32,38 +35,26 @@ static void	process_variable_name(t_expansion *exp, int start)
 	free(value);
 }
 
-void	process_variable_length(t_expansion *exp)
-{
-	int	start;
-
-	exp->i_index++;
-	start = exp->i_index;
-	exp->len--;
-	if (exp->input[exp->i_index] == 1 || exp->input[exp->i_index] == 2)
-	{
-		exp->i_index++;
-		return ;
-	}
-	if (exp->input[exp->i_index] == '?')
-	{
-		exp->len += handle_exit_status(exp);
-		return ;
-	}
-	process_variable_name(exp, start);
-}
-
 void	calc_exp_len(t_expansion *exp)
 {
-	while (exp->input[exp->i_index])
+	while (exp && exp->input && exp->input[exp->i_index])
 	{
 		update_quote_state(exp, exp->input[exp->i_index]);
 		if (!exp->s_quote && exp->input[exp->i_index] == '$'
+			&& exp->input[exp->i_index + 1] == '?')
+		{
+			exp->len--;
+			exp->i_index++;
+			exp->len += handle_exit_status(exp->shell->last_status);
+		}
+		else if (!exp->s_quote && exp->input[exp->i_index] == '$'
 			&& (ft_isalnum(exp->input[exp->i_index + 1])
-				|| exp->input[exp->i_index + 1] == '_'
-				|| exp->input[exp->i_index + 1] == '?'
-				|| exp->input[exp->i_index + 1] == 1 || exp->input[exp->i_index
-				+ 1] == 2))
+				|| exp->input[exp->i_index + 1] == '_'))
 			process_variable_length(exp);
+		else if (!exp->s_quote && !exp->d_quote
+			&& exp->input[exp->i_index] == '$' && (exp->input[exp->i_index
+				+ 1] == 1 || exp->input[exp->i_index + 1] == 2))
+			exp->i_index++;
 		else
 			exp->i_index++;
 	}
@@ -120,8 +111,6 @@ char	*expand_vars(char *input, t_shell *shell)
 	t_expansion	exp;
 
 	init_expansion(&exp, input, shell);
-	calc_exp_len(&exp);
-	exp.output = (char *)malloc(exp.len + 1);
 	if (!exp.output)
 		return (NULL);
 	while (input[exp.i_index])

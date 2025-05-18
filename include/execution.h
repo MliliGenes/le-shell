@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 04:16:25 by le-saad           #+#    #+#             */
-/*   Updated: 2025/05/18 00:49:29 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/18 02:27:30 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	update_quote_state(t_expansion *exp, char current_char);
 char	*holy_joint(char **args);
 int		holy_count_words(char *str);
 char	**holy_split(char *joint);
-int		handle_exit_status(t_expansion *exp);
+int		handle_exit_status(int status);
 char	*expand_vars(char *input, t_shell *shell);
 void	update_quote_status(char c, bool *in_single, bool *in_double);
 void	update_quote_status_new(char c, bool *in_single, bool *in_double);

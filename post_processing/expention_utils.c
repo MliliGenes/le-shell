@@ -6,12 +6,11 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 16:36:33 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/18 01:40:49 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/18 02:39:53 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/execution.h"
-#include <stdio.h>
 
 char	*find_env_var(t_shell *shell, const char *key)
 {
@@ -38,6 +37,8 @@ void	init_expansion(t_expansion *exp, char *input, t_shell *shell)
 	exp->i_index = 0;
 	exp->o_index = 0;
 	exp->shell = shell;
+	calc_exp_len(exp);
+	exp->output = (char *)malloc(exp->len + 1);
 }
 
 void	update_quote_state(t_expansion *exp, char current_char)
@@ -48,14 +49,12 @@ void	update_quote_state(t_expansion *exp, char current_char)
 		exp->d_quote = !exp->d_quote;
 }
 
-int	handle_exit_status(t_expansion *exp)
+int	handle_exit_status(int status)
 {
-	char	*exit_status;
 	int		len_adjustment;
+	char	*exit_status;
 
-	exp->i_index++;
-	exp->len--;
-	exit_status = ft_itoa(exp->shell->last_status);
+	exit_status = ft_itoa(status);
 	if (!exit_status)
 		return (0);
 	len_adjustment = ft_strlen(exit_status);
