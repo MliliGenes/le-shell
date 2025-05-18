@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 18:34:28 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/05/15 08:16:30 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/17 00:16:11 by le-saad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	handle_exit(char **args, t_shell *shell)
 	{
 		print_exit_error(args[1], ": numeric argument required\n");
 		shell->running = 0;
-		shell->last_status = 255;
+		shell->last_status = 2;
 		return (shell->last_status);
 	}
 	if (args[2])

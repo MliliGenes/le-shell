@@ -3,21 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   execute_cmd_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 02:40:06 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/15 22:00:06 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/17 00:57:13 by le-saad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/execution.h"
+
+bool is_path(char *str)
+{
+	return (*str == '.' || *str == '/');
+}
 
 char	*get_cmd_path(t_cmd *cmd, char **paths)
 {
 	char	*tmp;
 	char	*full_path;
 
-	if (access(cmd->cmd, F_OK) == 0 && access(cmd->cmd, X_OK) == 0)
+	if (is_path(cmd->cmd) && access(cmd->cmd, F_OK) == 0 && access(cmd->cmd, X_OK) == 0)
 		return (ft_strdup(cmd->cmd));
 	while (paths && *paths)
 	{

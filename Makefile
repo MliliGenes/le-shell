@@ -1,6 +1,6 @@
 CC = cc
 ERRORS = #-Wall -Wextra -Werror
-SANITIZER = #-fsanitize=address -g3
+SANITIZER = -fsanitize=address -g3
 CFLAGS = $(ERRORS) -O3 $(SANITIZER)
 LIB = -L/goinfre/sel-mlil/homebrew/opt/readline/lib -lreadline 
 
@@ -75,7 +75,8 @@ SRC_FILES = main.c \
 	$(EXEC_PROC_DIR)/wildcard.c \
 	$(EXEC_PROC_DIR)/entry_operations.c \
 	$(EXEC_PROC_DIR)/expansion_wildcard.c \
-	$(HEREDOC_DIR)/open_here_docs.c
+	$(HEREDOC_DIR)/open_here_docs.c \
+	$(HEREDOC_DIR)/here_doc_utils.c
 
 
 OBJ_FILES = $(patsubst %.c, ${BUILD_DIR}/%.o, $(SRC_FILES))

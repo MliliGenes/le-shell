@@ -67,11 +67,11 @@ char	*prompt_stderr(const char *prompt)
 	int		stdout_save;
 	char	*input;
 
-	stdout_save = dup(STDOUT_FILENO);
-	dup2(STDERR_FILENO, STDOUT_FILENO);
+	// stdout_save = dup(STDOUT_FILENO);
+	// dup2(STDERR_FILENO, STDOUT_FILENO);
 	input = readline(prompt);
-	dup2(stdout_save, STDOUT_FILENO);
-	close(stdout_save);
+	// dup2(stdout_save, STDOUT_FILENO);
+	// close(stdout_save);
 	return (input);
 }
 
@@ -113,6 +113,7 @@ void	cleanup_shell(t_shell *shell)
 		free_env_list(shell->env);
 	if (shell->path)
 		free_2d(shell->path);
+	rl_clear_history();
 }
 
 void	ll(void)
