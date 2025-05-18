@@ -6,16 +6,16 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 00:05:57 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/05/17 23:49:18 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/18 02:03:10 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/execution.h"
 #include "../include/parsing.h"
 
-int	handle_ambiguous(char *name, char *raw)
+int	handle_ambiguous(bool quoted, char *name, char *raw)
 {
-	if (!name || empty(name) || holy_count_words(name) > 1)
+	if (!quoted && (!*name || empty(name) || holy_count_words(name) > 1))
 	{
 		ft_putstr_fd("minishell: ", STDERR_FILENO);
 		ft_putstr_fd(raw, STDERR_FILENO);
@@ -29,7 +29,7 @@ int	handle_redir_in(t_cmd *cmd, t_file *file)
 {
 	int	fd;
 
-	if (!file->has_quotes && handle_ambiguous(file->name, file->raw))
+	if (handle_ambiguous(file->has_quotes, file->name, file->raw))
 		return (1);
 	fd = open(file->name, O_RDONLY);
 	if (fd < 0)
@@ -47,7 +47,7 @@ int	handle_redir_out(t_cmd *cmd, t_file *file)
 {
 	int	fd;
 
-	if (!file->has_quotes && handle_ambiguous(file->name, file->raw))
+	if (handle_ambiguous(file->has_quotes, file->name, file->raw))
 		return (1);
 	fd = open(file->name, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd < 0)
@@ -65,7 +65,7 @@ int	handle_redir_append(t_cmd *cmd, t_file *file)
 {
 	int	fd;
 
-	if (!file->has_quotes && handle_ambiguous(file->name, file->raw))
+	if (handle_ambiguous(file->has_quotes, file->name, file->raw))
 		return (1);
 	fd = open(file->name, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (fd < 0)

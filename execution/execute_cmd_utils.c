@@ -6,13 +6,11 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 02:40:06 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/18 00:33:23 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/18 01:48:13 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/execution.h"
-#include <stdbool.h>
-#include <stdio.h>
 
 int	check_path(t_cmd *path)
 {
@@ -20,13 +18,13 @@ int	check_path(t_cmd *path)
 
 	if (stat(path->cmd, &st) == 0)
 	{
-		if (S_ISDIR(st.st_mode))
+		if (S_ISDIR(st.st_mode) && ft_strchr(path->cmd, '/'))
 		{
 			ft_putstr_fd("minishell: ", STDERR_FILENO);
 			ft_putstr_fd(path->cmd, STDERR_FILENO);
 			ft_putstr_fd(": is a directory\n", STDERR_FILENO);
 			cleanup_fds(path);
-			return (127);
+			return (126);
 		}
 		else if (access(path->cmd, X_OK) == -1)
 		{
@@ -34,7 +32,7 @@ int	check_path(t_cmd *path)
 			ft_putstr_fd(path->cmd, STDERR_FILENO);
 			ft_putstr_fd(": permission denied\n", STDERR_FILENO);
 			cleanup_fds(path);
-			return (127);
+			return (126);
 		}
 	}
 	ft_putstr_fd(path->cmd, STDERR_FILENO);
@@ -86,14 +84,14 @@ static void	init_file_name(t_file *file, char *origin, t_shell *shell)
 
 	free_file(file);
 	file->raw = ft_strdup(origin);
-	file->has_quotes = true;
+	file->has_quotes = false;
 	buff = mark_quotes(file->raw);
 	buff = mark_astrestisk(buff);
 	ready = expand_vars(buff, shell);
 	ready = expand_wildcard(ready);
 	ready = reset_astrestisk(ready);
-	if (holy_count_words(ready) > 1)
-		file->has_quotes = false;
+	if (holy_count_words(ready) == 1)
+		file->has_quotes = true;
 	tmp = ready;
 	ready = remove_quotes(ready);
 	free(tmp);
