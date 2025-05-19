@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 16:36:33 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/18 02:41:04 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/19 10:05:03 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	calc_exp_len(t_expansion *exp)
 			process_variable_length(exp);
 		else if (!exp->s_quote && !exp->d_quote
 			&& exp->input[exp->i_index] == '$' && (exp->input[exp->i_index
-				+ 1] == 1 || exp->input[exp->i_index + 1] == 2))
+					+ 1] == 1 || exp->input[exp->i_index + 1] == 2))
 			exp->i_index++;
 		else
 			exp->i_index++;
@@ -123,8 +123,8 @@ char	*expand_vars(char *input, t_shell *shell)
 			continue ;
 		}
 		else if (!exp.s_quote && input[exp.i_index] == '$'
-			&& (ft_isalpha(input[exp.i_index + 1]) || input[exp.i_index
-				+ 1] == '_' || input[exp.i_index + 1] == '?'))
+			&& (ft_isalnum(input[exp.i_index + 1]) || input[exp.i_index
+					+ 1] == '_' || input[exp.i_index + 1] == '?'))
 		{
 			expand_variable(&exp);
 			continue ;
