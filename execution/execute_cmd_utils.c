@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_cmd_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 02:40:06 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/19 11:10:49 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/19 16:17:51 by le-saad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,14 +84,17 @@ static void	init_file_name(t_file *file, char *origin, t_shell *shell)
 
 	free_file(file);
 	file->raw = ft_strdup(origin);
-	file->has_quotes = false;
+	file->herdoc = false;
+	file->multiple_words = false;
 	buff = mark_quotes(file->raw);
 	buff = mark_astrestisk(buff);
 	ready = expand_vars(buff, shell);
 	ready = expand_wildcard(ready);
 	ready = reset_astrestisk(ready);
 	if (has_quotes(buff))
-		file->has_quotes = true;
+		file->herdoc = true;
+	if (holy_count_words(buff)> 1)
+		file->multiple_words = true;
 	tmp = ready;
 	ready = remove_quotes(ready);
 	free(tmp);

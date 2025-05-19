@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 00:05:57 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/05/19 11:01:48 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/19 16:19:11 by le-saad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	handle_redir_in(t_cmd *cmd, t_file *file)
 {
 	int	fd;
 
-	if (handle_ambiguous(file->has_quotes, file->name, file->raw))
+	if (handle_ambiguous(file->multiple_words, file->name, file->raw))
 		return (1);
 	fd = open(file->name, O_RDONLY);
 	if (fd < 0)
@@ -47,7 +47,7 @@ int	handle_redir_out(t_cmd *cmd, t_file *file)
 {
 	int	fd;
 
-	if (handle_ambiguous(file->has_quotes, file->name, file->raw))
+	if (handle_ambiguous(file->multiple_words, file->name, file->raw))
 		return (1);
 	fd = open(file->name, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd < 0)
@@ -65,7 +65,7 @@ int	handle_redir_append(t_cmd *cmd, t_file *file)
 {
 	int	fd;
 
-	if (handle_ambiguous(file->has_quotes, file->name, file->raw))
+	if (handle_ambiguous(file->multiple_words, file->name, file->raw))
 		return (1);
 	fd = open(file->name, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (fd < 0)
@@ -82,7 +82,7 @@ int	handle_redir_append(t_cmd *cmd, t_file *file)
 int	handle_redir_heredoc(t_cmd *cmd, t_redir *redir, t_file *file,
 		t_shell *shell)
 {
-	if (redir->here_doc_read != -1 && !file->has_quotes)
+	if (redir->here_doc_read != -1 && !file->herdoc)
 	{
 		if (update_heredoc_pipe(redir, shell))
 			return (1);

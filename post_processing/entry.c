@@ -3,23 +3,41 @@
 /*                                                        :::      ::::::::   */
 /*   entry.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 00:22:09 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/16 01:19:36 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/19 16:51:47 by le-saad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/execution.h"
 
+char *_mark_astrestisk(char *str)
+{
+	int		i;
+
+	if (!str)
+		return (NULL);
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '*')
+			str[i] = 3;
+		i++;
+	}
+	return (str);
+}
+
 t_entry	*create_entry(char *value)
 {
 	t_entry	*new;
+	char *tmp;
 
 	new = malloc(sizeof(t_entry));
 	if (!new)
 		return (NULL);
-	new->value = strdup(value);
+	tmp = _mark_astrestisk(value);
+	new->value = strdup(tmp);
 	if (!new->value)
 	{
 		free(new);
