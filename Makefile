@@ -1,8 +1,8 @@
 CC = cc
-ERRORS = #-Wall -Wextra -Werror -O3 
-SANITIZER = -fsanitize=address -g3
-CFLAGS = $(ERRORS) $(SANITIZER)
-LIB = -L ~/goinfre/homebrew/opt/readline/lib -lreadline 
+ERRORS = -Wall -Wextra -Werror -O3
+SANITIZER = #-fsanitize=address -g3
+CFLAGS = $(ERRORS) $(SANITIZER) -DREADLINE_LIBRARY
+LIB = -L ~/goinfre/homebrew/opt/readline/lib -lreadline
 
 NAME = minishell
 NAME_BONUS = minishell_bonus
@@ -87,7 +87,7 @@ SRC_FILES_BONUS = $(SRC_FILES:.c=_bonus.c)
 OBJ_FILES = $(patsubst %.c, ${BUILD_DIR}/%.o, $(SRC_FILES))
 OBJ_FILES_BONUS = $(patsubst %_bonus.c, ${BUILD_DIR_BONUS}/%_bonus.o, $(SRC_FILES_BONUS))
 
-INC_FLAGS = -I$(INCLUDE_DIR) -I"goinfre/sel-mlil/homebrew/opt/readline/include/readline"
+INC_FLAGS = -I$(INCLUDE_DIR) -I$(HOME)/goinfre/homebrew/opt/readline/include -DREADLINE_LIBRARY
 
 GREEN	= \033[0;32m
 YELLOW	= \033[0;33m
