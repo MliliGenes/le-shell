@@ -6,14 +6,14 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 23:08:16 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/14 23:45:36 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/19 11:18:02 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/execution.h"
 #include "../include/parsing.h"
 
-static bool	has_quotes(char *str)
+static bool	_has_quotes(char *str)
 {
 	int	i;
 
@@ -75,7 +75,7 @@ void	update_cmd_node(t_cmd *cmd, t_shell *shell)
 	if (!cmd || !cmd->args)
 		return ;
 	join_arg = holy_joint(cmd->args);
-	if (join_arg && has_quotes(join_arg))
+	if (join_arg && _has_quotes(join_arg))
 		join_arg = mark_quotes(join_arg);
 	expended_arg = expand_vars(join_arg, shell);
 	free(join_arg);

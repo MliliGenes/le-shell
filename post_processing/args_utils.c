@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 17:12:23 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/18 01:38:54 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/18 02:42:55 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,4 +32,3 @@ bool	is_in_quote(bool in_single, bool in_double)
 {
 	return (in_single || in_double);
 }
-

@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 02:40:06 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/18 01:48:13 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/19 11:10:49 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	check_path(t_cmd *path)
 			cleanup_fds(path);
 			return (126);
 		}
-		else if (access(path->cmd, X_OK) == -1)
+		else if (ft_strchr(path->cmd, '/'))
 		{
 			ft_putstr_fd("minishell: ", STDERR_FILENO);
 			ft_putstr_fd(path->cmd, STDERR_FILENO);
@@ -90,7 +90,7 @@ static void	init_file_name(t_file *file, char *origin, t_shell *shell)
 	ready = expand_vars(buff, shell);
 	ready = expand_wildcard(ready);
 	ready = reset_astrestisk(ready);
-	if (holy_count_words(ready) == 1)
+	if (has_quotes(buff))
 		file->has_quotes = true;
 	tmp = ready;
 	ready = remove_quotes(ready);
