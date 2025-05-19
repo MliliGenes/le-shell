@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 04:16:25 by le-saad           #+#    #+#             */
-/*   Updated: 2025/05/18 02:27:30 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/19 11:11:07 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,5 +82,6 @@ void	get_child_status(int *status);
 void	calc_exp_len(t_expansion *exp);
 void	handle_quotes(t_expansion *exp);
 void	handle_status(t_expansion *exp);
+bool	has_quotes(char *str);
 
 #endif

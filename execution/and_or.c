@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 04:56:00 by le-saad           #+#    #+#             */
-/*   Updated: 2025/05/17 13:40:46 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/19 11:10:57 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,4 +42,15 @@ void	get_child_status(int *status)
 		*status = 128 + WTERMSIG(*status);
 	else if (WIFEXITED(*status))
 		*status = WEXITSTATUS(*status);
+}
+
+bool	has_quotes(char *str)
+{
+	while (*str)
+	{
+		if (*str == 1 || *str == 2)
+			return (true);
+		str++;
+	}
+	return (false);
 }

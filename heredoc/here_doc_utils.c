@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 03:33:27 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/19 10:30:30 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/19 11:11:24 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,9 +89,7 @@ int	update_heredoc_pipe(t_redir *redir, t_shell *shell)
 		if (!line)
 			break ;
 		tmp = line;
-		printf("before %s => ", line);
 		line = expand_vars(tmp, shell);
-		printf("after %s\n", line);
 		free(tmp);
 		write(fd[1], line, ft_strlen(line));
 		free(line);
