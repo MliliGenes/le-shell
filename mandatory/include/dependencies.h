@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 08:49:15 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/20 14:05:10 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/20 15:30:08 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,6 @@
 # include <string.h>
 # include <sys/stat.h>
 # include <unistd.h>
-// # include <readline/history.h>
-// # include <readline/readline.h>
 # include "/Users/sel-mlil/readline/history.h"
 # include "/Users/sel-mlil/readline/readline.h"
 
