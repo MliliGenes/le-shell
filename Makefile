@@ -82,9 +82,11 @@ SRC_FILES = main.c \
 	$(HEREDOC_DIR)/open_here_docs.c \
 	$(HEREDOC_DIR)/here_doc_utils.c
 
-SRC_FILES_BONUS = $(SRC_FILES:.c=_bonus.c)
 
-OBJ_FILES = $(patsubst %.c, ${BUILD_DIR}/%.o, $(SRC_FILES))
+SRC_FILES_MANDATORY = $(addprefix mandatory/, $(SRC_FILES))
+SRC_FILES_BONUS = $(addprefix bonus/, $(SRC_FILES:.c=_bonus.c))
+
+OBJ_FILES = $(patsubst %.c, ${BUILD_DIR}/%.o, $(SRC_FILES_MANDATORY))
 OBJ_FILES_BONUS = $(patsubst %_bonus.c, ${BUILD_DIR_BONUS}/%_bonus.o, $(SRC_FILES_BONUS))
 
 INC_FLAGS = -I$(INCLUDE_DIR) -I$(HOME)/goinfre/homebrew/opt/readline/include -DREADLINE_LIBRARY
