@@ -6,20 +6,16 @@
 /*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 08:49:15 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/20 01:28:25 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/20 01:38:10 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef DEPENDENCIES_H
 # define DEPENDENCIES_H
 
-# include "/Users/ssbaytri/goinfre/homebrew/opt/readline/include/readline/history.h"
-# include "/Users/ssbaytri/goinfre/homebrew/opt/readline/include/readline/readline.h"
 # include <dirent.h>
 # include <fcntl.h>
 # include <limits.h>
-# include <readline/history.h>
-# include <readline/readline.h>
 # include <signal.h>
 # include <stdbool.h>
 # include <stddef.h>
@@ -28,6 +24,8 @@
 # include <string.h>
 # include <sys/stat.h>
 # include <unistd.h>
+# include <readline/history.h>
+# include <readline/readline.h>
 
 # define PROMPT "\001\033[1;32m\002sel-shell\001\033[0m\002$ "
 
