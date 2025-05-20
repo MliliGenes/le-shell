@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/parsing.h"
+#include "../include/parsing_bonus.h"
 
 t_lexer	*init_lexer(char *input)
 {

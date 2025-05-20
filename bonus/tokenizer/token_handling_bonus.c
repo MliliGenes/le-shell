@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/parsing.h"
+#include "../include/parsing_bonus.h"
 
 t_token	*handle_word(t_lexer *lexer)
 {

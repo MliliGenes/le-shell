@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/parsing.h"
+#include "../include/parsing_bonus.h"
 
 bool	is_white_space(char c)
 {

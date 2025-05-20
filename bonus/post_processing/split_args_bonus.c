@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/execution.h"
-#include "../include/parsing.h"
+#include "../include/execution_bonus.h"
+#include "../include/parsing_bonus.h"
 
 int	find_word_start(char *joint, int end, bool *in_single, bool *in_double)
 {

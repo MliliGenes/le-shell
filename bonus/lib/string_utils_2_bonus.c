@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/lib.h"
+#include "../include/lib_bonus.h"
 
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {

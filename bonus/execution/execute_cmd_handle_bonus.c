@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/execution.h"
-#include "../include/parsing.h"
-#include "../include/signals.h"
+#include "../include/execution_bonus.h"
+#include "../include/parsing_bonus.h"
+#include "../include/signals_bonus.h"
 
 int	handle_builtin(t_cmd *cmd, t_shell *shell)
 {

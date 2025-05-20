@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/parsing.h"
+#include "../include/parsing_bonus.h"
 
 t_cmd	*create_cmd_node(char **args, t_redir *redirs)
 {

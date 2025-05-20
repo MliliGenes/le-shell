@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/execution.h"
-#include "../include/parsing.h"
+#include "../include/execution_bonus.h"
+#include "../include/parsing_bonus.h"
 
 int	handle_ambiguous(bool quoted, char *name, char *raw)
 {

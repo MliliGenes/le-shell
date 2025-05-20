@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/builtins.h"
+#include "../include/builtins_bonus.h"
 
 static int	handle_home(t_env_var *env)
 {

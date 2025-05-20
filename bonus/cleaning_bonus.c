@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "include/minishell.h"
+#include "include/minishell_bonus.h"
 
 void	cleanup_iteration(t_shell *shell)
 {

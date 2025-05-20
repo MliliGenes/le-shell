@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/builtins.h"
+#include "../include/builtins_bonus.h"
 
 int	is_valid_key(char *str)
 {

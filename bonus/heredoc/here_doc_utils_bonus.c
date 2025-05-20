@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/execution.h"
-#include "../include/signals.h"
+#include "../include/execution_bonus.h"
+#include "../include/signals_bonus.h"
 
 int	setup_pipe(int fd[2])
 {

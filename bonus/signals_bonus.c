@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "include/signals.h"
+#include "include/signals_bonus.h"
 
 void	handle_sigint(int sig)
 {

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/parsing.h"
+#include "../include/parsing_bonus.h"
 
 t_redir	*create_redir_node(t_redir_type type, char *file_or_limiter)
 {

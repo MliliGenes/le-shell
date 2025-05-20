@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "include/minishell.h"
+#include "include/minishell_bonus.h"
 
 char	*prompt_stderr(const char *prompt)
 {

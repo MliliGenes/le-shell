@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/dependencies.h"
+#include "../include/dependencies_bonus.h"
 
 void	print_syntax_error(const char *token, const char *reason)
 {

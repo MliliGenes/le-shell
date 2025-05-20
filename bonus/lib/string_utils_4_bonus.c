@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/lib.h"
+#include "../include/lib_bonus.h"
 
 static int	word_count(char *s, char sep)
 {
