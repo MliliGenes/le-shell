@@ -1,13 +1,12 @@
 CC = cc
 ERRORS = -Wall -Wextra -Werror -O3
-SANITIZER = #-fsanitize=address -g3
-CFLAGS = $(ERRORS) $(SANITIZER) -DREADLINE_LIBRARY
-LIB = -L ~/goinfre/homebrew/opt/readline/lib -lreadline
+SANITIZER = -fsanitize=address -g3
+CFLAGS = $(ERRORS) $(SANITIZER)
+LIB = -L"/Users/sel-mlil/goinfre/homebrew/opt/readline/lib" -lreadline
 
 NAME = minishell
 NAME_BONUS = minishell_bonus
 
-BUILD_DIR_BONUS = build_bonus
 BUILD_DIR = build
 
 LIB_DIR = lib
@@ -87,9 +86,9 @@ SRC_FILES_MANDATORY = $(addprefix mandatory/, $(SRC_FILES))
 SRC_FILES_BONUS = $(addprefix bonus/, $(SRC_FILES:.c=_bonus.c))
 
 OBJ_FILES = $(patsubst %.c, ${BUILD_DIR}/%.o, $(SRC_FILES_MANDATORY))
-OBJ_FILES_BONUS = $(patsubst %_bonus.c, ${BUILD_DIR_BONUS}/%_bonus.o, $(SRC_FILES_BONUS))
+OBJ_FILES_BONUS = $(patsubst %_bonus.c, ${BUILD_DIR}/%_bonus.o, $(SRC_FILES_BONUS))
 
-INC_FLAGS = -I$(INCLUDE_DIR) -I$(HOME)/goinfre/homebrew/opt/readline/include -DREADLINE_LIBRARY
+INC_FLAGS = -I$(INCLUDE_DIR) -I"/Users/sel-mlil/goinfre/homebrew/opt/readline/include"
 
 GREEN	= \033[0;32m
 YELLOW	= \033[0;33m
@@ -108,14 +107,12 @@ bonus: $(NAME_BONUS)
 run: re
 	@printf "$(GREEN)✅  Cleaned terminal$(RESET)\n"
 	@clear
-	@make clean
 	@printf "$(BLUE)🚀  Running minishell...$(RESET)\n"
 	@./minishell
 
 run_bonus: re_bonus
 	@printf "$(GREEN)✅  Cleaned terminal$(RESET)\n"
 	@clear
-	@make clean_bonus
 	@printf "$(BLUE)🚀  Running minishell bonus...$(RESET)\n"
 	@./minishell_bonus
 
@@ -141,14 +138,15 @@ $(BUILD_DIR_BONUS)/%_bonus.o: %_bonus.c
 
 clean:
 	@printf "$(RED)🧹  Cleaning object files...$(RESET)\n"
-	@rm -rf $(BUILD_DIR)
+	@rm -rf $(BUILD_DIR)/mandatory
 
 clean_bonus:
 	@printf "$(RED)🧹  Cleaning bonus object files...$(RESET)\n"
-	@rm -rf $(BUILD_DIR_BONUS)
+	@rm -rf $(BUILD_DIR)/bonus
 
 fclean: clean clean_bonus
 	@printf "$(RED)🧹  Removing executables...$(RESET)\n"
+	@rm -rf $(BUILD_DIR)
 	@rm -f $(NAME) $(NAME_BONUS)
 
 re: fclean all
