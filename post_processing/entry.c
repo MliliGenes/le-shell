@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   entry.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 00:22:09 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/19 16:51:47 by le-saad          ###   ########.fr       */
+/*   Updated: 2025/05/20 01:29:41 by ssbaytri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/execution.h"
 
-char *_mark_astrestisk(char *str)
+char	*_mark_astrestisk(char *str)
 {
-	int		i;
+	int	i;
 
 	if (!str)
 		return (NULL);
@@ -31,7 +31,7 @@ char *_mark_astrestisk(char *str)
 t_entry	*create_entry(char *value)
 {
 	t_entry	*new;
-	char *tmp;
+	char	*tmp;
 
 	new = malloc(sizeof(t_entry));
 	if (!new)
