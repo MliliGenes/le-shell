@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 04:16:25 by le-saad           #+#    #+#             */
-/*   Updated: 2025/05/19 11:11:07 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/20 18:01:45 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ char	*get_cmd_path(t_cmd *cmd, char **paths);
 char	**env_to_array(t_env_var *env);
 int		execute_command(t_cmd *cmd, t_shell *shell);
 int		apply_redirections(t_cmd *cmd, t_shell *shell);
-int		handle_ambiguous(bool quoted, char *name, char *raw);
+int		handle_ambiguous(bool quoted, bool empty, char *name, char *raw);
 
 int		handle_redir_in(t_cmd *cmd, t_file *file);
 int		handle_redir_out(t_cmd *cmd, t_file *file);

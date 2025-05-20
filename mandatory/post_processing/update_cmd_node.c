@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 23:08:16 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/19 11:18:02 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/20 16:31:52 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ void	apply_wild_card(t_cmd *cmd)
 	while (cmd->args && cmd->args[index])
 	{
 		cmd->args[index] = mark_astrestisk(cmd->args[index]);
-		cmd->args[index] = expand_wildcard(cmd->args[index]);
 		cmd->args[index] = reset_astrestisk(cmd->args[index]);
 		index++;
 	}

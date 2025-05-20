@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   execute_cmd_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 02:40:06 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/20 01:26:38 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/20 20:14:53 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/execution.h"
+#include <stdbool.h>
 
 int	check_path(t_cmd *path)
 {
@@ -81,23 +82,39 @@ static void	init_file_name(t_file *file, char *origin, t_shell *shell)
 	char	*tmp;
 	char	*buff;
 	char	*ready;
+	int		i[2];
 
 	free_file(file);
 	file->raw = ft_strdup(origin);
+	
 	file->herdoc = false;
-	file->multiple_words = false;
+	file->bad_trip = false;
+	
 	buff = mark_quotes(file->raw);
-	buff = mark_astrestisk(buff);
 	ready = expand_vars(buff, shell);
-	ready = expand_wildcard(ready);
-	ready = reset_astrestisk(ready);
+	
 	if (has_quotes(buff))
 		file->herdoc = true;
-	if (holy_count_words(buff) > 1)
-		file->multiple_words = true;
+
 	tmp = ready;
 	ready = remove_quotes(ready);
+	
+	printf("DEBUG  raw: %s ==> WORDS: %d\n", origin, holy_count_words(origin));
+	
+	i[0] = holy_count_words(tmp);
+	i[1] = holy_count_words(ready);
+	
+	printf("DEBUG  expanded with qotes: %s ==> WORDS: %d\n", tmp, i[0]);
+	printf("DEBUG  expanded without   : %s ==> WORDS: %d\n", ready, i[1]);
+	
+	
+	if (i[0] == i[1] && ft_strcmp(origin, ready) != 0)
+		file->bad_trip = true;
+	
+	file->bad_trip ? printf("should error out\n") : printf("should work\n");
+	
 	free(tmp);
+
 	file->name = ready;
 	file->limiter = remove_quotes(buff);
 }

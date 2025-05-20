@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 01:09:59 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/04/25 13:52:23 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/20 16:28:11 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,7 @@ char	*extract_operator(t_lexer *lexer, int *op_length)
 	if (lexer->pos + 1 < lexer->len)
 	{
 		op[1] = lexer->input[lexer->pos + 1];
-		if ((op[0] == '>' && op[1] == '>') || (op[0] == '<' && op[1] == '<')
-			|| (op[0] == '|' && op[1] == '|') || (op[0] == '&' && op[1] == '&'))
+		if ((op[0] == '>' && op[1] == '>') || (op[0] == '<' && op[1] == '<'))
 			*op_length = 2;
 		else
 		{

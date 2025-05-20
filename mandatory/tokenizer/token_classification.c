@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 12:38:00 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/17 17:36:37 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/20 16:29:07 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,10 @@ bool	is_full_operator(t_lexer *lexer)
 	char	next;
 
 	c = lexer->current_char;
-	if (c == '&' && lexer->input[lexer->pos + 1] != '&')
-		return (false);
-	if (c == '(' || c == ')')
-		return (true);
-	if (c == '|' || c == '&' || c == '<' || c == '>')
+	if (c == '|' || c == '<' || c == '>')
 	{
 		next = lexer->input[lexer->pos + 1];
-		if ((c == '|' && next == '|') || (c == '&' && next == '&') || (c == '<'
-				&& next == '<') || (c == '>' && next == '>'))
+		if ((c == '<' && next == '<') || (c == '>' && next == '>'))
 			return (true);
 		if (c == '|' || c == '<' || c == '>')
 			return (true);
@@ -38,10 +33,6 @@ t_token_type	classify_operator(char *op)
 {
 	if (ft_strcmp(op, "|") == 0)
 		return (TOKEN_PIPE);
-	if (ft_strcmp(op, "||") == 0)
-		return (TOKEN_OR);
-	if (ft_strcmp(op, "&&") == 0)
-		return (TOKEN_AND);
 	if (ft_strcmp(op, "<") == 0)
 		return (TOKEN_REDIR_IN);
 	if (ft_strcmp(op, "<<") == 0)
@@ -50,10 +41,6 @@ t_token_type	classify_operator(char *op)
 		return (TOKEN_REDIR_OUT);
 	if (ft_strcmp(op, ">>") == 0)
 		return (TOKEN_APPEND);
-	if (ft_strcmp(op, "(") == 0)
-		return (TOKEN_PL);
-	if (ft_strcmp(op, ")") == 0)
-		return (TOKEN_PR);
 	return (TOKEN_WORD);
 }
 
