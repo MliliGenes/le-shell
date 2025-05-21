@@ -19,6 +19,17 @@ EXECUTION_DIR = execution
 EXEC_PROC_DIR = post_processing
 HEREDOC_DIR = heredoc
 
+HEADER_FILES = $(INCLUDE_DIR)/builtins.h\
+	$(INCLUDE_DIR)/dependencies.h \
+	$(INCLUDE_DIR)/execution.h \
+	$(INCLUDE_DIR)/lib.h \
+	$(INCLUDE_DIR)/minishell.h \
+	$(INCLUDE_DIR)/parsing.h \
+	$(INCLUDE_DIR)/signals.h \
+	$(INCLUDE_DIR)/structs.h
+
+HEADER_FILES_BONUS = $(patsubst %.h, %_bonus.h, $(HEADER_FILES))
+
 SRC_FILES = main.c \
 	signals.c \
 	shell_loop.c \
@@ -97,22 +108,14 @@ RED		= \033[0;31m
 RESET	= \033[0m
 
 all: $(NAME)
-	@printf "$(GREEN)✅  Cleaned terminal$(RESET)\n"
-	@clear
 
 bonus: $(NAME_BONUS)
-	@printf "$(GREEN)✅  Cleaned terminal$(RESET)\n"
-	@clear
 
 run: re
-	@printf "$(GREEN)✅  Cleaned terminal$(RESET)\n"
-	@clear
 	@printf "$(BLUE)🚀  Running minishell...$(RESET)\n"
 	@./minishell
 
 run_bonus: re_bonus
-	@printf "$(GREEN)✅  Cleaned terminal$(RESET)\n"
-	@clear
 	@printf "$(BLUE)🚀  Running minishell bonus...$(RESET)\n"
 	@./minishell_bonus
 
@@ -127,11 +130,6 @@ ${NAME_BONUS}: ${OBJ_FILES_BONUS}
 	@printf "$(GREEN)✅  Executable $(NAME_BONUS) created$(RESET)\n"
 
 $(BUILD_DIR)/%.o: %.c
-	@mkdir -p $(dir $@)
-	@printf "$(YELLOW)🔧  Compiling $<...$(RESET)\n"
-	@$(CC) $(CFLAGS) $(INC_FLAGS) -c $< -o $@
-
-$(BUILD_DIR_BONUS)/%_bonus.o: %_bonus.c
 	@mkdir -p $(dir $@)
 	@printf "$(YELLOW)🔧  Compiling $<...$(RESET)\n"
 	@$(CC) $(CFLAGS) $(INC_FLAGS) -c $< -o $@

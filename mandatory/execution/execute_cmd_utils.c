@@ -6,7 +6,7 @@
 /*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 02:40:06 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/20 22:16:25 by le-saad          ###   ########.fr       */
+/*   Updated: 2025/05/21 10:43:28 by le-saad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ static void	init_file_name(t_file *file, char *origin, t_shell *shell)
 	if (has_quotes(buff))
 		file->herdoc = true;
 	tmp = ready;
+	printf("%s\n", tmp);
 	ready = remove_quotes(ready);
 	if (holy_count_words(tmp) > 1)
 		file->bad_trip = true;

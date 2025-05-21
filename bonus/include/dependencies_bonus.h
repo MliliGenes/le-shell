@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dependencies_bonus.h                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 08:49:15 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/20 02:17:47 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/21 09:29:01 by le-saad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 # include <readline/history.h>
 # include <readline/readline.h>
 
-# define PROMPT "\001\033[1;32m\002sel-shell\001\033[0m\002$ "
+# define PROMPT "\001\033[31m\002sel-shell\001\033[0m\002$ "
 
 # define RESET "\033[0m"
 # define BLACK "\033[30m"
