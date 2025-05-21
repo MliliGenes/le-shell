@@ -1,8 +1,9 @@
 CC = cc
 ERRORS = -Wall -Wextra -Werror -O3
-SANITIZER = -fsanitize=address -g3
-CFLAGS = $(ERRORS) $(SANITIZER)
-LIB = -L"/Users/sel-mlil/goinfre/homebrew/opt/readline/lib" -lreadline
+SANITIZER = #-fsanitize=address -g3
+CFLAGS = $(ERRORS) $(SANITIZER) -DREADLINE_LIBRARY
+READLINE_PATH = /goinfre/ssbaytri/homebrew/opt/readline
+LIB = -L$(READLINE_PATH)/lib -lreadline -lncurses
 
 NAME = minishell
 NAME_BONUS = minishell_bonus
@@ -101,7 +102,7 @@ SRC_FILES_BONUS = $(addprefix $(BONUS_DIR)/, $(SRC_FILES:.c=_bonus.c))
 OBJ_FILES = $(patsubst $(MANDATORY_DIR)/%.c, $(BUILD_DIR)/$(MANDATORY_DIR)/%.o, $(SRC_FILES_MANDATORY))
 OBJ_FILES_BONUS = $(patsubst $(BONUS_DIR)/%_bonus.c, $(BUILD_DIR)/$(BONUS_DIR)/%.o, $(SRC_FILES_BONUS))
 
-INC_FLAGS = -I$(MANDATORY_DIR)/$(INCLUDE_DIR) -I$(BONUS_DIR)/$(INCLUDE_DIR) -I"/Users/sel-mlil/goinfre/homebrew/opt/readline/include"
+INC_FLAGS = -I$(MANDATORY_DIR)/$(INCLUDE_DIR) -I$(BONUS_DIR)/$(INCLUDE_DIR) -I$(READLINE_PATH)/include
 
 GREEN   = \033[0;32m
 YELLOW  = \033[0;33m
