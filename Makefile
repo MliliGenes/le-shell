@@ -1,6 +1,6 @@
 CC = cc
-ERRORS = #-Wall -Wextra -Werror -O3
-SANITIZER = #-fsanitize=address -g3
+ERRORS = -Wall -Wextra -Werror -O3
+SANITIZER = -fsanitize=address -g3
 CFLAGS = $(ERRORS) $(SANITIZER)
 LIB = -L"/Users/sel-mlil/goinfre/homebrew/opt/readline/lib" -lreadline
 
@@ -9,103 +9,105 @@ NAME_BONUS = minishell_bonus
 
 BUILD_DIR = build
 
-LIB_DIR = lib
-TOKENIZER_DIR = tokenizer
-PROCESSING_DIR = processing
-PARSING_DIR = parsing
-INCLUDE_DIR = include 
-BUILLTINS_DIR = builtins
-EXECUTION_DIR = execution
-EXEC_PROC_DIR = post_processing
-HEREDOC_DIR = heredoc
+MANDATORY_DIR = mandatory
+BONUS_DIR = bonus
+INCLUDE_DIR = include
 
-HEADER_FILES = $(INCLUDE_DIR)/builtins.h\
-	$(INCLUDE_DIR)/dependencies.h \
-	$(INCLUDE_DIR)/execution.h \
-	$(INCLUDE_DIR)/lib.h \
-	$(INCLUDE_DIR)/minishell.h \
-	$(INCLUDE_DIR)/parsing.h \
-	$(INCLUDE_DIR)/signals.h \
-	$(INCLUDE_DIR)/structs.h
+MANDATORY_HEADERS = \
+    $(MANDATORY_DIR)/$(INCLUDE_DIR)/builtins.h \
+    $(MANDATORY_DIR)/$(INCLUDE_DIR)/dependencies.h \
+    $(MANDATORY_DIR)/$(INCLUDE_DIR)/execution.h \
+    $(MANDATORY_DIR)/$(INCLUDE_DIR)/lib.h \
+    $(MANDATORY_DIR)/$(INCLUDE_DIR)/minishell.h \
+    $(MANDATORY_DIR)/$(INCLUDE_DIR)/parsing.h \
+    $(MANDATORY_DIR)/$(INCLUDE_DIR)/signals.h \
+    $(MANDATORY_DIR)/$(INCLUDE_DIR)/structs.h
 
-HEADER_FILES_BONUS = $(patsubst %.h, %_bonus.h, $(HEADER_FILES))
+BONUS_HEADERS = \
+    $(BONUS_DIR)/$(INCLUDE_DIR)/builtins_bonus.h \
+    $(BONUS_DIR)/$(INCLUDE_DIR)/dependencies_bonus.h \
+    $(BONUS_DIR)/$(INCLUDE_DIR)/execution_bonus.h \
+    $(BONUS_DIR)/$(INCLUDE_DIR)/lib_bonus.h \
+    $(BONUS_DIR)/$(INCLUDE_DIR)/minishell_bonus.h \
+    $(BONUS_DIR)/$(INCLUDE_DIR)/parsing_bonus.h \
+    $(BONUS_DIR)/$(INCLUDE_DIR)/signals_bonus.h \
+    $(BONUS_DIR)/$(INCLUDE_DIR)/structs_bonus.h
 
 SRC_FILES = main.c \
-	signals.c \
-	shell_loop.c \
-	cleaning.c \
-	$(LIB_DIR)/string_utils_1.c \
-	$(LIB_DIR)/string_utils_2.c \
-	$(LIB_DIR)/string_utils_3.c \
-	$(LIB_DIR)/string_utils_4.c \
-	$(LIB_DIR)/string_utils_5.c \
-	$(LIB_DIR)/error_utils.c \
-	$(TOKENIZER_DIR)/token_classification.c \
-	$(TOKENIZER_DIR)/token_handling.c \
-	$(TOKENIZER_DIR)/token_utils.c \
-	$(TOKENIZER_DIR)/token_validation.c \
-	$(TOKENIZER_DIR)/token_checkers.c \
-	$(TOKENIZER_DIR)/tokenizer.c \
-	$(PROCESSING_DIR)/command_utils.c \
-	$(PROCESSING_DIR)/operator_utils.c \
-	$(PROCESSING_DIR)/processing.c \
-	$(PROCESSING_DIR)/processing_utils.c \
-	$(PROCESSING_DIR)/ready_token_utils.c \
-	$(PROCESSING_DIR)/redirection_utils.c \
-	$(PARSING_DIR)/ast_construction.c \
-	$(PARSING_DIR)/parser.c \
-	$(PARSING_DIR)/parser_utils.c \
-	$(PARSING_DIR)/shunting_yard.c \
-	$(BUILLTINS_DIR)/env_utils.c \
-	$(BUILLTINS_DIR)/ft_cd.c \
-	$(BUILLTINS_DIR)/cd_utils.c \
-	$(BUILLTINS_DIR)/ft_echo.c \
-	$(BUILLTINS_DIR)/ft_env.c \
-	$(BUILLTINS_DIR)/ft_exit.c \
-	$(BUILLTINS_DIR)/ft_export.c \
-	$(BUILLTINS_DIR)/export_utils.c \
-	$(BUILLTINS_DIR)/export_env.c \
-	$(BUILLTINS_DIR)/ft_pwd.c \
-	$(BUILLTINS_DIR)/ft_unset.c \
-	$(BUILLTINS_DIR)/builtins_utils.c \
-	$(EXECUTION_DIR)/env_utils.c \
-	$(EXECUTION_DIR)/execute_cmd_handle.c \
-	$(EXECUTION_DIR)/execute_cmd_utils.c \
-	$(EXECUTION_DIR)/redirections.c \
-	$(EXECUTION_DIR)/redir_utils.c \
-	$(EXECUTION_DIR)/pipe.c \
-	$(EXECUTION_DIR)/and_or.c \
-	$(EXECUTION_DIR)/readfile.c \
-	$(EXEC_PROC_DIR)/args_utils.c \
-	$(EXEC_PROC_DIR)/expention_utils.c \
-	$(EXEC_PROC_DIR)/expension.c \
-	$(EXEC_PROC_DIR)/join_args.c \
-	$(EXEC_PROC_DIR)/split_args.c \
-	$(EXEC_PROC_DIR)/remove_quotes.c \
-	$(EXEC_PROC_DIR)/update_cmd_node.c \
-	$(EXEC_PROC_DIR)/marking_utils.c \
-	$(EXEC_PROC_DIR)/entry.c \
-	$(EXEC_PROC_DIR)/entry_utils.c \
-	$(EXEC_PROC_DIR)/wildcard.c \
-	$(EXEC_PROC_DIR)/entry_operations.c \
-	$(EXEC_PROC_DIR)/expansion_wildcard.c \
-	$(HEREDOC_DIR)/open_here_docs.c \
-	$(HEREDOC_DIR)/here_doc_utils.c
+    signals.c \
+    shell_loop.c \
+    cleaning.c \
+    lib/string_utils_1.c \
+    lib/string_utils_2.c \
+    lib/string_utils_3.c \
+    lib/string_utils_4.c \
+    lib/string_utils_5.c \
+    lib/error_utils.c \
+    tokenizer/token_classification.c \
+    tokenizer/token_handling.c \
+    tokenizer/token_utils.c \
+    tokenizer/token_validation.c \
+    tokenizer/token_checkers.c \
+    tokenizer/tokenizer.c \
+    processing/command_utils.c \
+    processing/operator_utils.c \
+    processing/processing.c \
+    processing/processing_utils.c \
+    processing/ready_token_utils.c \
+    processing/redirection_utils.c \
+    parsing/ast_construction.c \
+    parsing/parser.c \
+    parsing/parser_utils.c \
+    parsing/shunting_yard.c \
+    builtins/env_utils.c \
+    builtins/ft_cd.c \
+    builtins/cd_utils.c \
+    builtins/ft_echo.c \
+    builtins/ft_env.c \
+    builtins/ft_exit.c \
+    builtins/ft_export.c \
+    builtins/export_utils.c \
+    builtins/export_env.c \
+    builtins/ft_pwd.c \
+    builtins/ft_unset.c \
+    builtins/builtins_utils.c \
+    execution/env_utils.c \
+    execution/execute_cmd_handle.c \
+    execution/execute_cmd_utils.c \
+    execution/redirections.c \
+    execution/redir_utils.c \
+    execution/pipe.c \
+    execution/and_or.c \
+    execution/readfile.c \
+    post_processing/args_utils.c \
+    post_processing/expention_utils.c \
+    post_processing/expension.c \
+    post_processing/join_args.c \
+    post_processing/split_args.c \
+    post_processing/remove_quotes.c \
+    post_processing/update_cmd_node.c \
+    post_processing/marking_utils.c \
+    post_processing/entry.c \
+    post_processing/entry_utils.c \
+    post_processing/wildcard.c \
+    post_processing/entry_operations.c \
+    post_processing/expansion_wildcard.c \
+    heredoc/open_here_docs.c \
+    heredoc/here_doc_utils.c
 
+SRC_FILES_MANDATORY = $(addprefix $(MANDATORY_DIR)/, $(SRC_FILES))
+SRC_FILES_BONUS = $(addprefix $(BONUS_DIR)/, $(SRC_FILES:.c=_bonus.c))
 
-SRC_FILES_MANDATORY = $(addprefix mandatory/, $(SRC_FILES))
-SRC_FILES_BONUS = $(addprefix bonus/, $(SRC_FILES:.c=_bonus.c))
+OBJ_FILES = $(patsubst $(MANDATORY_DIR)/%.c, $(BUILD_DIR)/$(MANDATORY_DIR)/%.o, $(SRC_FILES_MANDATORY))
+OBJ_FILES_BONUS = $(patsubst $(BONUS_DIR)/%_bonus.c, $(BUILD_DIR)/$(BONUS_DIR)/%.o, $(SRC_FILES_BONUS))
 
-OBJ_FILES = $(patsubst %.c, ${BUILD_DIR}/%.o, $(SRC_FILES_MANDATORY))
-OBJ_FILES_BONUS = $(patsubst %_bonus.c, ${BUILD_DIR}/%_bonus.o, $(SRC_FILES_BONUS))
+INC_FLAGS = -I$(MANDATORY_DIR)/$(INCLUDE_DIR) -I$(BONUS_DIR)/$(INCLUDE_DIR) -I"/Users/sel-mlil/goinfre/homebrew/opt/readline/include"
 
-INC_FLAGS = -I$(INCLUDE_DIR) -I"/Users/sel-mlil/goinfre/homebrew/opt/readline/include"
-
-GREEN	= \033[0;32m
-YELLOW	= \033[0;33m
-BLUE	= \033[0;34m
-RED		= \033[0;31m
-RESET	= \033[0m
+GREEN   = \033[0;32m
+YELLOW  = \033[0;33m
+BLUE    = \033[0;34m
+RED     = \033[0;31m
+RESET   = \033[0m
 
 all: $(NAME)
 
@@ -119,28 +121,33 @@ run_bonus: re_bonus
 	@printf "$(BLUE)🚀  Running minishell bonus...$(RESET)\n"
 	@./minishell_bonus
 
-${NAME}: ${OBJ_FILES}
+$(NAME): $(OBJ_FILES)
 	@printf "$(YELLOW)🔨  Linking objects...$(RESET)\n"
-	@$(CC) $(CFLAGS) ${OBJ_FILES} $(INC_FLAGS) $(LIB) -o ${NAME}
+	@$(CC) $(CFLAGS) $(OBJ_FILES) $(INC_FLAGS) $(LIB) -o $(NAME)
 	@printf "$(GREEN)✅  Executable $(NAME) created$(RESET)\n"
 
-${NAME_BONUS}: ${OBJ_FILES_BONUS}
+$(NAME_BONUS): $(OBJ_FILES_BONUS)
 	@printf "$(YELLOW)🔨  Linking bonus objects...$(RESET)\n"
-	@$(CC) $(CFLAGS) ${OBJ_FILES_BONUS} $(INC_FLAGS) $(LIB) -o ${NAME_BONUS}
+	@$(CC) $(CFLAGS) $(OBJ_FILES_BONUS) $(INC_FLAGS) $(LIB) -o $(NAME_BONUS)
 	@printf "$(GREEN)✅  Executable $(NAME_BONUS) created$(RESET)\n"
 
-$(BUILD_DIR)/%.o: %.c
+$(BUILD_DIR)/$(MANDATORY_DIR)/%.o: $(MANDATORY_DIR)/%.c $(MANDATORY_HEADERS)
 	@mkdir -p $(dir $@)
 	@printf "$(YELLOW)🔧  Compiling $<...$(RESET)\n"
-	@$(CC) $(CFLAGS) $(INC_FLAGS) -c $< -o $@
+	@$(CC) $(CFLAGS) -I$(MANDATORY_DIR)/$(INCLUDE_DIR) -c $< -o $@
+
+$(BUILD_DIR)/$(BONUS_DIR)/%.o: $(BONUS_DIR)/%_bonus.c $(BONUS_HEADERS)
+	@mkdir -p $(dir $@)
+	@printf "$(YELLOW)🔧  Compiling $<...$(RESET)\n"
+	@$(CC) $(CFLAGS) -I$(BONUS_DIR)/$(INCLUDE_DIR) -c $< -o $@
 
 clean:
 	@printf "$(RED)🧹  Cleaning object files...$(RESET)\n"
-	@rm -rf $(BUILD_DIR)/mandatory
+	@rm -rf $(BUILD_DIR)/$(MANDATORY_DIR)
 
 clean_bonus:
 	@printf "$(RED)🧹  Cleaning bonus object files...$(RESET)\n"
-	@rm -rf $(BUILD_DIR)/bonus
+	@rm -rf $(BUILD_DIR)/$(BONUS_DIR)
 
 fclean: clean clean_bonus
 	@printf "$(RED)🧹  Removing executables...$(RESET)\n"
@@ -148,9 +155,7 @@ fclean: clean clean_bonus
 	@rm -f $(NAME) $(NAME_BONUS)
 
 re: fclean all
-	@printf "$(GREEN)♻️  Project rebuilt$(RESET)\n"
 
 re_bonus: fclean bonus
-	@printf "$(GREEN)♻️  Bonus project rebuilt$(RESET)\n"
 
 .PHONY: all bonus clean clean_bonus fclean re re_bonus run run_bonus

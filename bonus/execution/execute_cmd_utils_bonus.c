@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_cmd_utils_bonus.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 02:40:06 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/21 10:38:33 by le-saad          ###   ########.fr       */
+/*   Updated: 2025/05/21 11:31:06 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,15 +92,14 @@ static void	init_file_name(t_file *file, char *origin, t_shell *shell)
 	ready = mark_astrestisk(ready);
 	ready = expand_wildcard(ready);
 	ready = reset_astrestisk(ready);
-	ready = reset_spaces(ready);
-	if (has_quotes(buff))
-	file->herdoc = true;
+	file->herdoc = has_quotes(buff);
 	tmp = ready;
 	ready = remove_quotes(ready);
 	file->bad_trip = holy_count_words(tmp) > 1;
 	if (holy_count_words(tmp) == 0 && holy_count_words(ready) == 0)
-		file->empty = true; 
+		file->empty = true;
 	free(tmp);
+	ready = reset_spaces(ready);
 	file->name = ready;
 	file->limiter = remove_quotes(buff);
 }
