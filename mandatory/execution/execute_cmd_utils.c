@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_cmd_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 02:40:06 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/20 20:14:53 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/20 22:16:25 by le-saad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,39 +82,23 @@ static void	init_file_name(t_file *file, char *origin, t_shell *shell)
 	char	*tmp;
 	char	*buff;
 	char	*ready;
-	int		i[2];
 
 	free_file(file);
 	file->raw = ft_strdup(origin);
-	
 	file->herdoc = false;
 	file->bad_trip = false;
-	
+	file->empty = false;
 	buff = mark_quotes(file->raw);
 	ready = expand_vars(buff, shell);
-	
 	if (has_quotes(buff))
 		file->herdoc = true;
-
 	tmp = ready;
 	ready = remove_quotes(ready);
-	
-	printf("DEBUG  raw: %s ==> WORDS: %d\n", origin, holy_count_words(origin));
-	
-	i[0] = holy_count_words(tmp);
-	i[1] = holy_count_words(ready);
-	
-	printf("DEBUG  expanded with qotes: %s ==> WORDS: %d\n", tmp, i[0]);
-	printf("DEBUG  expanded without   : %s ==> WORDS: %d\n", ready, i[1]);
-	
-	
-	if (i[0] == i[1] && ft_strcmp(origin, ready) != 0)
+	if (holy_count_words(tmp) > 1)
 		file->bad_trip = true;
-	
-	file->bad_trip ? printf("should error out\n") : printf("should work\n");
-	
+	if (holy_count_words(tmp) == 0 && holy_count_words(ready) == 0)
+		file->empty = true; 
 	free(tmp);
-
 	file->name = ready;
 	file->limiter = remove_quotes(buff);
 }

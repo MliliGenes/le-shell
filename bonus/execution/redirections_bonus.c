@@ -1,21 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   redirections.c                                     :+:      :+:    :+:   */
+/*   redirections_bonus.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 00:05:57 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/05/19 16:19:11 by le-saad          ###   ########.fr       */
+/*   Updated: 2025/05/21 08:04:59 by le-saad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/execution_bonus.h"
 #include "../include/parsing_bonus.h"
 
-int	handle_ambiguous(bool quoted, char *name, char *raw)
+int	handle_ambiguous(bool multi_words, bool empty, char *name, char *raw)
 {
-	if (!quoted && (!*name || empty(name) || holy_count_words(name) > 1))
+	if (multi_words || empty )
 	{
 		ft_putstr_fd("minishell: ", STDERR_FILENO);
 		ft_putstr_fd(raw, STDERR_FILENO);
@@ -29,7 +29,7 @@ int	handle_redir_in(t_cmd *cmd, t_file *file)
 {
 	int	fd;
 
-	if (handle_ambiguous(file->multiple_words, file->name, file->raw))
+	if (handle_ambiguous(file->bad_trip, file->empty, file->name, file->raw))
 		return (1);
 	fd = open(file->name, O_RDONLY);
 	if (fd < 0)
@@ -47,7 +47,7 @@ int	handle_redir_out(t_cmd *cmd, t_file *file)
 {
 	int	fd;
 
-	if (handle_ambiguous(file->multiple_words, file->name, file->raw))
+	if (handle_ambiguous(file->bad_trip, file->empty, file->name, file->raw))
 		return (1);
 	fd = open(file->name, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd < 0)
@@ -65,7 +65,7 @@ int	handle_redir_append(t_cmd *cmd, t_file *file)
 {
 	int	fd;
 
-	if (handle_ambiguous(file->multiple_words, file->name, file->raw))
+	if (handle_ambiguous(file->bad_trip, file->empty, file->name, file->raw))
 		return (1);
 	fd = open(file->name, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (fd < 0)

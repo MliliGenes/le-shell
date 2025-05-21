@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs_bonus.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ssbaytri <ssbaytri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 06:20:05 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/20 02:20:50 by ssbaytri         ###   ########.fr       */
+/*   Updated: 2025/05/21 08:01:16 by le-saad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,7 +155,8 @@ typedef struct s_expansion
 
 typedef struct s_file
 {
-	bool					multiple_words;
+	bool					bad_trip;
+	bool					empty;
 	bool					herdoc;
 	char					*name;
 	char					*limiter;

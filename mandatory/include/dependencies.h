@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dependencies.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 08:49:15 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/20 15:30:08 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/20 21:40:27 by le-saad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,10 @@
 # include <string.h>
 # include <sys/stat.h>
 # include <unistd.h>
-# include "/Users/sel-mlil/readline/history.h"
-# include "/Users/sel-mlil/readline/readline.h"
+# include <readline/history.h>
+# include <readline/readline.h>
+// # include "/Users/sel-mlil/readline/history.h"
+// # include "/Users/sel-mlil/readline/readline.h"
 
 # define PROMPT "\001\033[1;32m\002sel-shell\001\033[0m\002$ "
 

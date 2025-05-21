@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 00:05:57 by ssbaytri          #+#    #+#             */
-/*   Updated: 2025/05/20 19:54:10 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/20 22:17:31 by le-saad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,7 @@
 
 int	handle_ambiguous(bool multi_words, bool empty, char *name, char *raw)
 {
-	(void)empty;
-	(void)name;
-	if (multi_words)
+	if (multi_words || empty )
 	{
 		ft_putstr_fd("minishell: ", STDERR_FILENO);
 		ft_putstr_fd(raw, STDERR_FILENO);
