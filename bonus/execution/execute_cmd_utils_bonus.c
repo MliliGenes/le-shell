@@ -6,7 +6,7 @@
 /*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 02:40:06 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/21 08:19:11 by le-saad          ###   ########.fr       */
+/*   Updated: 2025/05/21 08:23:10 by le-saad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,8 +98,7 @@ static void	init_file_name(t_file *file, char *origin, t_shell *shell)
 	tmp = ready;
 	printf("DEBUG: name with quotes: %s\n", tmp);
 	ready = remove_quotes(ready);
-	if (holy_count_words(tmp) > 1)
-		file->bad_trip = true;
+	file->bad_trip = holy_count_words(tmp) > 1;
 	if (holy_count_words(tmp) == 0 && holy_count_words(ready) == 0)
 		file->empty = true; 
 	free(tmp);

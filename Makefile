@@ -1,6 +1,6 @@
 CC = cc
 ERRORS = #-Wall -Wextra -Werror -O3
-SANITIZER = -fsanitize=address -g3
+SANITIZER = #-fsanitize=address -g3
 CFLAGS = $(ERRORS) $(SANITIZER)
 LIB = -L"/Users/sel-mlil/goinfre/homebrew/opt/readline/lib" -lreadline
 
