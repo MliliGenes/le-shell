@@ -6,7 +6,7 @@
 /*   By: le-saad <le-saad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 02:40:06 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/21 08:10:07 by le-saad          ###   ########.fr       */
+/*   Updated: 2025/05/21 08:19:11 by le-saad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,14 +88,15 @@ static void	init_file_name(t_file *file, char *origin, t_shell *shell)
 	file->bad_trip = false;
 	file->empty = false;
 	buff = mark_quotes(file->raw);
-	buff = mark_astrestisk(buff);
-	ready = expand_wildcard(ready);
-	ready = reset_spaces(ready);
-	ready = reset_astrestisk(ready);
 	ready = expand_vars(buff, shell);
+	ready = mark_astrestisk(ready);
+	ready = expand_wildcard(ready);
+	ready = reset_astrestisk(ready);
+	ready = reset_spaces(ready);
 	if (has_quotes(buff))
-		file->herdoc = true;
+	file->herdoc = true;
 	tmp = ready;
+	printf("DEBUG: name with quotes: %s\n", tmp);
 	ready = remove_quotes(ready);
 	if (holy_count_words(tmp) > 1)
 		file->bad_trip = true;
