@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   here_doc_utils.c                                   :+:      :+:    :+:   */
+/*   here_doc_utils_bonus.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 03:33:27 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/19 11:11:24 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/05/23 19:17:59 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int	wait_for_heredoc_process(pid_t pid)
 
 	waitpid(pid, &status, 0);
 	if (WIFSIGNALED(status))
-		return (128 + WTERMSIG(status));
+		return (1);
 	return (WEXITSTATUS(status));
 }
 
