@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dependencies_bonus.h                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sel <sel@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 08:49:15 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/21 12:21:23 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/08/16 16:01:27 by sel              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define DEPENDENCIES_BONUS_H
 
 # include <dirent.h>
+# include <sys/wait.h>
 # include <fcntl.h>
 # include <limits.h>
 # include <signal.h>
@@ -24,8 +25,10 @@
 # include <string.h>
 # include <sys/stat.h>
 # include <unistd.h>
-# include "/Users/sel-mlil/readline/history.h"
-# include "/Users/sel-mlil/readline/readline.h"
+# include <readline/history.h>
+# include <readline/readline.h>
+// # include "/Users/sel-mlil/readline/history.h"
+// # include "/Users/sel-mlil/readline/readline.h"
 
 # define PROMPT "\001\033[31m\002sel-shell\001\033[0m\002$ "
 

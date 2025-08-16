@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   marking_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sel <sel@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 23:09:35 by sel-mlil          #+#    #+#             */
-/*   Updated: 2025/05/16 01:17:08 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/08/16 15:59:02 by sel              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,11 +54,11 @@ char	*mark_space(char *str)
 	bool	s_quote;
 	bool	d_quote;
 	int		i;
-
-	if (!str)
-		return (NULL);
+	
 	s_quote = false;
 	d_quote = false;
+	if (!str)
+		return (NULL);
 	i = 0;
 	while (str[i])
 	{
